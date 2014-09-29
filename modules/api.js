@@ -10,7 +10,9 @@ exports = module.exports = function(server){
 	};
 	api.findEvents = function(callback){
 		var eventController = api.db.controllers.EventController;
-		eventController.findAll(function(err,data){	callback(err,data);				
+		eventController.findAll(function(err,data){	
+			console.info(err);
+			callback(err,data);				
 		});
 	};
 	api.removeEvents = function(callback){
@@ -24,16 +26,22 @@ exports = module.exports = function(server){
 			var path = fs.realpathSync('./test-data/'+ files[i]);
 			var content = fs.readFileSync(path, 'utf-8');			
 			xml2js.parseString(content,function(err,result){
-				var when = result.kml.Document[0].Placemark[0]['gx:Track'][0]['when'];
-				var where = result.kml.Document[0].Placemark[0]['gx:Track'][0]['gx:coord'];
-				for (var ii =0 ; ii <  when.length; ii++) {
-					var event ={'when': when[ii], 'where':{lat: where[ii].split(' ')[0], lng: where[ii].split(' ')[1]}};
-					eventController.registerEvent(event);
+				if(!err){
+					var when = result.kml.Document[0].Placemark[0]['gx:Track'][0]['when'];
+					var where = result.kml.Document[0].Placemark[0]['gx:Track'][0]['gx:coord'];
+					for (var ii =0 ; ii <  when.length; ii++) {
+						var event ={'when': when[ii], 'where':{lng: where[ii].split(' ')[0], lat: where[ii].split(' ')[1]}};
+						eventController.registerEvent(event);
+					}
+					if (callback) callback(null,{msg:'Import OK'});
+				}else{
+					if (callback) callback(err,{msg:'Import KO'});
 				}
+				
 			});
 			
 		};
-		if (callback) callback(null,{msg:'Import OK'});
+		
 	}
 	return api;
 }

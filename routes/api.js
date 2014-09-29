@@ -40,7 +40,7 @@ module.exports = function(_server){
 	});
 	server.route({
 	    method: 'GET',
-	    path: '/api/import',
+	    path: '/api/events/import',
 	    handler: function (request, reply) {
 	    	//RETURN API LIST
 	        api.importRawData(function(err, data){
