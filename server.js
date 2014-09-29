@@ -1,7 +1,6 @@
 /*SETTING UP DEPENDENCIES*/
 var Hapi = require('hapi');
 var Good = require('good');
-var db = require('./modules/db');
 
 /*CREATE HAPI SERVER --- http://hapijs.com/
   * set ejs as template system */
@@ -14,6 +13,7 @@ var server = new Hapi.Server('0.0.0.0',port,{
         isCached: false}
 });
 
+server.db = require('./modules/db');
 /*LOAD API MODULE*/
 server.api = require('./modules/api')(server);
 
@@ -31,7 +31,7 @@ server.pack.register(Good, function (err) {
         throw err; // something bad happened loading the plugin
     }
     server.start(function () {
-        server.db = db;        
+                
     });
 });
 
