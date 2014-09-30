@@ -10,27 +10,28 @@
 	<body>	
 		<div id="map-canvas"></div>
 	</body>
-</html>
-<script>
-	$(document).ready(function(){
-		$.get( "/api/events", function( data ) {
-		 	
-		 	var mapOptions = {center: { lat: 50.8231643, lng: 4.3673519},zoom: 13, mapTypeId: google.maps.MapTypeId.SATELLITE};
-        	var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-        	//console.info(data);
-        	for (var i=0; i<data.length; i++){
-        		var event = data[i];
-        		data[i] = new google.maps.LatLng(data[i].where.lat,data[i].where.lng);
-        		data[i]._event = event;
-        	}
-        	var pointArray = new google.maps.MVCArray(data);
-			var heatmap = new google.maps.visualization.HeatmapLayer({
-				data: pointArray
-			});
-			heatmap.set('radius', 20);
-			heatmap.setMap(map);
-        	
-        	
+
+	<script>
+		$(document).ready(function(){
+			$.get( "/api/events", function( data ) {
+			 	
+			 	var mapOptions = {center: { lat: 50.8231643, lng: 4.3673519},zoom: 13, mapTypeId: google.maps.MapTypeId.SATELLITE};
+	        	var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+	        	//console.info(data);
+	        	for (var i=0; i<data.length; i++){
+	        		var event = data[i];
+	        		data[i] = new google.maps.LatLng(data[i].where.lat,data[i].where.lng);
+	        		data[i]._event = event;
+	        	}
+	        	var pointArray = new google.maps.MVCArray(data);
+				var heatmap = new google.maps.visualization.HeatmapLayer({
+					data: pointArray
+				});
+				heatmap.set('radius', 20);
+				heatmap.setMap(map);
+	        	
+	        	
+			});		
 		});		
-	});		
-</script>
+	</script>
+</html>

@@ -1,9 +1,9 @@
 /*http://blog.modulus.io/nodejs-and-hapi-create-rest-api*/
 
 
-module.exports = function(_server){
-	var api = _server.api;
-	var server = _server;
+module.exports = function($){
+	var api = $.get('api');
+	var server = $.get('server');
 	server.route({
 	    method: 'GET',
 	    path: '/api',
@@ -24,36 +24,16 @@ module.exports = function(_server){
 	    method: 'GET',
 	    path: '/api/events',
 	    handler: function (request, reply) {
-	    	//RETURN API LIST
-	    	api.findEvents(function(err,data){
-	    		if (!err)
-	    			reply(data);
-	    		else
-	    			reply(err);
+	    	$.get('api').findEvents(function(err,data){
+	    		if (!err)reply(data);
+	    		else reply(err);
 	    	});	        
 	    }
 	});
 	server.route({
 	    method: 'GET',
 	    path: '/api/events/removeAll',
-	    handler: function (request, reply) {api.removeEvents(function(err){if (!err)reply('OK');else reply('KO');});}
-	});
-	server.route({
-	    method: 'GET',
-	    path: '/api/events/import',
 	    handler: function (request, reply) {
-	    	//RETURN API LIST
-	        api.importRawData(function(err, data){
-	        	if (!err){
-	        		reply(data.msg);
-	        	}
-	        	else{
-	        		reply('KO');
-	        	}
-
-	        });
-	    }
+	    	$.get('api').removeEvents(function(err){if (!err)reply('OK');else reply('KO');});}
 	});
-	
-
 }

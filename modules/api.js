@@ -1,47 +1,51 @@
 var fs = require('fs');
 var xml2js = require('xml2js');
 
-exports = module.exports = function(server){
+exports = module.exports = function($){
 	var api = {};
-	api.server = server;
-	api.db = server.db;
-	api.testMethod = function(){
-		return ('----------------------------> test method ');
+	api.testMethod = function testMethod(testData){
+		console.info('test data: ',testData);
+		return $.get('test');
 	};
+	/*EVENTS*/
 	api.findEvents = function(callback){
-		var eventController = api.db.controllers.EventController;
+		var eventController = $.get('controllers/event');
 		eventController.findAll(function(err,data){	
-			console.info(err);
 			callback(err,data);				
 		});
-	};
+	};	
 	api.removeEvents = function(callback){
-		var eventController = api.db.controllers.EventController;
+		var eventController = $.get('controllers/event');
 		eventController.removeAll(function(err){callback(err);});
 	};
-	api.importRawData = function(callback){
-		var eventController = api.db.controllers.EventController;
-		var files = fs.readdirSync('./test-data/');
-		for (var i = files.length - 1; i >= 0; i--) {
-			var path = fs.realpathSync('./test-data/'+ files[i]);
-			var content = fs.readFileSync(path, 'utf-8');			
-			xml2js.parseString(content,function(err,result){
-				if(!err){
-					var when = result.kml.Document[0].Placemark[0]['gx:Track'][0]['when'];
-					var where = result.kml.Document[0].Placemark[0]['gx:Track'][0]['gx:coord'];
-					for (var ii =0 ; ii <  when.length; ii++) {
-						var event ={'when': when[ii], 'where':{lng: where[ii].split(' ')[0], lat: where[ii].split(' ')[1]}};
-						eventController.registerEvent(event);
-					}
-					if (callback) callback(null,{msg:'Import OK'});
-				}else{
-					if (callback) callback(err,{msg:'Import KO'});
-				}
-				
-			});
-			
-		};
-		
-	}
+	api.importRawData = function(data,callback){
+		var eventController = $.get('controllers/event');
+		var err = null;
+		if (data.file) {
+			/*http://bl.ocks.org/joyrexus/0c6bd5135d7edeba7b87*/
+			var name = data.file.hapi.filename;
+            var path = __dirname + "/../uploads/" + name;
+            var file = fs.createWriteStream(path);
+            file.on('error', function (err) { 
+                //callback(err,'KO');
+                console.info(err);
+            });
+            data.file.pipe(file);
+            data.file.on('end', function (err) {
+            	eventController.importFile(path, function(err,res){
+            		/*send response*/ 
+	                var ret = {
+	                	msg: res.msg,
+	                    filename: data.file.hapi.filename,
+	                    headers: data.file.hapi.headers
+	                }
+	                callback(null,JSON.stringify(ret)); 
+
+	            });            	               
+            });
+		}else{(err = 'No file');}
+		/*RETURN (ASYNC)*/
+		//if (err){callback(err,'KO');}else{}
+	};
 	return api;
 }

@@ -1,4 +1,5 @@
-module.exports = function(server){
+module.exports = function($){
+	var server = $.get('server');
 	server.route({
 	    method: 'GET',
 	    path: '/index',
