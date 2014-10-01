@@ -1,14 +1,14 @@
-module.exports = function($){
+module.exports = function($) {
 	var server = $.get('server');
 	server.route({
-	    path: "/{path*}",
-	    method: "GET",
-	    handler: {
-	        directory: {
-	            path: "./public",
-	            listing: false,
-	            index: false
-	        }
-	    }
+		path: "/{path*}",
+		method: "GET",
+		handler: {
+			directory: {
+				path: "./public",
+				listing: false,
+				index: false
+			}
+		}
 	});
 };
