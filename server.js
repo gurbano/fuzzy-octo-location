@@ -28,13 +28,14 @@ $.put('controllers/event', require('./controller/event')($.get('models/event')))
 //OTHER MODULES
 $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
+$.put('fsmanager', require('./modules/fsmanager')($)); //
 
 
 
 /*Load routes*/
 require('./routes/client')($);
 require('./routes/static')($);
-require('./routes/api')($);
+require('./routes/rest')($);
 require('./routes/admin')($);
 
 

@@ -7,4 +7,23 @@ module.exports = function($) {
 			reply.view('index');
 		}
 	});
+	server.route({
+		method: 'POST',
+		path: '/upload',
+		config: {
+			payload: {
+				maxBytes: 209715200,
+				output: 'stream',
+				parse: true
+			},
+			handler: function(request, reply) {
+				var data = request.payload;
+				$.get('fsmanager').upload(data, function(err, content) {
+					$.get('controllers/event').content2event(content,function(err,ret){
+						reply(ret);	
+					});					
+				});
+			}
+		}
+	});
 };

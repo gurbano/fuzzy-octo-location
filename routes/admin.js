@@ -8,7 +8,7 @@ module.exports = function($) {
 			reply.view('admin');
 		}
 	});
-	server.route({
+	/*server.route({
 		method: 'POST',
 		path: '/upload',
 		config: {
@@ -31,4 +31,5 @@ module.exports = function($) {
 			}
 		}
 	});
-}
+	*/
+};
