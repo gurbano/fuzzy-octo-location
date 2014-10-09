@@ -1,0 +1,22 @@
+<% include partials/head %>
+    <link rel="stylesheet" type="text/css" href="css/fuzzy/fuzzy.css">
+    <link rel="stylesheet" type="text/css" href="css/console.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization"></script>
+	<script src="libs/dropzone.js"></script>
+	<script src="libs/knob.js"></script>
+    
+
+
+    <div id="map-canvas">
+
+    </div>
+    <div id="controls" class="">
+    	<div class="controls-section">
+        	<span>From: <input type="text" id="datepicker-from"></span>
+        	<span>To: <input type="text" id="datepicker-to"></span>
+        	<span><a target="_new" id="google-location-history-link" href="#">Download</a></span>
+        </div>
+    </div>
+    <script src="js/fuzzy/fuzzy.js"></script>
+    
+    <% include partials/foot %>

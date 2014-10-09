@@ -11,7 +11,7 @@ var server = new Hapi.Server('0.0.0.0', port, {
             html: require('ejs')
         },
         path: "./views",
-        partialsPath: "./partials/views",
+        partialsPath: "./views/partials",
         isCached: false
     }
 });

@@ -8,6 +8,13 @@ module.exports = function($) {
 		}
 	});
 	server.route({
+		method: 'GET',
+		path: '/fuzzy',
+		handler: function(request, reply) {
+			reply.view('fuzzylocator');
+		}
+	});
+	server.route({
 		method: 'POST',
 		path: '/upload',
 		config: {
