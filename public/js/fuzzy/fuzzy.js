@@ -170,10 +170,13 @@ var Dragger = function() {
     };
     self.drag = function() {
         GLOBALS.engine.running = false;
+        //GLOBALS.controls.updateUI(GLOBALS.current());
         self.helper.p2i(self.helper.d2p());
     };
     self.stopDrag = function() {
-        //GLOBALS.engine.running = true;
+        GLOBALS.controls.updateUI(GLOBALS.current());
+        GLOBALS.map.setSpeedFactor(current.speed, current.acc);
+        GLOBALS.engine.setSpeedFactor(current.speed, current.acc);
         self.helper.p2i(self.helper.d2p());
         //GLOBALS.engine.start();
     };
