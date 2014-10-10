@@ -88,7 +88,7 @@ var Binder = function() {
     var i = 0;
     self.updateUI = function(current) {
         //console.info(current);
-        $('#infotext').html(current.date);
+        //$('#infotext').html(current.date);
         self.clock.setTime(
             (60 * 60 * current.date.getHours()) +
             (60 * current.date.getMinutes()) +
@@ -390,10 +390,11 @@ var DataHolder = function() {
         /*BUILD SPEED MAP*/
         //http://stackoverflow.com/questions/1502590/calculate-distance-between-two-points-in-google-maps-v3
         for (var x = 0; x < self.data.length - 1; x++) {
-            /* WORKING
+            /* WORKING*/
             var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
             var speed = Number((m * 60) / 1000).toFixed(0);
-            */
+            
+            /* NOT WORKING
             var post = self.data[x];
             var pre = self.data[x+1];
             var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
@@ -408,6 +409,8 @@ var DataHolder = function() {
                 ms = Math.max(1, Number(post.time - pre.time) );
             }
             var speed = Number((m * 60) / ms).toFixed(0);
+            */
+
             self.data[x].speed = speed;
             if (x > 1) {
                 self.data[x].acc = self.data[x].speed - self.data[x - 1].speed;
