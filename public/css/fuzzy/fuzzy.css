@@ -35,19 +35,101 @@
 	color:white;
 }
 #controls .controls-section{
-	margin-bottom: 30px;
+	margin-bottom: 60px;
+
+}
+#controls .controls-section span{
+	display: block;
+	margin-left: 10px;
+}
+#controls .controls-section span.label{
+	margin-left: 0px;
 }
 
 
+
+
+#VCRcontrolBar{
+	position: absolute;
+	bottom: 225px;	
+	left:20px;
+	opacity: 0.2;
+	-webkit-transition: all 1s; /* For Safari 3.1 to 6.0 */
+    transition: all 1s;
+    background-color: gray;
+    display: none;
+    font-family: sans-serif;
+}
+#VCRcontrolBar:hover{
+	opacity: 1.0;
+}
+#VCRcontrolBar.open{
+	display: block;
+}
+#VCRcontrolBar ul{
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border:1px dotted;
+}
+#VCRcontrolBar ul li{
+	display: inline;
+	width: 50px;
+	margin: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+ 
+#modal{
+	text-align: center;
+	width: 100%;
+	min-height: 100px;
+	background-color: rgba(0,0,0,0.4);
+	position: absolute;
+	bottom: 100px;
+	opacity: 0.7;
+}
+#modal:hover{
+	opacity: 1.0;
+}
+#modal #infotext{
+	font-family: sans-serif;
+	font-variant: small-caps;
+	font-weight: 300;
+	font-size: 130%;
+}
+#modal #infotext span{
+	display: block;
+}
 #draggable{
 	position: absolute;
-	top: 0px;
+	top: 80px;
 	left: 0px;
-	width: 150px;
-	height: 50px;
+	width: 50px;
+	height: 20px;
 	background-color: black;
 	cursor: ne-resize;
 }
+.interpolated{
+	font-style: italic;;
+}
 
-
-
+#help_keyboard{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	height: 140px;
+	width:200px; 
+	background-image: url('/assets/images/arrow.png');
+	background-size: 210px 150px;
+    background-repeat: no-repeat;    
+    background-position: -5px -5px;
+    opacity: 0.2;
+    display: none;
+}
+#help_keyboard:hover{
+	opacity: 0.6;	
+};
+#help_keyboard.open{
+	display: block;	
+};

@@ -14,6 +14,7 @@ $(document).ready(function() {
     }else{
     	console.info('init not found!');
     }
+
     
 
 });

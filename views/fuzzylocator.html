@@ -1,24 +1,56 @@
 <% include partials/head %>
-    <link rel="stylesheet" type="text/css" href="css/fuzzy/fuzzy.css">
-    <link rel="stylesheet" type="text/css" href="css/console.css">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization"></script>
-	<script src="libs/dropzone.js"></script>
-	<script src="libs/knob.js"></script>
-    
 
+    <link rel="stylesheet" type="text/css" href="/css/console.css">
+    <link rel="stylesheet" href="/libs/flipclock.css">
+    <link rel="stylesheet" type="text/css" href="/css/fuzzy/fuzzy.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization,geometry"></script>
+    <script src="/libs/dropzone.js"></script>
+    <script src="/libs/knob.js"></script>
 
     <div id="map-canvas">
 
     </div>
-    <div id="controls" class="">
-    	<div class="controls-section">
-        	<span>From: <input type="text" id="datepicker-from"></span>
-        	<span>To: <input type="text" id="datepicker-to"></span>
-        	<span><a target="_new" id="google-location-history-link" href="#">Download</a></span>
+    <div id="VCRcontrolBar" class="">
+        <ul>
+            <li class="VCRcontrols" action="slow">SLOW</li>
+            <li class="VCRcontrols" action="play">PLAY</li>
+            <li class="VCRcontrols" action="pause">PAUSE</li>
+            <li class="VCRcontrols" action="fast">FAST</li>
+        </ul>
+    </div>
+    <div id="modal" class="">
+        <div id="infotext"></div>
+        <div id="draggable" class="draggable ui-widget-content">
+
         </div>
     </div>
-    <script src="js/fuzzy/fuzzy.js"></script>
-    <div id="draggable" class="draggable ui-widget-content">
-        
+    <div id="controls" class="">
+        <div class="controls-section">
+            <span>From:
+                <input type="text" id="datepicker-from">
+            </span>
+            <span>To:
+                <input type="text" id="datepicker-to">
+            </span>
+            <span><a target="_new" id="google-location-history-link" href="#">Download</a>
+            </span>
+        </div>
+        <div class="controls-section" id="load_klm">
+            <span><a href="#" id='link_load_usa'>USA</a>
+            </span>
+        </div>
     </div>
+    <script type="text/javascript">
+    var pre_load = '<%=load %>';
+    </script>
+    <div id="help_keyboard" class="help">
+        <span style="position:absolute;top:10px;right:82px;">PLAY</span>
+        <span style="position:absolute;bottom:42px;right:82px;">STOP</span>
+    </div>
+    <div id="flipclock" style="position: absolute;top: -10px;left: 25%;zoom: 0.5;-moz-transform: scale(0.5);"></div>
+    <div id="flipspeed" style="position: absolute;top: -10px;left: 65%;zoom: 0.4;-moz-transform: scale(0.4);"></div>
+
+    <!-- KEEP LAST SINCE WE MODIFY THE DOM AND WE WANT IT TO BE LOADED-->
+    <script src="/libs/flipclock.min.js"></script>
+    <script src="/js/fuzzy/fuzzy.js"></script>
     <% include partials/foot %>

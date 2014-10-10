@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+<name>Location history from 08/09/2014 to 08/10/2014</name>
+<open>1</open>
+<description/>
+<StyleMap id="multiTrack">
+<Pair>
+<key>normal</key>
+<styleUrl>#multiTrack_n</styleUrl>
+</Pair>
+<Pair>
+<key>highlight</key>
+<styleUrl>#multiTrack_h</styleUrl>
+</Pair>
+</StyleMap>
+<Style id="multiTrack_n">
+<IconStyle>
+<Icon>
+<href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>99ffac59</color>
+<width>6</width>
+</LineStyle>
+</Style>
+<Style id="multiTrack_h">
+<IconStyle>
+<scale>1.2</scale>
+<Icon>
+<href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>99ffac59</color>
+<width>8</width>
+</LineStyle>
+</Style>
+<Placemark>
+<name>Latitude User</name>
+<description>Location history for Latitude User from 08/09/2014 to 08/10/2014</description>
+<styleUrl>#multiTrack</styleUrl>
+<gx:Track>
+<altitudeMode>clampToGround</altitudeMode>
+
+<when>2014-08-09T04:59:19.983-07:00</when>
+<gx:coord>4.4823016 50.9016416 0</gx:coord>
+<when>2014-08-09T05:00:20.094-07:00</when>
+<gx:coord>4.4823016 50.9016416 0</gx:coord>
+<when>2014-08-09T05:01:20.043-07:00</when>
+<gx:coord>4.4823016 50.9016416 0</gx:coord>
+<when>2014-08-09T05:02:20.776-07:00</when>
+<gx:coord>4.4819989 50.9014503 0</gx:coord>
+<when>2014-08-09T05:03:29.884-07:00</when>
+<gx:coord>4.4819549 50.9014729 0</gx:coord>
+<when>2014-08-09T05:04:29.894-07:00</when>
+<gx:coord>4.4818381 50.901573 0</gx:coord>
+<when>2014-08-09T05:05:35.261-07:00</when>
+<gx:coord>4.4818599 50.9015529 0</gx:coord>
+<when>2014-08-09T05:06:35.302-07:00</when>
+<gx:coord>4.4819962 50.9014498 0</gx:coord>
+<when>2014-08-09T05:07:35.345-07:00</when>
+<gx:coord>4.4818605 50.9015449 0</gx:coord>
+<when>2014-08-09T05:08:35.406-07:00</when>
+<gx:coord>4.4818386 50.9015563 0</gx:coord>
+<when>2014-08-09T05:09:40.203-07:00</when>
+<gx:coord>4.4819737 50.9014671 0</gx:coord>
+<when>2014-08-09T05:10:40.602-07:00</when>
+<gx:coord>4.4820035 50.9014344 0</gx:coord>
+<when>2014-08-09T05:11:40.628-07:00</when>
+<gx:coord>4.4819873 50.9014576 0</gx:coord>
+<when>2014-08-09T05:12:31.668-07:00</when>
+<gx:coord>4.4819777 50.9014456 0</gx:coord>
+<when>2014-08-09T05:14:30.249-07:00</when>
+<gx:coord>4.4812548 50.9015744 0</gx:coord>
+<when>2014-08-09T05:15:36.995-07:00</when>
+<gx:coord>4.4823774 50.9021479 0</gx:coord>
+<when>2014-08-09T05:16:47.617-07:00</when>
+<gx:coord>4.4828867 50.9025101 0</gx:coord>
+<when>2014-08-09T05:17:47.634-07:00</when>
+<gx:coord>4.4828577 50.9024999 0</gx:coord>
+<when>2014-08-09T05:18:47.610-07:00</when>
+<gx:coord>4.4828639 50.9025091 0</gx:coord>
+<when>2014-08-09T05:19:47.598-07:00</when>
+<gx:coord>4.4828397 50.9024945 0</gx:coord>
+<when>2014-08-09T05:20:47.569-07:00</when>
+<gx:coord>4.4828762 50.9025103 0</gx:coord>
+<when>2014-08-09T05:21:47.617-07:00</when>
+<gx:coord>4.4828675 50.9024943 0</gx:coord>
+<when>2014-08-09T05:22:47.683-07:00</when>
+<gx:coord>4.4828419 50.9024768 0</gx:coord>
+<when>2014-08-09T05:23:44.680-07:00</when>
+<gx:coord>4.4828144 50.9024842 0</gx:coord>
+<when>2014-08-09T05:24:44.884-07:00</when>
+<gx:coord>4.4829008 50.9025003 0</gx:coord>
+<when>2014-08-09T05:25:44.757-07:00</when>
+<gx:coord>4.4828463 50.9025054 0</gx:coord>
+<when>2014-08-09T05:26:41.535-07:00</when>
+<gx:coord>4.4828826 50.902519 0</gx:coord>
+<when>2014-08-09T05:27:41.681-07:00</when>
+<gx:coord>4.4828563 50.9025232 0</gx:coord>
+<when>2014-08-09T05:28:44.977-07:00</when>
+<gx:coord>4.4828093 50.9024742 0</gx:coord>
+<when>2014-08-09T05:29:42.794-07:00</when>
+<gx:coord>4.4797656 50.9005815 0</gx:coord>
+<when>2014-08-09T05:31:39.047-07:00</when>
+<gx:coord>4.4813349 50.9016133 0</gx:coord>
+<when>2014-08-09T05:32:26.500-07:00</when>
+<gx:coord>4.4824008 50.9023232 0</gx:coord>
+<when>2014-08-09T05:33:45.648-07:00</when>
+<gx:coord>4.4819851 50.9023072 0</gx:coord>
+<when>2014-08-09T05:34:45.651-07:00</when>
+<gx:coord>4.4819984 50.9023168 0</gx:coord>
+<when>2014-08-09T05:35:47.095-07:00</when>
+<gx:coord>4.4819984 50.9023328 0</gx:coord>
+<when>2014-08-09T05:36:47.076-07:00</when>
+<gx:coord>4.4819984 50.9023328 0</gx:coord>
+<when>2014-08-09T05:37:47.202-07:00</when>
+<gx:coord>4.4819984 50.9023328 0</gx:coord>
+<when>2014-08-09T05:38:47.173-07:00</when>
+<gx:coord>4.4819984 50.9023424 0</gx:coord>
+<when>2014-08-09T05:39:47.239-07:00</when>
+<gx:coord>4.4819984 50.9023328 0</gx:coord>
+<when>2014-08-09T07:21:42.918-07:00</when>
+<gx:coord>8.5869123 50.049467 0</gx:coord>
+<when>2014-08-09T07:22:34.433-07:00</when>
+<gx:coord>8.5776141 50.0485271 0</gx:coord>
+<when>2014-08-09T07:42:56.033-07:00</when>
+<gx:coord>8.5801971 50.0521643 0</gx:coord>
+<when>2014-08-09T07:43:54.278-07:00</when>
+<gx:coord>8.567247 50.0467681 0</gx:coord>
+<when>2014-08-09T08:00:35.700-07:00</when>
+<gx:coord>8.5672446 50.0466707 0</gx:coord>
+<when>2014-08-09T08:01:54.679-07:00</when>
+<gx:coord>8.5671914 50.0467682 0</gx:coord>
+</gx:Track>
+</Placemark>
+</Document>
+</kml>

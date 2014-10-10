@@ -6,7 +6,7 @@ module.exports = function($) {
         handler: {
             directory: {
                 path: "./public",
-                listing: false,
+                listing: true,
                 index: false
             }
         }

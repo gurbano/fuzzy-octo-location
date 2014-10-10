@@ -8,13 +8,13 @@ exports = module.exports = function($) {
 	};
 	/*EVENTS*/
 	api.findEvents = function(callback) {
-		var eventController = $.get('controllers/event');
+		var eventController = $.get('controllers/fuzzy');
 		eventController.findAll(function(err, data) {
 			callback(err, data);
 		});
 	};
 	api.removeEvents = function(callback) {
-		var eventController = $.get('controllers/event');
+		var eventController = $.get('controllers/fuzzy');
 		eventController.removeAll(function(err) {
 			callback(err);
 		});

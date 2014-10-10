@@ -24,7 +24,7 @@ $.put('server', server);
 $.put('db', require('./modules/db')); //Load db connection, initialize model & controllers
 //EVENTS
 $.put('models/event', require('./models/event'));
-$.put('controllers/event', require('./controller/event')($.get('models/event')));
+$.put('controllers/fuzzy', require('./controller/fuzzy')($.get('models/event')));
 //OTHER MODULES
 $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
@@ -37,6 +37,7 @@ require('./routes/client')($);
 require('./routes/static')($);
 require('./routes/rest')($);
 require('./routes/admin')($);
+require('./routes/fuzzy')($);
 
 
 /*PACKS:
