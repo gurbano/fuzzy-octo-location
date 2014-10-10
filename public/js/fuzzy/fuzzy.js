@@ -89,11 +89,15 @@ var Binder = function() {
     self.updateUI = function(current) {
         //console.info(current);
         //$('#infotext').html(current.date);
+        var date = current.date;
+        //var timezone = +7; //TODO: REAL TIMEZONE
+       // date.setHours(date.getHours()+timezone);
         self.clock.setTime(
-            (60 * 60 * current.date.getHours()) +
-            (60 * current.date.getMinutes()) +
+            (60 * 60 * date.getHours() ) +
+            (60 * date.getMinutes()) +
             (getRandomInt(0, 59))
         );
+        
         self.speedclock.setTime(
             prepad('' + current.speed, '0', 3)
         );
@@ -175,14 +179,14 @@ var Dragger = function() {
     };
     self.stopDrag = function() {
         GLOBALS.controls.updateUI(GLOBALS.current());
-        GLOBALS.map.setSpeedFactor(current.speed, current.acc);
-        GLOBALS.engine.setSpeedFactor(current.speed, current.acc);
+        GLOBALS.map.setSpeedFactor(GLOBALS.current().speed, GLOBALS.current().acc);
+        GLOBALS.engine.setSpeedFactor(GLOBALS.current().speed, GLOBALS.current().acc);
         self.helper.p2i(self.helper.d2p());
         //GLOBALS.engine.start();
     };
     self.init = function(_data) {
         self.helper = new Helper(self);
-        GLOBALS.handler.draggable(self.options);
+        GLOBALS.handler.draggable(self.options);//jquery draggable
         GLOBALS.handler.show();
         GLOBALS.controls.enableRunUI();
     };
@@ -215,6 +219,7 @@ var FuzzyMap = function() {
     var self = this;
     var BASE_ZOOM = 13;
     self.center = new google.maps.LatLng(41.54, 12.30);
+
     self.mapOptions = {
         center: self.center,
         disableDefaultUI: true,
@@ -225,8 +230,33 @@ var FuzzyMap = function() {
     self.marker = new google.maps.Marker({
         position: self.center,
         map: self.map,
-        title: 'Hello World!'
+        title: 'Hello World!',
     });
+    google.maps.event.addListener(self.marker, 'click', function(){
+        self.displayStreetView(self.marker.position);
+    });
+    self.displayStreetView = function(position){
+            $('#streetview').height($(document).height());
+            //$('#streetview').show();
+            var stringa = 'https://maps.googleapis.com/maps/api/streetview?size=200x200&location='+position.lat()+','+position.lng()+'&key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc';
+            $('#streetview-imageN').attr('src',stringa +'&heading=0');
+            $('#streetview-imageNE').attr('src',stringa +'&heading=45');
+            $('#streetview-imageE').attr('src',stringa +'&heading=90');
+            $('#streetview-imageSE').attr('src',stringa +'&heading=135');
+            $('#streetview-imageS').attr('src',stringa+'&heading=180');
+            $('#streetview-imageSW').attr('src',stringa+'&heading=225');
+            $('#streetview-imageW').attr('src',stringa+'&heading=270');
+            $('#streetview-imageNW').attr('src',stringa+'&heading=315');
+            $('#streetview img').each(function(){
+                $(this).removeClass('hidden');
+                $(this).click(function(){self.hideStreetView();});                
+            } );
+    };
+    self.hideStreetView = function(){
+        $('#streetview img').each(function(){
+            $(this).addClass('hidden');
+        } );
+    };
     self.setSpeedFactor = function(speed, acc) {
         //SANITY CHECK
         if (acc > 200) return;
@@ -236,8 +266,8 @@ var FuzzyMap = function() {
         if (speed < 80 && zoom < BASE_ZOOM) { //at slow speed can zoom in
             zoom = BASE_ZOOM;
         }
-        if (speed > 150) zoom = BASE_ZOOM - 2;
-        if (speed > 200) zoom = BASE_ZOOM - 3;
+        //if (speed > 150) zoom = BASE_ZOOM - 2;
+        if (speed > 200) zoom = BASE_ZOOM - 2;
         if (speed > 300) zoom = BASE_ZOOM - 4;
         if (speed > 400) zoom = BASE_ZOOM - 5;
         if (speed > 500) zoom = BASE_ZOOM - 6;

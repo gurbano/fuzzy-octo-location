@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="/libs/flipclock.css">
     <link rel="stylesheet" type="text/css" href="/css/fuzzy/fuzzy.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization,geometry"></script>
+
+    
+    
     <script src="/libs/dropzone.js"></script>
     <script src="/libs/knob.js"></script>
 
@@ -49,6 +52,17 @@
     </div>
     <div id="flipclock" style="position: absolute;top: -10px;left: 25%;zoom: 0.5;-moz-transform: scale(0.5);"></div>
     <div id="flipspeed" style="position: absolute;top: -10px;left: 65%;zoom: 0.4;-moz-transform: scale(0.4);"></div>
+
+    <div id="streetview">
+        <img id="streetview-imageW" class="hidden W" src="">
+        <img id="streetview-imageNW" class="hidden N W" src="">
+        <img id="streetview-imageN" class="hidden N" src="">
+        <img id="streetview-imageNE" class="hidden N E" src="">
+        <img id="streetview-imageE"  class="hidden E" src="">
+        <img id="streetview-imageSE"  class="hidden S E" src="">
+        <img id="streetview-imageS"  class="hidden S" src="">
+        <img id="streetview-imageSW"  class="hidden S W" src="">
+    </div>
 
     <!-- KEEP LAST SINCE WE MODIFY THE DOM AND WE WANT IT TO BE LOADED-->
     <script src="/libs/flipclock.min.js"></script>
