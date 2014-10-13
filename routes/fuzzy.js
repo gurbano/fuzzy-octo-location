@@ -48,4 +48,25 @@ module.exports = function($) {
             }
         }
     });
+    /*EVENTS*/
+    server.route({
+        method: 'GET',
+        path: '/fuzzy/events',
+        handler: function(request, reply) {
+            $.get('api').findEvents(function(err, data) {
+                if (!err) reply(data);
+                else reply(err);
+            });
+        }
+    });
+    server.route({
+        method: 'POST',
+        path: '/fuzzy/events/removeAll',
+        handler: function(request, reply) {
+            $.get('api').removeEvents(function(err) {
+                if (!err) reply('OK');
+                else reply('KO');
+            });
+        }
+    });
 };

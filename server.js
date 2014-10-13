@@ -37,7 +37,8 @@ require('./routes/client')($);
 require('./routes/static')($);
 require('./routes/rest')($);
 require('./routes/admin')($);
-require('./routes/fuzzy')($);
+require('./routes/fuzzy')($); //project fuzzy-octo-locator
+require('./routes/nteam')($); //Project newteam
 
 
 /*PACKS:

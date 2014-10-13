@@ -20,25 +20,4 @@ module.exports = function($) {
 			reply(api.testMethod());
 		}
 	});
-	/*EVENTS*/
-	server.route({
-		method: 'GET',
-		path: '/api/events',
-		handler: function(request, reply) {
-			$.get('api').findEvents(function(err, data) {
-				if (!err) reply(data);
-				else reply(err);
-			});
-		}
-	});
-	server.route({
-		method: 'GET',
-		path: '/api/events/removeAll',
-		handler: function(request, reply) {
-			$.get('api').removeEvents(function(err) {
-				if (!err) reply('OK');
-				else reply('KO');
-			});
-		}
-	});
 };
