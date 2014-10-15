@@ -1,0 +1,466 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"controlle",
+				"controllers"
+			],
+			[
+				"find",
+				"findAll"
+			],
+			[
+				"Event",
+				"EventSchema"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"get",
+				"getWorld"
+			],
+			[
+				"id",
+				"_instanceID"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"add",
+				"addModule"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"modules",
+				"modulesmanager"
+			],
+			[
+				"reu",
+				"require"
+			],
+			[
+				"Sys",
+				"SYSTEM"
+			],
+			[
+				"r",
+				"rect"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "routes/fuzzy.js",
+			"settings":
+			{
+				"buffer_size": 2137,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/js/fuzzy/fuzzy.js",
+			"settings":
+			{
+				"buffer_size": 23062,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 242.0,
+		"selected_items":
+		[
+			[
+				"git pu",
+				"Git: Push Current Branch"
+			],
+			[
+				"git commi",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add Current File"
+			],
+			[
+				"forma",
+				"Format: Javascript"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"INSTA",
+				"Package Control: Install Package"
+			],
+			[
+				"PACKAGE CON",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"ADD",
+				"Package Control: Add Repository"
+			],
+			[
+				"console",
+				"Package Control: Install Package"
+			],
+			[
+				"install package",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Pack",
+				"Package Control: Add Channel"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 538.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib2,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/workspaces/github/fuzzy-octo-location/.idea/libraries/fuzzy_octo_location_node_modules.xml",
+		"/C/workspaces/github/fuzzy-octo-location/.idea/fuzzy-octo-location.iml",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/fuzzy/fuzzy.js",
+		"/C/workspaces/github/fuzzy-octo-location/controller/fuzzy.js",
+		"/C/workspaces/github/fuzzy-octo-location/routes/client.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/fsmanager.js",
+		"/C/workspaces/github/fuzzy-octo-location/controller/event.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/api.js",
+		"/C/workspaces/github/fuzzy-octo-location/server.js",
+		"/C/App/sublimeText3/Data/Packages/JsFormat/JsFormat.sublime-settings",
+		"/C/workspaces/github/fuzzy-octo-location/models/event.js",
+		"/C/workspaces/github/fuzzy-octo-location/routes/static.js",
+		"/C/workspaces/github/fuzzy-octo-location/routes/rest.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/fsManager.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/fsManager",
+		"/C/workspaces/github/fuzzy-octo-location/routes/admin.js",
+		"/C/workspaces/github/fuzzy-octo-location/routes/api.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/battery.js",
+		"/C/App/sublimeText3/Data/Packages/Package Control/Package Control.sublime-settings",
+		"/C/App/sublimeText3/Data/Packages/User/Package Control.sublime-settings",
+		"/C/App/sublimeText3/Data/Packages/User/Preferences.sublime-settings",
+		"/C/workspaces/github/fuzzy-octo-location/package.json",
+		"/C/workspaces/github/fuzzy-octo-location/node_modules/mongoose/node_modules/mpromise/test/promises.Aplus.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/$.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/eval.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/db.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/a.java",
+		"/C/workspaces/github/fuzzy-octo-location/global.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/global.js",
+		"/C/workspaces/github/fuzzy-octo-location/modules/globalImpl.js",
+		"/C/workspaces/github/fuzzy-octo-location/views/admin.html",
+		"/C/workspaces/github/fuzzy-octo-location/views/index.html",
+		"/C/workspaces/github/fuzzy-octo-location/uploads/readme.txt",
+		"/C/workspaces/github/fuzzy-octo-location/views/admin_index",
+		"/C/workspaces/github/fuzzy-octo-location/views/admin/index.html",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/readme.txt",
+		"/C/workspaces/github/fuzzy-octo-location/public/css/readme.txt",
+		"/C/workspaces/github/fuzzy-octo-location/public/assets/pdf/readme.txt",
+		"/C/workspaces/github/fuzzy-octo-location/public/assets/images/readme.txt",
+		"/C/Users/urbangi/Downloads/history-07-07-2014.kml",
+		"/C/workspaces/github/fuzzy-octo-location/node_modules/.gitignore",
+		"/C/workspaces/github/calendar/public/js/social.js",
+		"/C/workspaces/github/calendar/modules/db.js",
+		"/C/workspaces/github/calendar/routes/api.js",
+		"/C/workspaces/github/calendar/routes/admin.js",
+		"/C/workspaces/github/calendar/routes/client.js",
+		"/C/workspaces/github/calendar/routes/static.js",
+		"/C/workspaces/github/calendar/models/event.js",
+		"/C/workspaces/github/calendar/views/calendar.html",
+		"/C/workspaces/github/calendar/public/css/calendar.css",
+		"/C/workspaces/github/calendar/public/css/fonts.css",
+		"/C/workspaces/github/calendar/calendar.js",
+		"/C/workspaces/github/calendar/server.js",
+		"/C/Users/urbangi/Downloads/jquery-2.1.1.min.js",
+		"/C/workspaces/github/calendar/view/calendar.html",
+		"/C/workspaces/github/calendar/public/js/calendar.js",
+		"/C/workspaces/github/calendar/libs/main.js",
+		"/C/workspaces/github/calendar/public/css/main.css",
+		"/C/workspaces/github/ccity/server_modules/engine/modulesmanager.js",
+		"/C/workspaces/github/ccity/server_modules/engine/world.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/abstractModule.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/baseModule.js",
+		"/C/workspaces/github/ccity/server_modules/helper/class.js",
+		"/C/workspaces/github/ccity/server.js",
+		"/C/workspaces/github/ccity/server_modules/properties/application.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/anagraphic.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/demographic.js",
+		"/C/workspaces/github/ccity/server_modules/class.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/geographic.js",
+		"/C/workspaces/github/ccity/server_modules/helper/utils.js",
+		"/C/workspaces/github/ccity/server_modules/engine/modules/base/module.js",
+		"/C/workspaces/github/ccity/package.json",
+		"/C/workspaces/github/ccity/app_modules/properties/system",
+		"/C/workspaces/github/ccity/app_modules/properties/application",
+		"/C/workspaces/github/ccity/app_modules/helper/properties/application",
+		"/C/workspaces/github/ccity/app_modules/helper/properties/system",
+		"/C/workspaces/github/ccity/app_modules/helper/systemProperties.js",
+		"/C/workspaces/github/ccity/app/main.js",
+		"/C/workspaces/github/ccity/app.js",
+		"/C/workspaces/github/gurbano-master/app.js",
+		"/C/workspaces/github/gurbano-master/views/paper1.html",
+		"/C/workspaces/github/gurbano-master/assets/data/projects.json",
+		"/C/workspaces/github/gurbano-master/app_modules/middleware.js",
+		"/C/workspaces/github/gurbano-master/assets/js/foi/clouds.js",
+		"/C/workspaces/github/gurbano-master/assets/js/foi/gurbano.js"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"requirejs",
+			"callee",
+			"\n  "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "routes/fuzzy.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								227,
+								239
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/js/fuzzy/fuzzy.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23062,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8877,
+								8915
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4337.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 227.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 370.0
+	},
+	"project": "sublime.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"fuzzy",
+				"public\\js\\fuzzy\\fuzzy.js"
+			],
+			[
+				"fuzzy.j",
+				"public\\js\\fuzzy\\fuzzy.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 208.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

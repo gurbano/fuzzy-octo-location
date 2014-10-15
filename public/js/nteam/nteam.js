@@ -3,24 +3,27 @@ var GLOBALS = {};
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
     /*START USER MANAGEMENT*/
-    /*
-    GLOBALS.usm.start();
-    GLOBALS.usm.requireFacebook(function(err, user) {
-        $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-
-        //debugger;
-
-    });
-    */
 
 
-    GLOBALS.Newteam = new Newteam({
-        user: null
-    });
-    GLOBALS.Newteam.start(function(err) {
-        if (err) console.error(err);
-        console.info('Newteam started');
-    });
+    var startApplication = function() {
+        GLOBALS.Newteam = new Newteam({
+            user: null
+        });
+        GLOBALS.Newteam.start(function(err) {
+            if (err) console.error(err);
+            console.info('Newteam started');
+        });
+    };
+
+
+    //GLOBALS.usm.start();
+    //GLOBALS.usm.requireFacebook(function(err, user) {
+    //   $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+
+    startApplication();
+
+    //});
+
 
 
 };
@@ -36,13 +39,16 @@ Newteam.prototype.start = function(_callback) {
     //self.testXXX('-------------> OK');    
     self.setup();
     self.startEngine(function(err) {
+        self.renderer.setSize(window.innerWidth, window.innerHeight);
+        self.camera.aspect = window.innerWidth / window.innerHeight;
+        self.camera.updateProjectionMatrix();
         self.UX({
             'onDrag': function(params, event) {
-                var upX = (self.UX.mouse.directionX ? -1 : 1);
-                var upY = (self.UX.mouse.directionY ? -1 : 1);
+                //console.info(params);
                 self.setWorldRotation({
-                    x: self.getWorldRotation().x + Number(CAMERA_SPEED*upX),
-                    y: self.getWorldRotation().y + Number(CAMERA_SPEED*upY)
+                    x: self.getWorldRotation().x + Number(CAMERA_SPEED * params.dx),
+                    y: self.getWorldRotation().y + Number(CAMERA_SPEED * params.dy), // + Number(CAMERA_SPEED * upY)
+                    z: self.getWorldRotation().z
                 });
                 //Number() + Number(CAMERA_SPEED*)))
                 //Number(self.getWorldRotation().z) + Number(CAMERA_SPEED*(self.UX.mouse.directionY ? -1 : 1)))  

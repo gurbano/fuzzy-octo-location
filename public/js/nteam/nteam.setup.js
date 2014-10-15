@@ -34,5 +34,7 @@
      // create a basic scene and add the camera
      self.scene = new THREE.Scene();
      self.scene.add(self.camera);
+     //self.axes = new THREE.AxisHelper( );
+     //self.scene.add( self.axes );
      self.bindResize(self.renderer, self.camera);
  };

@@ -11,7 +11,6 @@ Newteam.prototype.startLoop = function(gameLoop) {
 Newteam.prototype.render = function() {
     var self = this;
 
-    var timer = Date.now() * 0.0001;
     
     self.renderer.render(self.scene, self.camera);
 };

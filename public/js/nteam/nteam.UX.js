@@ -15,23 +15,25 @@ Newteam.prototype.UX = function(options) {
             dx: false,
             x: 0,
             y: 0,
-            directionX: 0,
-            directionY: 0,
+            dragStart : {x : 0,y:0}
         }
     };
 
-
+    var lastDraggedX =0;
     self.mapDiv.addEventListener("mousedown", function(event) {
         self.UX.mouse.sx = true;
+        self.UX.mouse.dragStart.x = event.clientX;
+        self.UX.mouse.dragStart.y = event.clientY;
+
     }, false);
     self.mapDiv.addEventListener("mousemove", function(event) {
-    	self.UX.mouse.directionX = self.UX.mouse.x > event.clientX;	
-    	self.UX.mouse.directionY = self.UX.mouse.y > event.clientY;	
     	if(self.UX.mouse.sx){
-    		self.throw('onDrag', {},event);
+    		self.throw('onDrag', 
+                {dx: event.clientX - self.UX.mouse.dragStart.x , dy: event.clientY - self.UX.mouse.dragStart.y}
+                ,event);
+            self.UX.mouse.dragStart.x = event.clientX;
+            self.UX.mouse.dragStart.y = event.clientY;
     	}        
-        self.UX.mouse.x = event.clientX;
-        self.UX.mouse.y = event.clienty;
 
     }, false);
     self.mapDiv.addEventListener("mouseup", function(event) {
