@@ -1,4 +1,6 @@
 <% include partials/head %>
+    <script type="text/javascript" src="/libs/nteam/three.js"></script>
+    <script type="text/javascript" src="/libs/nteam/three.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/nteam/nteam.css">
     <style type="text/css">
     #main {
@@ -10,11 +12,18 @@
     }
     </style>
     <div id="main">
-
+        <div id="globe">
+        </div>
     </div>
 
-    <div id='socialbar'>
-        <div id='profilepic' ></div>
-    </div>
+
     <script src="/js/nteam/nteam.js"></script>
+    <script src="/js/nteam/nteam.UX.js"></script>
+    <script src="/js/nteam/nteam.cost.js"></script>
+    <script src="/js/nteam/nteam.setup.js"></script>
+    <script src="/js/nteam/nteam.lights.js"></script>
+    <script src="/js/nteam/nteam.earth.js"></script>
+
+    <script src="/js/nteam/nteam.renderer.js"></script>
+    <script src="/js/nteam/nteam.engine.js"></script>
     <% include partials/foot %>

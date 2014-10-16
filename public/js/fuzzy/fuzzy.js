@@ -91,13 +91,13 @@ var Binder = function() {
         //$('#infotext').html(current.date);
         var date = current.date;
         //var timezone = +7; //TODO: REAL TIMEZONE
-       // date.setHours(date.getHours()+timezone);
+        // date.setHours(date.getHours()+timezone);
         self.clock.setTime(
-            (60 * 60 * date.getHours() ) +
+            (60 * 60 * date.getHours()) +
             (60 * date.getMinutes()) +
             (getRandomInt(0, 59))
         );
-        
+
         self.speedclock.setTime(
             prepad('' + current.speed, '0', 3)
         );
@@ -186,7 +186,7 @@ var Dragger = function() {
     };
     self.init = function(_data) {
         self.helper = new Helper(self);
-        GLOBALS.handler.draggable(self.options);//jquery draggable
+        GLOBALS.handler.draggable(self.options); //jquery draggable
         GLOBALS.handler.show();
         GLOBALS.controls.enableRunUI();
     };
@@ -232,30 +232,32 @@ var FuzzyMap = function() {
         map: self.map,
         title: 'Hello World!',
     });
-    google.maps.event.addListener(self.marker, 'click', function(){
+    google.maps.event.addListener(self.marker, 'click', function() {
         self.displayStreetView(self.marker.position);
     });
-    self.displayStreetView = function(position){
-            $('#streetview').height($(document).height());
-            //$('#streetview').show();
-            var stringa = 'https://maps.googleapis.com/maps/api/streetview?size=200x200&location='+position.lat()+','+position.lng()+'&key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc';
-            $('#streetview-imageN').attr('src',stringa +'&heading=0');
-            $('#streetview-imageNE').attr('src',stringa +'&heading=45');
-            $('#streetview-imageE').attr('src',stringa +'&heading=90');
-            $('#streetview-imageSE').attr('src',stringa +'&heading=135');
-            $('#streetview-imageS').attr('src',stringa+'&heading=180');
-            $('#streetview-imageSW').attr('src',stringa+'&heading=225');
-            $('#streetview-imageW').attr('src',stringa+'&heading=270');
-            $('#streetview-imageNW').attr('src',stringa+'&heading=315');
-            $('#streetview img').each(function(){
-                $(this).removeClass('hidden');
-                $(this).click(function(){self.hideStreetView();});                
-            } );
+    self.displayStreetView = function(position) {
+        $('#streetview').height($(document).height());
+        //$('#streetview').show();
+        var stringa = 'https://maps.googleapis.com/maps/api/streetview?size=200x200&location=' + position.lat() + ',' + position.lng() + '&key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc';
+        $('#streetview-imageN').attr('src', stringa + '&heading=0');
+        $('#streetview-imageNE').attr('src', stringa + '&heading=45');
+        $('#streetview-imageE').attr('src', stringa + '&heading=90');
+        $('#streetview-imageSE').attr('src', stringa + '&heading=135');
+        $('#streetview-imageS').attr('src', stringa + '&heading=180');
+        $('#streetview-imageSW').attr('src', stringa + '&heading=225');
+        $('#streetview-imageW').attr('src', stringa + '&heading=270');
+        $('#streetview-imageNW').attr('src', stringa + '&heading=315');
+        $('#streetview img').each(function() {
+            $(this).removeClass('hidden');
+            $(this).click(function() {
+                self.hideStreetView();
+            });
+        });
     };
-    self.hideStreetView = function(){
-        $('#streetview img').each(function(){
+    self.hideStreetView = function() {
+        $('#streetview img').each(function() {
             $(this).addClass('hidden');
-        } );
+        });
     };
     self.setSpeedFactor = function(speed, acc) {
         //SANITY CHECK
@@ -263,9 +265,9 @@ var FuzzyMap = function() {
         if (acc < -200) return;
         var currentZoom = Number(self.map.getZoom());
         var zoom = currentZoom; // BASE_ZOOM;
-        if (speed < 80 && zoom < BASE_ZOOM) { //at slow speed can zoom in
-            zoom = BASE_ZOOM;
-        }
+        //if (speed < 80 && zoom < BASE_ZOOM) { //at slow speed can zoom in
+         //   zoom = BASE_ZOOM;
+        //}
         //if (speed > 150) zoom = BASE_ZOOM - 2;
         if (speed > 200) zoom = BASE_ZOOM - 2;
         if (speed > 300) zoom = BASE_ZOOM - 4;
@@ -360,16 +362,20 @@ var DataHolder = function() {
         pre = toEvent(pre);
         post = toEvent(post);
         //LINEAR
-        //var interpolation = (time - pre.time) / (post.time - pre.time);
-        //var newLat = Number(pre.where.lat) + Number(interpolation * (post.where.lat - pre.where.lat));
-        //var newLng = Number(pre.where.lng) + Number(interpolation * (post.where.lng - pre.where.lng));
+        var interpolation = (time - pre.time) / (post.time - pre.time);
+        var newLat = Number(pre.where.lat) + Number(interpolation * (post.where.lat - pre.where.lat));
+        var newLng = Number(pre.where.lng) + Number(interpolation * (post.where.lng - pre.where.lng));
+        
+
         var hours = 1.5;
         var limit = hours * 60 * 60 * 1000;
-        var interpolatePosition = ((post.time - pre.time) >= limit);
+        
 
-        var newLat = easeInOutQuad(Number(time - pre.time), Number(pre.where.lat), Number(post.where.lat) - Number(pre.where.lat), Number(post.time) - Number(pre.time));
-        var newLng = easeInOutQuad(Number(time - pre.time), Number(pre.where.lng), Number(post.where.lng) - Number(pre.where.lng), Number(post.time) - Number(pre.time));
+        //var newLat = easeInOutQuad(Number(time - pre.time), Number(pre.where.lat), Number(post.where.lat) - Number(pre.where.lat), Number(post.time) - Number(pre.time));
+        //var newLng = easeInOutQuad(Number(time - pre.time), Number(pre.where.lng), Number(post.where.lng) - Number(pre.where.lng), Number(post.time) - Number(pre.time));
+        //var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
 
+        var interpolatePosition = true;//((post.time - pre.time) >= limit);
         var ret = {};
         ret.id = new Date().getTime();
         if (interpolatePosition) {
@@ -391,7 +397,13 @@ var DataHolder = function() {
         ret.speed = 0;
         return ret;
     };
-    self.getRealTime = function(data){if (data.isInterpolated){return data.pre.time;}else{return data.time;}};
+    self.getRealTime = function(data) {
+        if (data.isInterpolated) {
+            return data.pre.time;
+        } else {
+            return data.time;
+        }
+    };
     self.init = function(_data) {
         var minTime = new Date(_data[0].when).getTime();
         var maxTime = new Date(_data[_data.length - 1].when).getTime();
@@ -426,7 +438,7 @@ var DataHolder = function() {
             /* WORKING*/
             var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
             var speed = Number((m * 60) / 1000).toFixed(0);
-            
+
             /* NOT WORKING
             var post = self.data[x];
             var pre = self.data[x+1];
@@ -449,7 +461,7 @@ var DataHolder = function() {
                 self.data[x].acc = self.data[x].speed - self.data[x - 1].speed;
             }
         }
-        
+
         return self;
     };
     return self;
@@ -597,6 +609,18 @@ var Engine = function() {
 var GLOBALS = {};
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
+    GLOBALS.usm.start(false)
+        .login({ //redirect the user to this same page
+            method: 'facebook'
+        }, function success(user) {
+            console.info("You are signed in to Facebook");
+            console.info(user);
+            $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+            
+
+        }, function failure(err) {
+            console.info(err);
+        });
     GLOBALS.map = new FuzzyMap();
     GLOBALS.dragger = new Dragger();
     GLOBALS.engine = new Engine();

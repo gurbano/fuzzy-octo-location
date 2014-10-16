@@ -1,19 +1,49 @@
 #main{
-	background-color: orange;
+	background-color: #010006;
 }
-#socialbar{
-	position: absolute;
-	width: 100%;
-	top: 0;
-	left: 0;
-	padding-left: 15px;
-	min-height: 50px;
-	background-color: rgba(0,0,0,0.6);
+
+
+.explanation {
+    font-family: verdana;
+    color: #CCC;
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    margin-bottom: 5px;
+    font-size: x-small;
+    padding-bottom: 5px;
 }
-#socialbar #profilepic{
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
-	-webkit-border-radius: 25px;
-	-moz-border-radius: 25px;	
+
+.page-header {
+    font-family: helvetica;
+    font-weight: lighter;
+    color: #CCCCCC;
+    font-style: normal;
+    text-align: center;
+    font-size: xx-large;
+    margin: 0px;
+}
+
+.explanation p a {
+    color: #6495ed;
+}
+
+html {
+    background-color: #111;
+}
+
+.explanation a {
+    color: #6495ed;
+
+}
+
+#globe {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+    height: 600px;
+}
+
+div {
+    background-color: #111;
 }

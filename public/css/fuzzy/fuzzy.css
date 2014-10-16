@@ -150,6 +150,9 @@
 	margin-left: -100px ;
 	width: 200px;
 	height: 200px;
+	border-radius: 100px;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;	
 	-webkit-transition: all 3s; /* For Safari 3.1 to 6.0 */
     transition: all 3s;
     -webkit-transition-timing-function: ease; /* Safari and Chrome */
@@ -157,20 +160,16 @@
 }
 
 .N{
-	top: 0 !important;
-	margin-top: 0px !important;
+	
 }
 .E{
-	left: 100% !important;
-	margin-left: -200px !important;
+	
 }
 .S{
-	top: 100% !important;
-	margin-top: -200px !important;
+	
 }
 .W{
-	left: 0% !important;
-	margin-left: 0 !important;
+	
 }
 .hidden{
 	top: 50%  !important ;
@@ -180,3 +179,4 @@
 	width: 10px !important;
 	height: 10px !important;
 }
+

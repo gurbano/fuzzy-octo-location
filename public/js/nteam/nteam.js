@@ -3,43 +3,24 @@ var GLOBALS = {};
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
     /*START USER MANAGEMENT*/
-    GLOBALS.usm.start(
-        true,
-        function fail(err) {
-            console.info('USM problem');
-            if (err === GLOBALS.usm.errors.USER_REQUIRED) {
-                GLOBALS.usm.login({ //redirect the user to this same page
-                    method: 'facebook'
-                }, function success(user) {
-                    console.info("You are signed in to Facebook");
-                    console.info(user);
-                    $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                    //background: url(http://link-to-your/image.jpg) no-repeat;
+    /*
+    GLOBALS.usm.start();
+    GLOBALS.usm.requireFacebook(function(err, user) {
+        $('#profilepic').css('background-image', 'url(' + user.picture + ')');
 
-                }, function failure(err) {
-                    console.info(err);
-                    console.info('cannot start application');
-                });
-            } else {
-                console.info(err);
-                return;
-            }
-        },
-        function success(user) {
+        //debugger;
 
-            /*START APPLICATION*/
-            GLOBALS.Newteam = new Newteam({
-                user: null
-            }).start(
-                function(err) {
-                    if (err) console.error(err);
-                    console.info('Newteam started');
-                });
-
-        });
+    });
+    */
 
 
-
+    GLOBALS.Newteam = new Newteam({
+        user: null
+    });
+    GLOBALS.Newteam.start(function(err) {
+        if (err) console.error(err);
+        console.info('Newteam started');
+    });
 
 
 };
@@ -47,13 +28,29 @@ init = function(_GLOBALS) {
 /*NEWTEAM APPLICATION*/
 var Newteam = function(options) {
     var self = this;
-    self.start = function(___callback) {
-        if (___callback) {
-            ___callback(null);
-        }
-    };
-    self.user = {};
-
-
     return self;
+};
+Newteam.prototype.start = function(_callback) {
+
+    var self = this;
+    //self.testXXX('-------------> OK');    
+    self.setup();
+    self.startEngine(function(err) {
+        self.UX({
+            'onDrag': function(params, event) {
+                var upX = (self.UX.mouse.directionX ? -1 : 1);
+                var upY = (self.UX.mouse.directionY ? -1 : 1);
+                self.setWorldRotation({
+                    x: self.getWorldRotation().x + Number(CAMERA_SPEED*upX),
+                    y: self.getWorldRotation().y + Number(CAMERA_SPEED*upY)
+                });
+                //Number() + Number(CAMERA_SPEED*)))
+                //Number(self.getWorldRotation().z) + Number(CAMERA_SPEED*(self.UX.mouse.directionY ? -1 : 1)))  
+
+            }
+
+
+        });
+        _callback(err);
+    });
 };
