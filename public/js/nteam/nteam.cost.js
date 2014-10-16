@@ -1,8 +1,8 @@
-var POS_X = 0;
+var POS_X = 1800;
 var POS_Y = 0;
-var POS_Z = 0;
-var WIDTH = 1000;
-var HEIGHT = 600;
+var POS_Z = 1800;
+var WIDTH = 800;
+var HEIGHT = 800;
 
 var FOV = 45;
 var NEAR = 1;

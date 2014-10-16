@@ -1,6 +1,19 @@
 <% include partials/head %>
+    <script src="/libs/dancer/dancer.js"></script>
+    <script src="/libs/dancer/support.js"></script>
+    <script src="/libs/dancer/kick.js"></script>
+    <script src="/libs/dancer/adapterWebAudio.js"></script>
+    <script src="/libs/dancer/adapterMoz.js"></script>
+    <script src="/libs/dancer/adapterFlash.js"></script>
+    <script type="text/javascript" src="/libs/dancer/fft.js"></script>
+    <script type="text/javascript" src="/libs/dancer/flash_detect.js"></script>
+    <script src="/libs/dancer/dancer.fft.js"></script>
+    <script src="/libs/dancer/dancer.waveform.js"></script>
+
     <script type="text/javascript" src="/libs/nteam/three.js"></script>
     <script type="text/javascript" src="/libs/nteam/three.min.js"></script>
+    <script src="/libs/nteam/stats.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/css/nteam/nteam.css">
     <style type="text/css">
     #main {
@@ -11,9 +24,29 @@
         background-position: center center;
     }
     </style>
+
+
     <div id="main">
         <div id="globe">
         </div>
+        <div id="info">
+            <h1>dancer.js</h1>
+            <h2>JavaScript Audio Library</h2>
+            <a id="togglefft" href="#">toggle FFT spectrum</a>
+            <canvas id="fft" height="50" width="256"></canvas>
+            <ul>
+                <li><a href="https://github.com/jsantell/dancer.js" title="dancer.js on github">view API/source</a>
+                </li>
+                <li>by <a href="http://jsantell.com" title="Jordan Santell">jordan santell</a>
+                </li>
+            </ul>
+        </div>
+        <div id="songinfo">
+            <span>Now playing...</span>
+            <h3><a href="http://zirconstudios.bandcamp.com/album/unearthed" title="Zircon Studios Bandcamp">Zircon - Devil's Spirit</a>
+            </h3>
+        </div>
+        <div id="loading">Loading . . .</div>
     </div>
 
 
@@ -23,7 +56,8 @@
     <script src="/js/nteam/nteam.setup.js"></script>
     <script src="/js/nteam/nteam.lights.js"></script>
     <script src="/js/nteam/nteam.earth.js"></script>
-
     <script src="/js/nteam/nteam.renderer.js"></script>
     <script src="/js/nteam/nteam.engine.js"></script>
+
+    <script src="/js/nteam/nteam.audio.js"></script>
     <% include partials/foot %>

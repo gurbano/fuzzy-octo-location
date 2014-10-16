@@ -57,11 +57,5 @@ Newteam.prototype.updateWorldRotation = function() {
      if (self.rotation.y)
          self.sp.rotation.z = - self.rotation.y;
      else self.sp.rotation.z = 0;
-    
 
-    console.info(self.sp.rotation);
-    self.camera.position.x = self.camera.position.x +1;
-    //self.camera.lookAt(self.scene.position);
-    //self.light.position = self.camera.position;
-    //self.light.lookAt(self.scene.position);
 };

@@ -20,11 +20,21 @@ init = function(_GLOBALS) {
     //GLOBALS.usm.requireFacebook(function(err, user) {
     //   $('#profilepic').css('background-image', 'url(' + user.picture + ')');
 
-    startApplication();
+    //startApplication();
 
     //});
-
-
+    
+    var dancer = new Dancer();
+    var a = new Audio();
+    a.src = '/assets/music/test.mp3';
+    dancer.load(a);
+    Dancer.isSupported() || loaded();
+    !dancer.isLoaded() ? dancer.bind( 'loaded', loaded ) : loaded(dancer);
+    
+    var loaded = function(d){
+        console.info('play');
+        d.play();
+    }
 
 };
 
