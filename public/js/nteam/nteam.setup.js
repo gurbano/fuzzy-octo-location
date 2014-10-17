@@ -1,4 +1,4 @@
- Newteam.prototype.bindResize = function(renderer, camera,controls) {
+ Newteam.prototype.bindResize = function(renderer, camera, controls) {
      var callback = function() {
          renderer.setSize(window.innerWidth, window.innerHeight);
          camera.aspect = window.innerWidth / window.innerHeight;
@@ -34,7 +34,19 @@
      self.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
      self.controls = new THREE.TrackballControls(self.camera);
-     self.controls.addEventListener( 'change', self.render );
+     self.controls.rotateSpeed = 1.0;
+     self.controls.zoomSpeed = 1.2;
+     self.controls.panSpeed = 0.8;
+
+     self.controls.noZoom = false;
+     self.controls.noPan = false;
+
+     self.controls.staticMoving = true;
+     self.controls.dynamicDampingFactor = 0.3;
+
+     self.controls.keys = [65, 83, 68];
+
+     self.controls.addEventListener('change', self.render);
 
      // create a basic scene and add the camera
      self.scene = new THREE.Scene();

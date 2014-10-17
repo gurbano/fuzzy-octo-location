@@ -53,23 +53,25 @@ var zAxis = new THREE.Vector3(0, 0, 1);
 var xyaxis = new THREE.Vector3(1, 0, 1);
 
 var tmp = 0;
+
 Newteam.prototype.updateEarthRotation = function(deltax, deltay) {
     var self = this;
+    /*
     if (deltax) {
         self.sp.rotateAroundOwnAxis(yAxis, deltax / 100);
     };
     if (deltay) {        
         self.sp.rotateAroundOwnAxis(xAxis, -deltay / 100);
     };
-    self.sp.rotation.y += 0.0008;
+   
+    */
+    self.sp.rotation.y += 0.0012;
 }
 
 
 var rotWorldMatrix;
 THREE.Object3D.prototype.rotateAroundOwnAxis = function(axis, radians) {
-    mesh.matrix.multiplySelf(rotation_matrix);
-    mesh.rotation.setRotationFromMatrix(mesh.matrix);
-    this.rotateAroundWorldAxis(axis,radians);
+    this.rotateAroundWorldAxis(axis, radians);
 
 }
 THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {

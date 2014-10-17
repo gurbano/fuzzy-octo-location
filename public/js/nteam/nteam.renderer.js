@@ -12,7 +12,8 @@ Newteam.prototype.render = function() {
     var self = this;
 
     if(self.stats)self.stats.update();
-    self.renderer.render(self.scene, self.camera);
+    if (self.renderer)
+        self.renderer.render(self.scene, self.camera);
 };
 
 
@@ -22,6 +23,7 @@ Newteam.prototype.giveLife = function(dead) {
     var self = this;
     var heartBeat = function(self) {
         dead();
+        self.controls.update();
         requestAnimationFrame(function() {
             heartBeat(self)
         });

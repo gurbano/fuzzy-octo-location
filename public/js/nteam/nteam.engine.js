@@ -31,6 +31,7 @@ Newteam.prototype.startEngine = function(_callback) {
         
 
         self.startLoop(function gameLoop(){
+            
             self.updateCamera();
             self.updateEarthRotation();
     		self.render();

@@ -23,7 +23,7 @@ Newteam.prototype.UX = function(options) {
     };
 
 
-
+/*
     
     self.mapDiv.addEventListener("mousedown", function(event) {
         self.UX.mouse.sx = true;
@@ -52,7 +52,7 @@ Newteam.prototype.UX = function(options) {
         self.throw('keypress', {}, event);
 
     });
-
+*/
 
     var stats = new Stats();
     stats.domElement.style.position = 'absolute';
