@@ -26,11 +26,13 @@ Newteam.prototype.startEngine = function(_callback) {
         self.separateWaterFromEarth(); //Giorno due o Secondo giorno - Cielo e Mare
         //self.breathWind();
         
+        
         //Giorno tre o Terzo giorno - Alberi e piante
         
 
         self.startLoop(function gameLoop(){
-            self.updateWorldRotation();
+            self.updateCamera();
+            self.updateEarthRotation();
     		self.render();
         });
         _callback(null);

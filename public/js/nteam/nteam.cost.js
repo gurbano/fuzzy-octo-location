@@ -1,6 +1,6 @@
-var POS_X = 1800;
+var POS_X = 0;
 var POS_Y = 0;
-var POS_Z = 1800;
+var POS_Z = -2800;
 var WIDTH = 800;
 var HEIGHT = 800;
 

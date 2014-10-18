@@ -20,21 +20,10 @@ init = function(_GLOBALS) {
     //GLOBALS.usm.requireFacebook(function(err, user) {
     //   $('#profilepic').css('background-image', 'url(' + user.picture + ')');
 
-    //startApplication();
+    startApplication();
 
     //});
-    
-    var dancer = new Dancer();
-    var a = new Audio();
-    a.src = '/assets/music/test.mp3';
-    dancer.load(a);
-    Dancer.isSupported() || loaded();
-    !dancer.isLoaded() ? dancer.bind( 'loaded', loaded ) : loaded(dancer);
-    
-    var loaded = function(d){
-        console.info('play');
-        d.play();
-    }
+
 
 };
 
@@ -54,18 +43,23 @@ Newteam.prototype.start = function(_callback) {
         self.camera.updateProjectionMatrix();
         self.UX({
             'onDrag': function(params, event) {
-                //console.info(params);
-                self.setWorldRotation({
-                    x: self.getWorldRotation().x + Number(CAMERA_SPEED * params.dx),
-                    y: self.getWorldRotation().y + Number(CAMERA_SPEED * params.dy), // + Number(CAMERA_SPEED * upY)
-                    z: self.getWorldRotation().z
-                });
-                //Number() + Number(CAMERA_SPEED*)))
-                //Number(self.getWorldRotation().z) + Number(CAMERA_SPEED*(self.UX.mouse.directionY ? -1 : 1)))  
-
-            }
-
-
+                self.updateEarthRotation(params.dx, params.dy);
+            },
+            'keypress': function(params, event) {
+                console.info(event);
+                if (event.keyCode===119){
+                    self.updateEarthRotation(null, -1);
+                }
+                if (event.keyCode===115){
+                    self.updateEarthRotation(null, 1);
+                }
+                if (event.keyCode===97){
+                    self.updateEarthRotation(1, null);
+                }
+                if (event.keyCode===100){
+                    self.updateEarthRotation(-1, null);
+                }
+            },
         });
         _callback(err);
     });

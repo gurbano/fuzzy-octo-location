@@ -11,7 +11,7 @@ Newteam.prototype.startLoop = function(gameLoop) {
 Newteam.prototype.render = function() {
     var self = this;
 
-    
+    if(self.stats)self.stats.update();
     self.renderer.render(self.scene, self.camera);
 };
 
