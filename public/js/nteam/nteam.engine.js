@@ -1,42 +1,41 @@
 Newteam.prototype.initData = function(_callback) {
-    $.get('/assets/data/nteam/density.csv', function(data) {
+    /*$.get('/assets/data/nteam/density.csv', function(data) {
         _callback(data);
     });
-
-
+    */
+    $.get('/nteam/userdata/' + GLOBALS.usm.user.id, function(data) {
+        console.info(data);
+        _callback(data);
+    })
 };
 
 
 Newteam.prototype.startEngine = function(_callback) {
     //debugger;
     var self = this;
-    self.initData(function(data) {
+    self.initData(function(data) { //LOAD GAME DATA
         //console.info(data);
-        /*
-        	
-			
-        	
-        	Giorno quattro o Quarto giorno - Sole e Luna
-        	Giorno cinque o Quinto giorno - Pesci e uccelli
-        	Giorno sei o Sesto giorno - Uomo e Animali
-        	Giorno sette o Settimo giorno - Riposo
-        */
-        self.data = data;
-        self.lightsOn(); //Giorno uno o Primo giorno - Notte e Giorno
-        self.separateWaterFromEarth(); //Giorno due o Secondo giorno - Cielo e Mare
-        //self.breathWind();
-        
-        
-        //Giorno tre o Terzo giorno - Alberi e piante
-        
+        self.renderer.setSize(window.innerWidth, window.innerHeight);
+        self.camera.aspect = window.innerWidth / window.innerHeight;
+        self.camera.updateProjectionMatrix();
+        self.initDataDisplayer();
+        self.simulator = new Simulator(self.dd);
+        self.loadTexture(function() {
+            self.createEarth(); //Giorno due o Secondo giorno - Cielo e Mare
+            self.simulator.start(data, function() {
+                self.lightsOn(); //Giorno uno o Primo giorno - Notte e Giorno
+                //Giorno tre o Terzo giorno - Alberi e piante
+                self.startLoop(function gameLoop() {
 
-        self.startLoop(function gameLoop(){
-            
-            self.updateCamera();
-            self.updateEarthRotation();
-    		self.render();
+                    self.updateCamera();
+                    self.updateEarthRotation();
+                    self.render();
+                });
+                _callback(null);
+            });
         });
-        _callback(null);
+
+
 
     });
 

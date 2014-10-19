@@ -16,13 +16,12 @@ init = function(_GLOBALS) {
     };
 
 
-    //GLOBALS.usm.start();
-    //GLOBALS.usm.requireFacebook(function(err, user) {
-    //   $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+    GLOBALS.usm.start();
+    GLOBALS.usm.requireFacebook(function(err, user) {
+        $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+        startApplication();
 
-    startApplication();
-
-    //});
+    });
 
 
 };
@@ -38,25 +37,22 @@ Newteam.prototype.start = function(_callback) {
     //self.testXXX('-------------> OK');    
     self.setup();
     self.startEngine(function(err) {
-        self.renderer.setSize(window.innerWidth, window.innerHeight);
-        self.camera.aspect = window.innerWidth / window.innerHeight;
-        self.camera.updateProjectionMatrix();
         self.UX({
             'onDrag': function(params, event) {
                 self.updateEarthRotation(params.dx, params.dy);
             },
             'keypress': function(params, event) {
                 console.info(event);
-                if (event.keyCode===119){
+                if (event.keyCode === 119) {
                     self.updateEarthRotation(null, -1);
                 }
-                if (event.keyCode===115){
+                if (event.keyCode === 115) {
                     self.updateEarthRotation(null, 1);
                 }
-                if (event.keyCode===97){
+                if (event.keyCode === 97) {
                     self.updateEarthRotation(1, null);
                 }
-                if (event.keyCode===100){
+                if (event.keyCode === 100) {
                     self.updateEarthRotation(-1, null);
                 }
             },

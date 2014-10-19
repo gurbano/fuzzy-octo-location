@@ -7,4 +7,14 @@ module.exports = function($) {
             reply.view('newteam');
         }
     });
+    server.route({
+        method: 'GET',
+        path: '/nteam/userdata/{userid?}',        
+        handler: function(request, reply) {
+        	var id = request.params.id;
+            reply({user:id, data: {
+                
+            }});
+        }
+    });
 };

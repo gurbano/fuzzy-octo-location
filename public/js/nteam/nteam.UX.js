@@ -23,6 +23,28 @@ Newteam.prototype.UX = function(options) {
     };
 
 
+
+    var stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.bottom = '0px';
+    stats.domElement.style.zIndex = 100;
+    self.stats = stats;
+    $('body').append(stats.domElement);
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
     
     self.mapDiv.addEventListener("mousedown", function(event) {
@@ -53,12 +75,3 @@ Newteam.prototype.UX = function(options) {
 
     });
 */
-
-    var stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    stats.domElement.style.zIndex = 100;
-    self.stats = stats;
-    $('body').append(stats.domElement);
-
-};

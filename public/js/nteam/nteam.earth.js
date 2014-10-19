@@ -1,48 +1,76 @@
-Newteam.prototype.separateWaterFromEarth = function() {
+Newteam.prototype.loadTexture = function(_callback) {
     var self = this;
-    self.spGeo = new THREE.SphereGeometry(600, 50, 50);
-    self.spGeo.position = new THREE.Vector3(-300, 0, -300);
-    self.planetTexture = THREE.ImageUtils.loadTexture("/assets/data/nteam/map.jpg");
-    self.mat2 = new THREE.MeshPhongMaterial({
-        map: self.planetTexture,
-        shininess: 0.2
+    self.planetTexture = THREE.ImageUtils.loadTexture("/assets/images/nteam/2_no_clouds_4k.jpg", undefined, function() {
+        self.planetBumpMap = THREE.ImageUtils.loadTexture("/assets/images/nteam/elev_bump_4k.jpg", undefined, function() {
+            self.planetSpecularMap = THREE.ImageUtils.loadTexture("/assets/images/nteam/water_4k.png", undefined, function() {
+                _callback();
+            });
+        });
     });
-    self.sp = new THREE.Mesh(self.spGeo, self.mat2);
+};
+
+function createClouds(radius, segments) {
+    return new THREE.Mesh(
+        new THREE.SphereGeometry(radius + 5, segments, segments),
+        new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.8
+        })
+    );
+}
+
+function createStars(radius, segments) {
+    return new THREE.Mesh(
+        new THREE.SphereGeometry(radius, segments, segments),
+        new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture('/assets/images/nteam/galaxy_starfield.png'),
+            side: THREE.BackSide
+        })
+    );
+}
+
+
+Newteam.prototype.createEarth = function() {
+    var self = this;
+    self.spGeo = new THREE.SphereGeometry(EARTH_SIZE, 50, 50);
+    self.spGeo.position = new THREE.Vector3(0, 0, 0);
+    self.scene.add(createStars(3500, 32));
+    self.clouds = createClouds(EARTH_SIZE, 32);
+    self.scene.add(self.clouds);
+    self.sp = new THREE.Mesh(
+        self.spGeo,
+        new THREE.MeshPhongMaterial({
+            map: self.planetTexture, //THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
+            bumpMap: self.planetBumpMap, //THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+            bumpScale: 0.005,
+            specularMap: self.planetSpecularMap, //THREE.ImageUtils.loadTexture('images/water_4k.png'),
+            specular: new THREE.Color('grey')
+        })
+    );
 
     var axisLength = 850;
     if (true) {
+        /*
         self.sp.add(createAxis(v(-axisLength, 0, 0), v(axisLength, 0, 0), 0xFF0000, 1));
         self.sp.add(createAxis(v(0, -axisLength, 0), v(0, axisLength, 0), 0x00FF00, 1));
         self.sp.add(createAxis(v(0, 0, -axisLength), v(0, 0, axisLength), 0x0000FF, 1));
+        */
     }
 
     if (true) {
-        axisLength = 1850
+        axisLength = 10850;
+        /*
         self.scene.add(createAxis(v(-axisLength, 0, 0), v(axisLength, 0, 0), 0xFF0000, 3));
         self.scene.add(createAxis(v(0, -axisLength, 0), v(0, axisLength, 0), 0x00FF00, 3));
         self.scene.add(createAxis(v(0, 0, -axisLength), v(0, 0, axisLength), 0x0000FF, 3));
+        */
+        self.scene.add(createAxis(v(0, -axisLength, 0), v(0, axisLength, 0), 0xffffff, 3));
     }
     self.scene.add(self.sp);
 
 
-
-
-};
-
-Newteam.prototype.breathWind = function() {
-    var self = this;
-
-    self.spGeoClouds = new THREE.SphereGeometry(600, 50, 50);
-    self.cloudsTexture = THREE.ImageUtils.loadTexture("/assets/data/nteam/earth_clouds_1024.png");
-    self.materialClouds = new THREE.MeshPhongMaterial({
-        color: 0xffffff,
-        map: self.cloudsTexture,
-        transparent: true,
-        opacity: 0.3
-    });
-    self.meshClouds = new THREE.Mesh(self.spGeoClouds, self.materialClouds);
-    self.meshClouds.scale.set(1.015, 1.015, 1.015);
-    self.scene.add(self.meshClouds);
 };
 
 
@@ -65,22 +93,24 @@ Newteam.prototype.updateEarthRotation = function(deltax, deltay) {
     };
    
     */
-    self.sp.rotation.y += 0.0012;
-}
+    //self.sp.rotation.y += 0.00032;
+    self.clouds.rotation.y += 0.00034;
+    self.clouds.rotation.x += 0.00008;
+};
 
 
 var rotWorldMatrix;
 THREE.Object3D.prototype.rotateAroundOwnAxis = function(axis, radians) {
     this.rotateAroundWorldAxis(axis, radians);
 
-}
+};
 THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
     rotWorldMatrix = new THREE.Matrix4();
     rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
     rotWorldMatrix.multiply(this.matrix);
     this.matrix = rotWorldMatrix;
     this.rotation.setFromRotationMatrix(this.matrix);
-}
+};
 
 
 

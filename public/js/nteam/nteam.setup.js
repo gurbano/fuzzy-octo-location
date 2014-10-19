@@ -21,7 +21,7 @@
  Newteam.prototype.setup = function(_callback) {
      var self = this;
      self.renderer = new THREE.WebGLRenderer();
-     self.renderer.setSize(WIDTH, HEIGHT);
+     self.renderer.setSize(window.innerWidth, window.innerHeight);
      self.renderer.setClearColorHex(CLEAR_HEX_COLOR);
 
      // add it to the target element
@@ -29,7 +29,7 @@
      self.mapDiv.appendChild(self.renderer.domElement);
 
      // setup a camera that points to the center
-     self.camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
+     self.camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
      self.camera.position.set(POS_X, POS_Y, POS_Z);
      self.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -43,6 +43,9 @@
 
      self.controls.staticMoving = true;
      self.controls.dynamicDampingFactor = 0.3;
+
+     self.controls.minDistance = 1200;
+     self.controls.maxDistance = 4000;
 
      self.controls.keys = [65, 83, 68];
 
@@ -59,6 +62,5 @@
  var x = new THREE.Vector3(.5, 0, 0);
  Newteam.prototype.updateCamera = function(first_argument) {
      var self = this;
-     //self.sp.rotateAroundWorldAxis(x,.01);
-
+     // self.sp.rotateAroundWorldAxis(x,.01);
  };
