@@ -3,7 +3,7 @@ var POS_Y = 0;
 var POS_Z = 2800;
 
 var POS_X_L = 120800;
-var POS_Y_L = 120800;
+var POS_Y_L = 0;
 var POS_Z_L = 120800;
 
 var EARTH_SIZE = 600;

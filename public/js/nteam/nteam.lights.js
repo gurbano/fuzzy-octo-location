@@ -8,7 +8,7 @@ Newteam.prototype.lightsOn = function() {
 */
 
      // soft white light
-	self.scene.add( new THREE.AmbientLight( 0x151515 ) );
+	//self.scene.add( new THREE.AmbientLight( 0x151515 ) );
 	
 
 

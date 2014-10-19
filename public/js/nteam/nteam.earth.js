@@ -69,6 +69,7 @@ Newteam.prototype.createEarth = function() {
         self.scene.add(createAxis(v(0, -axisLength, 0), v(0, axisLength, 0), 0xffffff, 3));
     }
     self.scene.add(self.sp);
+    self.scene.collision.push(self.sp);
 
 
 };
@@ -93,7 +94,7 @@ Newteam.prototype.updateEarthRotation = function(deltax, deltay) {
     };
    
     */
-    //self.sp.rotation.y += 0.00032;
+    self.sp.rotation.y += 0.00040;
     self.clouds.rotation.y += 0.00034;
     self.clouds.rotation.x += 0.00008;
 };

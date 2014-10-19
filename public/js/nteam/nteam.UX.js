@@ -8,28 +8,21 @@ Newteam.prototype.UX = function(options) {
             options[type](params, event);
         }
     };
-    self.UX = {
-        mouse: {
-            move: false,
-            sx: false,
-            dx: false,
-            x: 0,
-            y: 0,
-            dragStart: {
-                x: 0,
-                y: 0
-            }
-        }
-    };
-
-
-
     var stats = new Stats();
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.bottom = '0px';
     stats.domElement.style.zIndex = 100;
     self.stats = stats;
     $('body').append(stats.domElement);
+    if (options.events){
+        for (var i = options.events.length - 1; i >= 0; i--) {
+            var ev = options.events[i];
+            self.mapDiv.addEventListener(ev,function(event){
+                self.throw(ev,{},event);
+            });
+        };
+    }
+
 
 };
 

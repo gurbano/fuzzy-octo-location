@@ -32,30 +32,18 @@ var Newteam = function(options) {
     return self;
 };
 Newteam.prototype.start = function(_callback) {
-
     var self = this;
     //self.testXXX('-------------> OK');    
     self.setup();
     self.startEngine(function(err) {
         self.UX({
-            'onDrag': function(params, event) {
-                self.updateEarthRotation(params.dx, params.dy);
-            },
-            'keypress': function(params, event) {
-                console.info(event);
-                if (event.keyCode === 119) {
-                    self.updateEarthRotation(null, -1);
-                }
-                if (event.keyCode === 115) {
-                    self.updateEarthRotation(null, 1);
-                }
-                if (event.keyCode === 97) {
-                    self.updateEarthRotation(1, null);
-                }
-                if (event.keyCode === 100) {
-                    self.updateEarthRotation(-1, null);
-                }
-            },
+            'events' : ['mousemove'],
+            'mousemove': function(params, event) {
+                GLOBALS.pick(event.clientX,event.clientY,function(top,all){
+                    console.info(top.object.name);                    
+                    self.pointer.position.copy(top.point);
+                });
+            }
         });
         _callback(err);
     });

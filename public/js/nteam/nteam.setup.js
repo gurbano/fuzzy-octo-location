@@ -41,7 +41,7 @@
      self.controls.noZoom = false;
      self.controls.noPan = false;
 
-     self.controls.staticMoving = true;
+     self.controls.staticMoving = false;
      self.controls.dynamicDampingFactor = 0.3;
 
      self.controls.minDistance = 1200;
@@ -49,10 +49,13 @@
 
      self.controls.keys = [65, 83, 68];
 
-     self.controls.addEventListener('change', self.render);
+     self.controls.addEventListener('change', function() {
+         self.render();
+     });
 
      // create a basic scene and add the camera
      self.scene = new THREE.Scene();
+     self.scene.collision = [];
      self.scene.add(self.camera);
      //self.axes = new THREE.AxisHelper( );
      //self.scene.add( self.axes );
@@ -60,7 +63,14 @@
  };
 
  var x = new THREE.Vector3(.5, 0, 0);
+ //var theta = 0;
+ //var radius = POS_Z;
  Newteam.prototype.updateCamera = function(first_argument) {
      var self = this;
-     // self.sp.rotateAroundWorldAxis(x,.01);
+     // theta += 0.1;
+     // var camera = self.camera;
+     //camera.position.x = radius * Math.sin(THREE.Math.degToRad(theta));
+     //camera.position.y = radius * Math.sin(THREE.Math.degToRad(theta));
+     //camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta));
+     //camera.lookAt(self.scene.position);
  };
