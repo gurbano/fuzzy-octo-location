@@ -2,9 +2,67 @@ var DataDisplayer = function(parent) {
     var self = this;
     self.parent = parent;
     //self.parent.dataLayer = new 
+    self.movingObjects = [];
+    self.internalLoop = function() {
+        //console.info(self.movingObjects.length + ' obj rimasti');
+        var tmp = [];
+        var obj = null;
+        for (var i = 0; i < self.movingObjects.length; i++) {
+            obj = self.movingObjects[i].update();
+            if (obj===null){
+                //self.movingObjects[i].mesh.visible = false;
+                //self.parent.scene.remove(self.movingObjects[i].mesh);
+            }else{
+                tmp.push(obj);
+            }
+        };
+        self.movingObjects = tmp;
 
+        setTimeout(self.internalLoop, 1000 / 600);
+    };
+    setTimeout(function() {
+        console.info('Starting dd.internalLoop ');
+        self.internalLoop();
+    }, 5 * 500);
     return self;
 };
+var MovingObject = function(mesh, start, end, speed) {
+    var self = this;
+    self.start = start;
+    self.end = end;
+    self.step = 0;
+    self.steps = distance(start.lat, start.lng, end.lat, end.lng) / 5;
+    self.position = start;
+    self.mesh = mesh;
+    self.dead = false;
+    self.update = function() {
+       // console.info('update called', self.step, self.steps);
+        if (self.dead){
+            self.mesh.material.color.r = 255;
+            self.mesh.material.color.g = 0;
+            self.mesh.material.color.b = 0;
+            return null;
+        }
+        var newLat = easeInOutQuad(Number(self.step), Number(self.start.lat), Number(self.end.lat) - Number(self.start.lat), self.steps);
+        var newLng = easeInOutQuad(Number(self.step), Number(self.start.lng), Number(self.end.lng) - Number(self.start.lng), self.steps);
+        var position = coords(newLat, newLng, 0);
+        self.mesh.position.x = position.x;
+        self.mesh.position.y = position.y;
+        self.mesh.position.z = position.z;
+        //self.mesh.lookAt(start);
+        self.step++;
+        self.dead = self.step > self.steps;
+        return self;
+    }
+    return self;
+}
+DataDisplayer.prototype.drawMovingObject = function(start, end, speed) {
+    var self = this;
+    var obj = new MovingObject(
+        self.drawCube(start.lat, start.lng, 5) //mesh
+        , start, end, speed);
+    self.movingObjects.push(obj);
+}
 var materials = {};
 materials.cubeMat = new THREE.MeshLambertMaterial({
     color: 0xffffff,
@@ -44,54 +102,21 @@ DataDisplayer.prototype.drawSphere = function(lat, lng, radius) {
 
 DataDisplayer.prototype.drawCity = function(id, name, lat, lng, data) {
     var self = this;
-    //var cube = self.drawSphere(lat, lng, 10 + data.relevance*5);
-    //cube.name = data.name.common;
+    var cube = self.drawSphere(lat, lng, 10 + data.relevance * 5);
+    cube.name = data.name.common;
     //DRAW CITY NAME
-    //self.parent.scene.collision.push(cube);
-    //return cube;
+    self.parent.scene.collision.push(cube);
+    return cube;
 }
 var easeInOutQuad = function(t, b, c, d) {
     if (t < d / 2) return 2 * c * t * t / (d * d) + b;
     var ts = t - d / 2;
     return -2 * c * ts * ts / (d * d) + 2 * c * ts / d + c / 2 + b;
 }
-DataDisplayer.prototype.drawMovingObject = function(start, end, speed) {
-    var self = this;
-    var _s = self.drawSphere(start.lat, start.lng, 3);
-    var _e = self.drawSphere(end.lat, end.lng, 3);
-    self.parent.scene.collision.push(_s);
-    self.parent.scene.collision.push(_e);
-
-    var obj = self.drawCube(start.lat, start.lng, 5);
-    var updateObj = function(obj, start, end, step, steps) {
-        if (step == steps) {
-            updateObj(obj, end, start, 0, distance(start.lat,start.lng,end.lat,end.lng));
-            return;
-        }
-        var newLat = easeInOutQuad(Number(step), Number(start.lat), Number(end.lat) - Number(start.lat), steps);
-        var newLng = easeInOutQuad(Number(step), Number(start.lng), Number(end.lng) - Number(start.lng), steps);
-        var position = self.parent.coords(newLat, newLng, 0);
-        obj.position.x = position.x;
-        obj.position.y = position.y;
-        obj.position.z = position.z;
-        obj.lookAt(_e.position);
-        setTimeout(
-            function() {
-                step++;
-                updateObj(obj, start, end, step, steps);
-            }, 10/8
-        );
-    };
-    setTimeout(
-        function() {
-            updateObj(obj, start, end, 0, distance(start.lat,start.lng,end.lat,end.lng));
-        }, 10/8
-    );
-
-}
 
 
-        
+
+
 
 
 function distance(lat1, lon1, lat2, lon2) {
@@ -122,6 +147,16 @@ Newteam.prototype.coords = function(lat, lon, heigth) {
     return new THREE.Vector3(x, y, z);
 };
 
+var coords = function(lat, lon, heigth) {
+    var phi = (lat) * Math.PI / 180;
+    var theta = (lon - 180) * Math.PI / 180;
+
+    var x = -(EARTH_SIZE + heigth) * Math.cos(phi) * Math.cos(theta);
+    var y = (EARTH_SIZE + heigth) * Math.sin(phi);
+    var z = (EARTH_SIZE + heigth) * Math.cos(phi) * Math.sin(theta);
+
+    return new THREE.Vector3(x, y, z);
+};
 
 
 Newteam.prototype.initDataDisplayer = function(first_argument) {

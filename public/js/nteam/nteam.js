@@ -40,7 +40,8 @@ Newteam.prototype.start = function(_callback) {
             'events' : ['mousemove'],
             'mousemove': function(params, event) {
                 GLOBALS.pick(event.clientX,event.clientY,function(top,all){
-                    console.info(top.object.name);                    
+                    if(top.object.name)console.info(top.object.name);
+
                     self.pointer.position.copy(top.point);
                 });
             }
