@@ -75,7 +75,7 @@
 			"file": "public/js/nteam/nteam.js",
 			"settings":
 			{
-				"buffer_size": 1803,
+				"buffer_size": 1626,
 				"line_ending": "Windows"
 			}
 		},
@@ -83,7 +83,7 @@
 			"file": "views/newteam.html",
 			"settings":
 			{
-				"buffer_size": 1647,
+				"buffer_size": 1825,
 				"line_ending": "Windows"
 			}
 		},
@@ -91,7 +91,7 @@
 			"file": "public/js/nteam/nteam.setup.js",
 			"settings":
 			{
-				"buffer_size": 2043,
+				"buffer_size": 2170,
 				"line_ending": "Windows"
 			}
 		},
@@ -99,26 +99,32 @@
 			"file": "public/js/nteam/nteam.lights.js",
 			"settings":
 			{
-				"buffer_size": 396,
+				"buffer_size": 544,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "package eu.europa.ec.sfc2014.frontoffice.web.pages.paymentapplication;\n\nimport java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\n\nimport org.apache.commons.collections.CollectionUtils;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\nimport com.vaadin.data.fieldgroup.FieldGroup.CommitException;\nimport com.vaadin.ui.Alignment;\nimport com.vaadin.ui.HorizontalLayout;\nimport com.vaadin.ui.Label;\nimport com.vaadin.ui.Notification;\nimport com.vaadin.ui.Panel;\nimport com.vaadin.ui.VerticalLayout;\nimport com.vaadin.ui.Window;\n\nimport eu.europa.ec.agri.jcore.opsis.component.form.BeanItemForm;\nimport eu.europa.ec.sfc.model.util.internal.spring.Assert;\nimport eu.europa.ec.sfc2014.core.model.domain.Action;\nimport eu.europa.ec.sfc2014.core.model.domain.DocumentAttachment;\nimport eu.europa.ec.sfc2014.core.model.domain.DocumentType;\nimport eu.europa.ec.sfc2014.core.model.domain.ObjectType;\nimport eu.europa.ec.sfc2014.core.model.domain.SfcMainVersionObject;\nimport eu.europa.ec.sfc2014.core.model.domain.Status;\nimport eu.europa.ec.sfc2014.core.model.exceptions.SfcException;\nimport eu.europa.ec.sfc2014.core.model.exceptions.SfcFaultException;\nimport eu.europa.ec.sfc2014.frontoffice.business.PaymentApplicationServiceSfCf;\nimport eu.europa.ec.sfc2014.frontoffice.business.report.ReportGenerator;\nimport eu.europa.ec.sfc2014.frontoffice.business.report.ReportService;\nimport eu.europa.ec.sfc2014.frontoffice.business.report.ReportType;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.commissiondecision.CommissionDecision;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.common.DocumentLink;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersion;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersionDocumentLink;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersionEmff;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersionObjectStatusHistory;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersionSfCf;\nimport eu.europa.ec.sfc2014.frontoffice.model.domain.paymentapplication.PaymentApplicationVersionValidationResult;\nimport eu.europa.ec.sfc2014.frontoffice.model.dto.CompareToContainer;\nimport eu.europa.ec.sfc2014.frontoffice.web.SfcCommonObject;\nimport eu.europa.ec.sfc2014.frontoffice.web.component.search.Display;\nimport eu.europa.ec.sfc2014.frontoffice.web.component.search.DisplayInfoBar;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.common.DocumentLinks;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.common.ValidationResults;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.common.report.MailMergeReportGenerator;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.paymentapplication.adapters.PapActionHeaderDisplayAdapter;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.paymentapplication.adapters.PapReturnActionAdapter;\nimport eu.europa.ec.sfc2014.frontoffice.web.pages.paymentapplication.adapters.PapSfCfValidationHeaderDisplayAdapter;\nimport eu.europa.ec.sfc2014.frontoffice.web.util.FrontofficeWebUtils;\nimport eu.europa.ec.sfc2014.workflow.business.FOWorkflowService;\n\n/**\n * InfoBar\n *\n */\npublic class DisplayPaymentApplicationVersionInfoBar extends DisplayInfoBar {\n\n	private static final Logger							logger					= LoggerFactory.getLogger(DisplayPaymentApplicationVersionInfoBar.class);\n	private static final long								serialVersionUID		= 1L;\n\n	private static final String							SND_CONF_MSG			= \"pap.SendPaymentApplicationVersion.confirmationMessage\";\n	private static final String							CAN_CONF_MSG			= \"pap.CancelPaymentApplicationVersion.confirmationMessage\";\n	private static final String							DEL_CONF_MSG			= \"pap.DeletePaymentApplicationVersion.confirmationMessage\";\n	private static final String							REO_CONF_MSG			= \"pap.ReopenPaymentApplicationVersion.confirmationMessage\";\n	private static final String							ACC_CONF_MSG			= \"pap.AcceptPaymentApplicationVersion.confirmationMessage\";\n	private static final String							REJ_CONF_MSG			= \"pap.RejectPaymentApplicationVersion.confirmationMessage\";\n	private static final String							RMM_CONF_MSG			= \"pap.ReturnPaymentApplicationVersion.confirmationMessage\";\n	private static final String							RME_CONF_MSG			= \"pap.ReturnPaymentApplicationVersion.confirmationMessage\";\n	private static final String							CNV_CONF_MSG			= \"pap.CreNewVersion.confirmationMessage\";\n	private static final String							CNV_RME_CONF_MSG		= \"pap.CreNewVersion.confirmationMessageBis\";\n\n	private static final String							CRE_DONE_MSG			= \"pap.CreateNewPaymentApplicationVersion.confirmationMessage\";\n	private static final String							DEL_DONE_MSG			= \"pap.DeletePaymentApplicationVersion.deletionConfirmedMessage\";\n\n	private static final String							RME_REASON_TITLE_MSG	= \"ReturnPaymentApplicationVersion.reasonFor\";\n	private static final String							REJ_REASON_TITLE_MSG	= \"RejectPaymentApplicationVersion.reasonFor\";\n\n	private static final int								VALIDATION_LIST_SIZE	= 10;\n\n	private PaymentApplicationVersionDocumentLink	doclnk					= null;\n\n	public DisplayPaymentApplicationVersionInfoBar(Long id, Display disp) {\n		super(id, disp);\n	}\n\n	@Override\n	protected ReportGenerator getReportGenerator(Long id) {\n		return new MailMergeReportGenerator(id, getReportType(id), ReportService.REPORT_WITH_WATERMARK);\n	}\n\n	protected ReportType getReportType(final Long id) {\n		PaymentApplicationVersion prgVer = getPaymentApplicationService().readPaymentApplicationVersion(id);\n		if (prgVer != null) {\n			if (prgVer instanceof PaymentApplicationVersionSfCf) {\n				PaymentApplicationVersionSfCf prgVerSfcf = (PaymentApplicationVersionSfCf) prgVer;\n				if (prgVerSfcf.getCci().isETCProgramme()) {\n					return ReportType.REPORT_PAP_ETC_ALL;\n				} else {\n					return ReportType.REPORT_PAP_IGJ_ALL;\n				}\n			} else if (prgVer instanceof PaymentApplicationVersionEmff) {\n				return ReportType.REPORT_PAP_EMFF_ALL;\n			}\n		}\n\n		return null;\n	}\n\n	@Override\n	protected SfcMainVersionObject getMvo() {\n		return getPaymentApplicationService().readPaymentApplicationVersion(getObjectId());\n	}\n\n	@Override\n	protected ReportGenerator getReportDecisionGenerator(Long id) {\n		return new MailMergeReportGenerator(id, getDecisionReportType(id), ReportService.REPORT_WITHOUT_WATERMARK);\n	}\n\n	protected ReportType getDecisionReportType(final Long id) {\n		PaymentApplicationVersion prgVer = getPaymentApplicationService().readPaymentApplicationVersion(id);\n		if (prgVer != null) {\n			if (prgVer instanceof PaymentApplicationVersionSfCf) {\n				return ReportType.REPORT_PAP_IGJ_ALL;\n			} else if (prgVer instanceof PaymentApplicationVersionEmff) {\n				return ReportType.REPORT_PAP_EMFF_ALL;\n			}\n		}\n\n		return null;\n	}\n\n	/*\n	 * (non-Javadoc)\n	 * @see eu.europa.ec.sfc2014.frontoffice.web.component.search.DisplayInfoBar#addWorkflowButtons(com.vaadin.ui.HorizontalLayout)\n	 */\n	@Override\n	protected void addWorkflowButtons(HorizontalLayout buttons) {\n		List<String> possibleActions = new ArrayList<String>();\n\n		try {\n			possibleActions = getPaymentApplicationService().getMvoNextActions(this.getObjectId());\n		} catch (SfcFaultException e) {\n			// No existing workflow. That means that the object has reach a end status\n			// as cancelled or something similar. No more actions are possible to execute in this case.\n\n			logger.info(\n					\"No existing workflow. That means that the object has reach a end status as cancelled or something similar. No more actions are possible to execute in this case: object unique id: {}\",\n					this.getObjectId());\n\n			// TODO: delete this\n			//\n			// Only for testing in DEV !!!: if workflow doesn´t exists a new one is created:\n			// try {\n			// executeAction(Action.CRE);\n			// } catch (SfcFaultException e2) {\n			// // TODO Auto-generated catch block\n			// }\n			// try {\n			// possibleActions = SfcCommonObject.getInstance().getProgrammeService().getPrgVerNextActions(this.getObjectId());\n			//\n			// } catch (SfcFaultException e1) {\n			// possibleActions = new ArrayList<String>();\n			// }\n\n		} finally {\n			// if the workflow reached an end status then “setIsBeanEditable()” wasn’t called, and therefore we could still see the edit buttons.\n			this.getDisplay().getSectionFactory().setIsBeanEditable((possibleActions.contains(Action.EDT)));\n		}\n\n		try {\n			if (getPaymentApplicationService().isValidNewWorkVersion(this.getObjectId())) {\n				SfcCommonObject.getInstance().getSecurityManager().assertAction(Action.CRE, ObjectType.getPaymentApplicationObjectType(), null);\n				buttons.addComponent(createButton(Action.CRE));\n			}\n		} catch (SfcFaultException e) {\n		}\n\n		if (possibleActions.contains(Action.VAL)) {\n			buttons.addComponent(createButton(Action.VAL));\n		}\n\n		if (possibleActions.contains(Action.SND)) {\n			buttons.addComponent(createButton(Action.SND));\n		}\n\n		if (possibleActions.contains(Action.RME)) {\n			buttons.addComponent(createButton(Action.RME));\n		}\n\n		if (possibleActions.contains(Action.RMM)) {\n			buttons.addComponent(createButton(Action.RMM));\n		}\n\n		if (possibleActions.contains(Action.CAN)) {\n			buttons.addComponent(createButton(Action.CAN));\n		}\n\n		if (possibleActions.contains(Action.DEL)) {\n			buttons.addComponent(createButton(Action.DEL));\n		}\n\n		if (possibleActions.contains(Action.REO)) {\n			buttons.addComponent(createButton(Action.REO));\n		}\n\n		if (possibleActions.contains(Action.REJ)) {\n			buttons.addComponent(createButton(Action.REJ));\n		}\n\n		if (possibleActions.contains(Action.ACC)) {\n			buttons.addComponent(createButton(Action.ACC));\n		}\n\n	}\n\n	protected PaymentApplicationService getPaymentApplicationService() {\n		return SfcCommonObject.getInstance().getPaymentApplicationService();\n	}\n\n	protected Status getPrgVerStatus() {\n\n		PaymentApplicationVersion ver = getPaymentApplicationService().readPaymentApplicationVersion(this.getObjectId());\n\n		Status status = new Status();\n		status.setId(ver.getObjectStatus().getStatus());\n		status = SfcCommonObject.getInstance().getDirectoryService().findByMessageId(status);\n		return status;\n	}\n\n	//	protected boolean assertCreateNewVersion() {\n	//\n	//		PaymentApplicationVersion ver = SfcCommonObject.getInstance().getPaymentApplicationService().readPaymentApplicationVersion(this.getObjectId());\n	//		PaymentApplicationVersion lastVer;\n	//		if (ver.isEMFF()) {\n	//			lastVer = SfcCommonObject.getInstance().getPaymentApplicationServiceEmff()\n	//					.readLastPaymentApplicationVersion(ver.getCci(), ver.getFund());\n	//		} else {\n	//			lastVer = SfcCommonObject.getInstance().getPaymentApplicationService()\n	//					.readLastPaymentApplicationVersion(ver.getCci(), ((PaymentApplicationVersionSfCf) ver).getFund());\n	//			if (lastVer == null)\n	//				return false;\n	//		}\n	//		if (!lastVer.getId().equals(ver.getId())) {\n	//			return false;\n	//		}\n	//\n	//		Status status = new Status();\n	//		status.setId(ver.getObjectStatus().getStatus());\n	//		status = SfcCommonObject.getInstance().getDirectoryService().findByMessageId(status);\n	//\n	//		Long ownerNode = ver.getOwnerNode();\n	//		Long currentUserNode = SfcCommonObject.getInstance().getSecurityManager().getUserObject().getCurrentProfile().getNodeId();\n	//\n	//		if ((ownerNode.equals(currentUserNode)) &&\n	//				(status.getCode().equals(Status.ABE) ||\n	//						status.getCode().equals(Status.ABM) ||\n	//						status.getCode().equals(Status.RME) ||\n	//				status.getCode().equals(Status.CANCELLED))) {\n	//\n	//			return true;\n	//		}\n	//		return false;\n	//\n	//	}\n\n	/*\n	 * (non-Javadoc)\n	 * @see eu.europa.ec.sfc2014.frontoffice.web.component.search.DisplayInfoBar#getVersionsToCompareWith(java.lang.Long)\n	 */\n	@Override\n	protected List<CompareToContainer> getVersionsToCompareWith(Long id) {\n		return getPaymentApplicationService().getCompareToVersions(id);\n	}\n\n	/**\n	 * Display modal windows for validation action.\n	 */\n	@Override\n	protected void displayValidationModalWindow() {\n		executeAction(Action.VAL);\n\n		PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n		List<PaymentApplicationVersionValidationResult> listOfValidationResult = papver.getValidationResults();\n		ValidationResults validationTable = new ValidationResults(listOfValidationResult, VALIDATION_LIST_SIZE);\n\n		BeanItemForm<PapSfCfValidationHeaderDisplayAdapter> headerForm = new BeanItemForm<PapSfCfValidationHeaderDisplayAdapter>();\n		headerForm.setData(new PapSfCfValidationHeaderDisplayAdapter(papver, null));\n		headerForm.setViewMode(true);\n\n		displayModalWindow(headerForm, validationTable, Action.VAL, null);\n	}\n\n	@Override\n	protected String getConfirmationMessage(String actionCode) {\n		String confirmationMessageKey = null;\n		switch (actionCode) {\n			case Action.CRE:\n				if (getPrgVerStatus().getCode().equals(Status.RME) || getPrgVerStatus().getCode().equals(Status.CANCELLED))\n					confirmationMessageKey = CNV_RME_CONF_MSG;\n				else\n					confirmationMessageKey = CNV_CONF_MSG;\n				break;\n			case Action.SND:\n				confirmationMessageKey = SND_CONF_MSG;\n				break;\n			case Action.RME:\n				confirmationMessageKey = RME_CONF_MSG;\n				break;\n			case Action.RMM:\n				confirmationMessageKey = RMM_CONF_MSG;\n				break;\n			case Action.CAN:\n				confirmationMessageKey = CAN_CONF_MSG;\n				break;\n			case Action.DEL:\n				confirmationMessageKey = DEL_CONF_MSG;\n				break;\n			case Action.REO:\n				confirmationMessageKey = REO_CONF_MSG;\n				break;\n			case Action.ACC:\n				confirmationMessageKey = ACC_CONF_MSG;\n				break;\n			case Action.REJ:\n				confirmationMessageKey = REJ_CONF_MSG;\n				break;\n\n		}\n\n		return confirmationMessageKey;\n	}\n\n	@Override\n	protected String getTitleMessage(String actionCode) {\n		String titleMessageKey = null;\n		switch (actionCode) {\n			case Action.ACC:\n				titleMessageKey = \"act.PAP.ACC\";\n				break;\n			case Action.CAN:\n				titleMessageKey = \"act.PAP.CAN\";\n				break;\n			case Action.CRE:\n				titleMessageKey = \"act.PAP.CNV\";\n				break;\n			case Action.DEL:\n				titleMessageKey = \"act.PAP.DEL\";\n				break;\n			case Action.LCD:\n				titleMessageKey = \"act.PAP.LCD\";\n				break;\n			case Action.REO:\n				titleMessageKey = \"act.PAP.REO\";\n				break;\n			case Action.RME:\n				titleMessageKey = \"act.PAP.RME\";\n				break;\n			case Action.RMM:\n				titleMessageKey = \"act.PAP.RMM\";\n				break;\n			case Action.SND:\n				titleMessageKey = \"act.PAP.SND\";\n				break;\n			case Action.VAL:\n				titleMessageKey = \"act.PAP.VAL\";\n				break;\n			case Action.REJ:\n				titleMessageKey = \"act.PAP.REJ\";\n				break;\n		}\n\n		return titleMessageKey;\n	}\n\n	/**\n	 * Displays generic modal windows\n	 * \n	 * @param actionCode action code\n	 * @param confirmationMessageKey message key\n	 */\n	@Override\n	protected void displayActionModalWindow(String actionCode, String confirmationMessageKey) {\n		PaymentApplicationVersion prgver = (PaymentApplicationVersion) display.getBean();\n		final BeanItemForm<PapActionHeaderDisplayAdapter> headerForm = new BeanItemForm<PapActionHeaderDisplayAdapter>();\n		headerForm.setData(new PapActionHeaderDisplayAdapter(prgver, null));\n		headerForm.setViewMode(true);\n		displayModalWindow(headerForm, null, actionCode, confirmationMessageKey);\n	}\n\n	/**\n	 * Displays generic action modal windows with comment edition.\n	 * \n	 * @param actionCode action code\n	 * @param confirmationMessageKey message key\n	 */\n	@Override\n	protected void displayActionWithDocumentsModalWindow(String actionCode, String confirmationMessageKey) {\n\n		final PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n\n		PaymentApplicationVersionObjectStatusHistory pvosh = new PaymentApplicationVersionObjectStatusHistory();\n		pvosh.setPaymentApplicationVersion(papver);\n		doclnk = (PaymentApplicationVersionDocumentLink) papver.getNewDocumentLink();\n\n		// Find correct document type for this document based on object type and action \n		List<DocumentType> docTypes = SfcCommonObject.getInstance().getDocumentService()\n				.getDocumentTypesForObjectAndAction(papver.getObjectType().getCode(), actionCode);\n		Assert.isTrue(CollectionUtils.size(docTypes) == 1);\n		DocumentType docType = docTypes.get(0);\n		doclnk.getDocument().setDocumentType(docType.getId());\n\n		final BeanItemForm<PapReturnActionAdapter> headerForm = new BeanItemForm<PapReturnActionAdapter>();\n		headerForm.setData(new PapReturnActionAdapter(papver, null, getReasonMessageKey(actionCode)));\n		diplayModalWindowWithDocument(headerForm, doclnk, actionCode);\n	}\n\n	private String getReasonMessageKey(String actionCode) {\n		switch (actionCode) {\n			case Action.RMM:\n			case Action.RME:\n				return RME_REASON_TITLE_MSG;\n			case Action.REJ:\n				return REJ_REASON_TITLE_MSG;\n		}\n		return null;\n	}\n\n	protected void actionAccept() {\n		displayActionWithDocumentsModalWindow(Action.ACC, getConfirmationMessage(Action.ACC));\n	}\n\n	/**\n	 * Displays generic action modal windows with comment edition.\n	 * \n	 * @param actionCode action code\n	 * @param confirmationMessageKey message key\n	 */\n	@Override\n	protected void displayActionWithCommentsModalWindow(String actionCode, String confirmationMessageKey) {\n\n		final PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n\n		final BeanItemForm<PapReturnActionAdapter> headerForm = new BeanItemForm<PapReturnActionAdapter>();\n		PaymentApplicationVersionObjectStatusHistory pvosh = new PaymentApplicationVersionObjectStatusHistory();\n		pvosh.setPaymentApplicationVersion(papver);\n		PaymentApplicationVersionDocumentLink doclnk = (PaymentApplicationVersionDocumentLink) papver.getNewDocumentLink();\n		doclnk.getDocument().setDocumentType(DocumentType.DocType.PAP_OFFICIAL_COMMISSION_OBSERVATIONS.getId());\n\n		headerForm.setData(new PapReturnActionAdapter(papver, null));\n\n		displayModalWindow(headerForm, null, actionCode, confirmationMessageKey);\n	}\n\n	/**\n	 * Execute the set of operation correspondent to the action execution.\n	 * \n	 * @param actionCode action code\n	 * @param window container windows\n	 * @param headerForm form\n	 */\n	@Override\n	public void executeCommitAction(String actionCode, final Window window, final BeanItemForm<?> headerForm) {\n		try {\n\n			if (actionCode.equals(Action.CRE)) {\n				PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n\n				if (display.getBean() instanceof PaymentApplicationVersionSfCf) {\n					papver = getPaymentApplicationService()\n							.createNewVersion(((PaymentApplicationVersionSfCf) display.getBean()).getId());\n				} else if (display.getBean() instanceof PaymentApplicationVersionEmff) {\n					papver = SfcCommonObject.getInstance().getPaymentApplicationServiceEmff()\n							.createNewVersion(((PaymentApplicationVersionEmff) display.getBean()).getId());\n				} else {\n					throw new SfcFaultException(\"payment application version type not recognized\");\n				}\n\n				display.getSearchPage().updateTitleTab(papver.getTitleTab());\n				display.setBeanId(papver.getId());\n				display.totalRefresh();\n\n				window.close();\n				String notification = i18n.getMessage(CRE_DONE_MSG, new Object[] { papver.getFullVersion(), papver.getCci().toString() });\n				Notification.show(notification);\n			} else if (actionCode.equals(Action.SND)) {\n				PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n				try {\n					getPaymentApplicationService().send(papver.getId());\n				} catch (SfcFaultException ex) {\n					FrontofficeWebUtils.showNotification(ex);\n				}\n				refreshDisplay();\n				window.close();\n			}\n			else if (actionCode.equals(Action.DEL)) {\n				PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n				String notification = i18n.getMessage(DEL_DONE_MSG, new Object[] {\n						papver.getVersion().toString(), papver.getCci().toString() });\n				getPaymentApplicationService().delete(papver.getId());\n				display.close();\n				Notification.show(notification);\n				window.close();\n			} else if (actionCode.equals(Action.REO)) {\n				PaymentApplicationVersion prgver = (PaymentApplicationVersion) headerForm.getAdapter().getBean();\n				getPaymentApplicationService().reOpen(prgver.getId());\n				refreshDisplay();\n				window.close();\n			} else if (actionCode.equals(Action.CAN))\n			{\n				PaymentApplicationVersion prgver = (PaymentApplicationVersion) headerForm.getAdapter().getBean();\n				getPaymentApplicationService().cancel(prgver.getId());\n				refreshDisplay();\n				window.close();\n			} else if (actionCode.equals(Action.ACC)) {\n				if (!headerForm.isValid()) {\n					logger.debug(\"form is not valid, a commit will reveal the errors in the commitException\");\n				}\n				headerForm.commit();\n				if (headerForm.isValid()) {\n					saveDocumentLinkOnCommit();\n					PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n					getPaymentApplicationService().accept(papver.getId(), null);\n					refreshDisplay();\n					window.close();\n				}\n			} else if (actionCode.equals(Action.RMM)) {\n				if (!headerForm.isValid()) {\n					logger.debug(\"form is not valid, a commit will reveal the errors in the commitException\");\n				}\n				headerForm.commit();\n				if (headerForm.isValid()) {\n					saveDocumentLinkOnCommit();\n					PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n					String reason = ((PaymentApplicationVersion) headerForm.getAdapter().getBean()).getObjectStatus().getComments();\n					SfcCommonObject.getInstance().getProgrammeService()\n							.returnForModificationMS(papver.getId(), reason);\n					refreshDisplay();\n					window.close();\n				}\n			} else if (actionCode.equals(Action.RME)) {\n				if (!headerForm.isValid()) {\n					logger.debug(\"form is not valid, a commit will reveal the errors in the commitException\");\n				}\n				headerForm.commit();\n				if (headerForm.isValid()) {\n					saveDocumentLinkOnCommit();\n					PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n					String reason = ((PaymentApplicationVersion) headerForm.getAdapter().getBean()).getObjectStatus().getComments();\n					getPaymentApplicationService()\n							.returnForModification(papver.getId(), reason, null);\n					refreshDisplay();\n					window.close();\n				}\n			} else if (actionCode.equals(Action.REJ)) {\n				if (!headerForm.isValid()) {\n					logger.debug(\"form is not valid, a commit will reveal the errors in the commitException\");\n				}\n				headerForm.commit();\n				if (headerForm.isValid()) {\n					saveDocumentLinkOnCommit();\n					PaymentApplicationVersion papver = (PaymentApplicationVersion) display.getBean();\n					String reason = ((PaymentApplicationVersion) headerForm.getAdapter().getBean()).getObjectStatus().getComments();\n					getPaymentApplicationService()\n							.reject(papver.getId(), reason, null);\n					refreshDisplay();\n					window.close();\n				}\n			}\n\n		} catch (CommitException cEx) {\n			validationResultPanel.showErrorNotification(cEx);\n		} catch (SfcFaultException ex) {\n			FrontofficeWebUtils.showNotification(ex);\n			validationResultPanel.showErrorNotification(FrontofficeWebUtils.getMessageFromSfcFault(ex));\n			if (actionCode.equals(Action.DEL)) {\n				window.close();\n			}\n		}\n	}\n\n	private void saveDocumentLinkOnCommit() throws SfcFaultException {\n		if (documentLinkForm != null && !documentLinkForm.isDocumentEmpty()) {\n			if (documentLinkForm.commit(true) == false) {\n				// there are errors in the document section\n				return;\n			}\n		} else {\n			doclnk = null;\n		}\n		if (doclnk != null) {\n			SfcCommonObject.getInstance().getDocumentService().saveDocumentLink(doclnk);\n		}\n	}\n\n	/**\n	 * Execute an action in the workflow.\n	 * \n	 * @param actionCode action code\n	 * @throws SfcFaultException\n	 */\n	public void executeAction(String actionCode) {\n		try {\n			getPaymentApplicationService().executeAction(actionCode, getObjectId());\n		} catch (SfcFaultException ex) {\n			FrontofficeWebUtils.showNotification(ex);\n			validationResultPanel.showErrorNotification(FrontofficeWebUtils.getMessageFromSfcFault(ex));\n		}\n\n	}\n\n	public void executeAction(String actionCode, String comments) throws SfcFaultException {\n		Map<String, Object> params = null;\n		if (comments != null) {\n			params = new HashMap<String, Object>();\n			params.put(FOWorkflowService.WORKFLOW_PARAM_STATUS_COMMENT, comments);\n		}\n\n		getPaymentApplicationService().executeAction(actionCode, getObjectId(), params);\n	}\n\n	public void executeAction(String actionCode, CommissionDecision cd) throws SfcFaultException {\n		Map<String, Object> params = null;\n		if (cd != null) {\n			params = new HashMap<String, Object>();\n			params.put(FOWorkflowService.WORKFLOW_PARAM_CD, cd.getId());\n		}\n\n		getPaymentApplicationService().executeAction(actionCode, getObjectId(), params);\n	}\n\n	/**\n	 * Displays the send pop up window.	\n	 * @throws SfcFaultException \n	 */\n	@Override\n	protected void actionSend() {\n\n		PaymentApplicationVersion prgver = (PaymentApplicationVersion) display.getBean();\n		BeanItemForm<PapActionHeaderDisplayAdapter> headerForm = new BeanItemForm<PapActionHeaderDisplayAdapter>();\n		headerForm.setData(new PapActionHeaderDisplayAdapter(prgver, null));\n		headerForm.setViewMode(true);\n\n		boolean isUpperNodeEC = getPaymentApplicationService().isUpperNodeEC(prgver);\n\n		if (isUpperNodeEC) {\n			// The user sending must be different from the user who last validated\n			String currentUser = SfcCommonObject.getInstance().getSecurityManager().getUserObject().getName();\n			String validationUser = prgver.getValidationUser();\n			if (validationUser != null && validationUser.equals(currentUser)) {\n				Notification.show(i18n.getMessage(SfcException.SFC_PAP_004.getKey()), Notification.Type.ERROR_MESSAGE);\n				return;\n			}\n\n			Label label = new Label(i18n.getMessage(\"pa.sendWindow.snapshotDataBeforeSend\"));\n			label.setSizeUndefined();\n			label.addStyleName(\"field-caption\");\n			headerForm.getFormLayout().addComponent(label, 0, 4);\n\n			label = new Label(i18n.getMessage(\"pa.sendWindow.prepareDocument\"));\n			label.setSizeUndefined();\n		}\n		// headerForm.getFormLayout().addComponent(label, 1, 2);\n		final Window subwindow = new Window(i18n.getMessage(getTitleMessage(Action.SND)));\n		subwindow.setModal(true);\n		subwindow.setClosable(true);\n		// we want them to click the cancel to cancel or we need to create a window close listener that does the same as the cancel\n		subwindow.setWidth(\"40%\");\n		subwindow.setResizable(false);\n\n		int row = 4;\n\n		if (isUpperNodeEC) {\n			try {\n				DocumentLink docLnk = getPaymentApplicationService().prepareToSendMVO(prgver);\n				for (DocumentAttachment docatt : docLnk.getDocument().getListOfDocumentAttachments()) {\n					if (!docatt.getIsHidden()) {\n						String lobname = docatt.getSfcLargeObject() == null ? null : docatt.getSfcLargeObject().getLobName();\n						++row;\n						headerForm.getFormLayout().addComponent(DocumentLinks.downloadButton(-1, docatt.getTitle(), lobname, docatt.getId()), 1, row, 1,\n								row);\n					}\n				}\n			} catch (SfcFaultException ex) {\n				FrontofficeWebUtils.showNotification(ex);\n				validationResultPanel.showErrorNotification(FrontofficeWebUtils.getMessageFromSfcFault(ex));\n			}\n		}\n\n		VerticalLayout layout = (VerticalLayout) subwindow.getContent();\n		if (layout == null) {\n			layout = new VerticalLayout();\n			subwindow.setContent(layout);\n		}\n\n		Label label = new Label(i18n.getMessage(getConfirmationMessage(Action.SND)));\n		label.setSizeUndefined();\n		++row;\n		headerForm.getFormLayout().addComponent(label, 0, row, 1, row);\n\n		VerticalLayout v = new VerticalLayout();\n		v.addComponent(headerForm);\n		headerForm.setWidth(\"85%\");\n		headerForm.getFormLayout().setWidth(\"85%\");\n\n		v.setComponentAlignment(headerForm, Alignment.MIDDLE_CENTER);\n\n		Panel p = new Panel();\n		p.setContent(v);\n		p.setSizeFull();\n		layout.addComponent(p);\n\n		addButtons(layout, subwindow, Action.SND, headerForm);\n\n		this.getUI().addWindow(subwindow);\n\n	}\n\n	@Override\n	protected void displayLinkCDModalWindow() {\n		logger.error(\"Action LCD is not implemented for PAP\");\n	}\n}\n",
+			"settings":
+			{
+				"buffer_size": 27842,
+				"line_ending": "Windows",
+				"name": "package eu.europa.ec.sfc2014.frontoffice.web.pages"
 			}
 		},
 		{
 			"file": "public/js/nteam/nteam.cost.js",
 			"settings":
 			{
-				"buffer_size": 277,
+				"buffer_size": 333,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "Newteam.prototype.initData = function(_callback) {\n    $.get('/assets/data/nteam/density.csv', function(data) {\n        _callback(data);\n    });\n\n\n};\n\n\nNewteam.prototype.startEngine = function(_callback) {\n    //debugger;\n    var self = this;\n    self.initData(function(data) {\n        //console.info(data);\n        /*\n            \n            \n            \n            Giorno quattro o Quarto giorno - Sole e Luna\n            Giorno cinque o Quinto giorno - Pesci e uccelli\n            Giorno sei o Sesto giorno - Uomo e Animali\n            Giorno sette o Settimo giorno - Riposo\n        */\n        self.data = data;\n        self.lightsOn(); //Giorno uno o Primo giorno - Notte e Giorno\n        self.separateWaterFromEarth(); //Giorno due o Secondo giorno - Cielo e Mare\n        //self.breathWind();\n\n\n        //Giorno tre o Terzo giorno - Alberi e piante\n\n\n        self.startLoop(function gameLoop() {\n\n            self.updateCamera();\n            self.updateEarthRotation();\n            self.render();\n        });\n        _callback(null);\n\n    });\n\n    /*\n    addDensity(CSVToArray(data));\n            \n            \n            addClouds();\n    */\n\n\n};\n",
 			"file": "public/js/nteam/nteam.engine.js",
-			"file_size": 1209,
-			"file_write_time": 130580080079188097,
 			"settings":
 			{
-				"buffer_size": 1156,
+				"buffer_size": 1411,
 				"line_ending": "Windows"
 			}
 		},
@@ -134,7 +140,7 @@
 			"file": "public/js/nteam/nteam.earth.js",
 			"settings":
 			{
-				"buffer_size": 3093,
+				"buffer_size": 4295,
 				"line_ending": "Windows"
 			}
 		},
@@ -142,7 +148,7 @@
 			"file": "public/js/nteam/nteam.UX.js",
 			"settings":
 			{
-				"buffer_size": 1672,
+				"buffer_size": 1687,
 				"line_ending": "Windows"
 			}
 		},
@@ -404,6 +410,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getPay",
+			"xyxyx",
 			"light",
 			"../../src/",
 			"resize",
@@ -420,6 +428,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"SFC_OBJECT_ID_SEQ.nextval",
 			"/libs/dancer/",
 			""
 		],
@@ -432,7 +441,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -441,7 +450,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1803,
+						"buffer_size": 1626,
 						"regions":
 						{
 						},
@@ -462,7 +471,7 @@
 						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -471,15 +480,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1647,
+						"buffer_size": 1825,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1332,
-								1332
+								0,
+								0
 							]
 						],
 						"settings":
@@ -492,7 +501,7 @@
 						"translation.y": 456.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -501,15 +510,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2043,
+						"buffer_size": 2170,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								456,
-								456
+								0,
+								0
 							]
 						],
 						"settings":
@@ -522,7 +531,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -531,35 +540,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 396,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								376,
-								376
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/js/nteam/nteam.cost.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 277,
+						"buffer_size": 544,
 						"regions":
 						{
 						},
@@ -582,12 +563,69 @@
 					"type": "text"
 				},
 				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 27842,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9691,
+								9697
+							]
+						],
+						"settings":
+						{
+							"auto_name": "package eu.europa.ec.sfc2014.frontoffice.web.pages",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 14.0,
+						"translation.y": 3513.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
 					"buffer": 5,
+					"file": "public/js/nteam/nteam.cost.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 333,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "public/js/nteam/nteam.engine.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1156,
+						"buffer_size": 1411,
 						"regions":
 						{
 						},
@@ -608,11 +646,11 @@
 						"translation.y": 108.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "public/js/nteam/nteam.renderer.js",
 					"semi_transient": false,
 					"settings":
@@ -638,24 +676,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "public/js/nteam/nteam.earth.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3093,
+						"buffer_size": 4295,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1928,
-								1928
+								0,
+								0
 							]
 						],
 						"settings":
@@ -668,24 +706,24 @@
 						"translation.y": 886.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "public/js/nteam/nteam.UX.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1672,
+						"buffer_size": 1687,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1442,
-								1442
+								0,
+								0
 							]
 						],
 						"settings":
@@ -698,11 +736,11 @@
 						"translation.y": 486.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "public/libs/nteam/stats.min.js",
 					"semi_transient": false,
 					"settings":
@@ -727,7 +765,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
