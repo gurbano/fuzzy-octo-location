@@ -362,18 +362,18 @@ var DataHolder = function() {
         pre = toEvent(pre);
         post = toEvent(post);
         //LINEAR
-        var interpolation = (time - pre.time) / (post.time - pre.time);
-        var newLat = Number(pre.where.lat) + Number(interpolation * (post.where.lat - pre.where.lat));
-        var newLng = Number(pre.where.lng) + Number(interpolation * (post.where.lng - pre.where.lng));
+        //var interpolation = (time - pre.time) / (post.time - pre.time);
+        //var newLat = Number(pre.where.lat) + Number(interpolation * (post.where.lat - pre.where.lat));
+        //var newLng = Number(pre.where.lng) + Number(interpolation * (post.where.lng - pre.where.lng));
         
 
         var hours = 1.5;
         var limit = hours * 60 * 60 * 1000;
         
 
-        //var newLat = easeInOutQuad(Number(time - pre.time), Number(pre.where.lat), Number(post.where.lat) - Number(pre.where.lat), Number(post.time) - Number(pre.time));
-        //var newLng = easeInOutQuad(Number(time - pre.time), Number(pre.where.lng), Number(post.where.lng) - Number(pre.where.lng), Number(post.time) - Number(pre.time));
-        //var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
+        var newLat = easeInOutQuad(Number(time - pre.time), Number(pre.where.lat), Number(post.where.lat) - Number(pre.where.lat), Number(post.time) - Number(pre.time));
+        var newLng = easeInOutQuad(Number(time - pre.time), Number(pre.where.lng), Number(post.where.lng) - Number(pre.where.lng), Number(post.time) - Number(pre.time));
+        var m = google.maps.geometry.spherical.computeDistanceBetween(self.data[x].latLng, self.data[x + 1].latLng);
 
         var interpolatePosition = true;//((post.time - pre.time) >= limit);
         var ret = {};

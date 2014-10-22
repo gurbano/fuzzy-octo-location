@@ -11,7 +11,7 @@ module.exports = function($) {
         method: 'GET',
         path: '/',
         handler: function(request, reply) {
-            reply.view('index');
+            reply.view('masonry');
         }
     });
 };
