@@ -5,5 +5,4 @@ var EventSchema = new mongoose.Schema({
 	where: {lat: {type : Number} , lng: {type: Number} }
 });
 var Event = mongoose.model('Event', EventSchema);
-
 module.exports = Event;

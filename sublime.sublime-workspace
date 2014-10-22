@@ -72,87 +72,43 @@
 	"buffers":
 	[
 		{
-			"file": "public/js/nteam/nteam.js",
+			"file": "views/flock.html",
 			"settings":
 			{
-				"buffer_size": 1803,
+				"buffer_size": 729,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "views/newteam.html",
+			"file": "public/js/flock/flock.js",
 			"settings":
 			{
-				"buffer_size": 1647,
+				"buffer_size": 2705,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/js/nteam/nteam.setup.js",
+			"file": "public/js/flock/traffic.js",
 			"settings":
 			{
-				"buffer_size": 2043,
+				"buffer_size": 5819,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/js/nteam/nteam.lights.js",
+			"file": "public/js/flock/world.js",
 			"settings":
 			{
-				"buffer_size": 396,
+				"buffer_size": 135,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/js/nteam/nteam.cost.js",
+			"file": "public/js/flock/dist/flock.js",
 			"settings":
 			{
-				"buffer_size": 277,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Newteam.prototype.initData = function(_callback) {\n    $.get('/assets/data/nteam/density.csv', function(data) {\n        _callback(data);\n    });\n\n\n};\n\n\nNewteam.prototype.startEngine = function(_callback) {\n    //debugger;\n    var self = this;\n    self.initData(function(data) {\n        //console.info(data);\n        /*\n            \n            \n            \n            Giorno quattro o Quarto giorno - Sole e Luna\n            Giorno cinque o Quinto giorno - Pesci e uccelli\n            Giorno sei o Sesto giorno - Uomo e Animali\n            Giorno sette o Settimo giorno - Riposo\n        */\n        self.data = data;\n        self.lightsOn(); //Giorno uno o Primo giorno - Notte e Giorno\n        self.separateWaterFromEarth(); //Giorno due o Secondo giorno - Cielo e Mare\n        //self.breathWind();\n\n\n        //Giorno tre o Terzo giorno - Alberi e piante\n\n\n        self.startLoop(function gameLoop() {\n\n            self.updateCamera();\n            self.updateEarthRotation();\n            self.render();\n        });\n        _callback(null);\n\n    });\n\n    /*\n    addDensity(CSVToArray(data));\n            \n            \n            addClouds();\n    */\n\n\n};\n",
-			"file": "public/js/nteam/nteam.engine.js",
-			"file_size": 1209,
-			"file_write_time": 130580080079188097,
-			"settings":
-			{
-				"buffer_size": 1156,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/js/nteam/nteam.renderer.js",
-			"settings":
-			{
-				"buffer_size": 690,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/js/nteam/nteam.earth.js",
-			"settings":
-			{
-				"buffer_size": 3093,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/js/nteam/nteam.UX.js",
-			"settings":
-			{
-				"buffer_size": 1672,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/libs/nteam/stats.min.js",
-			"settings":
-			{
-				"buffer_size": 2309,
-				"line_ending": "Windows",
-				"name": "// stats.js - http://github.com/mrdoob/stats.js"
+				"buffer_size": 23143,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -258,9 +214,28 @@
 	},
 	"file_history":
 	[
+		"/C/workspaces/github/fuzzy-octo-location/public/js/flock/traffic.js",
+		"/C/workspaces/github/fuzzy-octo-location/bundle.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/borderMenu.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/fuzzy/flock.js",
+		"/C/workspaces/github/fuzzy-octo-location/views/flock.html",
+		"/C/workspaces/github/fuzzy-octo-location/routes/client.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/libs/flock/boids.js",
+		"/C/workspaces/github/fuzzy-octo-location/views/index.html",
+		"/C/App/sublimeText3/Data/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
+		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/lib/util/createLink.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.lights.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.js",
+		"/C/workspaces/github/fuzzy-octo-location/views/newteam.html",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.setup.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.cost.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.engine.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.renderer.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.earth.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.UX.js",
+		"/C/workspaces/github/fuzzy-octo-location/public/libs/nteam/stats.min.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/templates/std/conflict.std",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/inquirer/node_modules/cli-color/node_modules/es5-ext/object/safe-traverse.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.cost.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/bower-registry-client/node_modules/request/node_modules/form-data/node_modules/combined-stream/lib/combined_stream.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/cardinal/node_modules/redeyed/test/redeyed-function-config-skipping-tokens.js",
 		"/C/workspaces/github/fuzzy-octo-location/bower_components/jquery/src/var/toString.js",
@@ -269,7 +244,6 @@
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/mongoose/node_modules/mpromise/.idea/codeStyleSettings.xml",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/mout/math/countSteps.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/mout/lang/createObject.js",
-		"/C/workspaces/github/fuzzy-octo-location/routes/client.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/lib/util/removeIgnores.js",
 		"/C/workspaces/github/fuzzy-octo-location/LICENSE",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/update-notifier/node_modules/latest-version/node_modules/package-json/node_modules/registry-url/node_modules/npmconf/test/00-setup.js",
@@ -281,7 +255,6 @@
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/xml2js/node_modules/sax/test/stray-ending.js",
 		"/C/workspaces/github/fuzzy-octo-location/server.js",
 		"/C/workspaces/github/fuzzy-octo-location/public/libs/nteam/three.TrackballControls.js",
-		"/C/App/sublimeText3/Data/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
 		"/C/workspaces/github/fuzzy-octo-location/views/partials/foot.ejs",
 		"/C/workspaces/github/fuzzy-octo-location/views/partials/head.ejs",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/xml2js/node_modules/xmlbuilder/node_modules/lodash-node/compat/internals/htmlEscapes.js",
@@ -296,17 +269,11 @@
 		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.audio.js",
 		"/C/workspaces/github/fuzzy-octo-location/bower_components/jquery/src/traversing.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/bower-registry-client/node_modules/request/tests/test-redirect.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.UX.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.earth.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.setup.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.lights.js",
 		"/C/workspaces/github/fuzzy-octo-location/routes/nteam.js",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.engine.js",
 		"/C/workspaces/github/fuzzy-octo-location/public/css/nteam/nteam.css",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/node_modules/mout/function/constant.js",
 		"/C/workspaces/github/fuzzy-octo-location/public/css/console.css",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/CONTRIBUTING.md",
-		"/C/workspaces/github/fuzzy-octo-location/public/js/nteam/nteam.renderer.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/lib/renderers/StandardRenderer.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/lib/renderers/index.js",
 		"/C/workspaces/github/fuzzy-octo-location/node_modules/bower/lib/renderers/JsonRenderer.js",
@@ -341,7 +308,6 @@
 		"/C/workspaces/github/fuzzy-octo-location/modules/global.js",
 		"/C/workspaces/github/fuzzy-octo-location/modules/globalImpl.js",
 		"/C/workspaces/github/fuzzy-octo-location/views/admin.html",
-		"/C/workspaces/github/fuzzy-octo-location/views/index.html",
 		"/C/workspaces/github/fuzzy-octo-location/uploads/readme.txt",
 		"/C/workspaces/github/fuzzy-octo-location/views/admin_index",
 		"/C/workspaces/github/fuzzy-octo-location/views/admin/index.html",
@@ -375,17 +341,7 @@
 		"/C/workspaces/github/ccity/server_modules/helper/class.js",
 		"/C/workspaces/github/ccity/server.js",
 		"/C/workspaces/github/ccity/server_modules/properties/application.js",
-		"/C/workspaces/github/ccity/server_modules/engine/modules/anagraphic.js",
-		"/C/workspaces/github/ccity/server_modules/engine/modules/demographic.js",
-		"/C/workspaces/github/ccity/server_modules/class.js",
-		"/C/workspaces/github/ccity/server_modules/engine/modules/geographic.js",
-		"/C/workspaces/github/ccity/server_modules/helper/utils.js",
-		"/C/workspaces/github/ccity/server_modules/engine/modules/base/module.js",
-		"/C/workspaces/github/ccity/package.json",
-		"/C/workspaces/github/ccity/app_modules/properties/system",
-		"/C/workspaces/github/ccity/app_modules/properties/application",
-		"/C/workspaces/github/ccity/app_modules/helper/properties/application",
-		"/C/workspaces/github/ccity/app_modules/helper/properties/system"
+		"/C/workspaces/github/ccity/server_modules/engine/modules/anagraphic.js"
 	],
 	"find":
 	{
@@ -404,6 +360,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"boidData",
+			"inhe",
+			"Traffic",
+			"TrafficEmitter",
+			"Boids",
+			"draw",
+			"progress-bar",
+			"getPay",
+			"xyxyx",
 			"light",
 			"../../src/",
 			"resize",
@@ -420,6 +385,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"traffic",
+			"Traffic",
+			"TrafficEmitter",
+			"SFC_OBJECT_ID_SEQ.nextval",
 			"/libs/dancer/",
 			""
 		],
@@ -432,142 +401,52 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/js/nteam/nteam.js",
+					"file": "views/flock.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1803,
+						"buffer_size": 729,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								628,
+								628
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "views/newteam.html",
+					"file": "public/js/flock/flock.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1647,
+						"buffer_size": 2705,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1332,
-								1332
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 456.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/js/nteam/nteam.setup.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2043,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								456,
-								456
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "public/js/nteam/nteam.lights.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 396,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								376,
-								376
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/js/nteam/nteam.cost.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 277,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								672,
+								672
 							]
 						],
 						"settings":
@@ -582,50 +461,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "public/js/nteam/nteam.engine.js",
-					"semi_transient": false,
+					"buffer": 2,
+					"file": "public/js/flock/traffic.js",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1156,
+						"buffer_size": 5819,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								687,
-								687
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": -0.0,
-						"translation.y": 108.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "public/js/nteam/nteam.renderer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 690,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								371,
-								371
+								1405,
+								1405
 							]
 						],
 						"settings":
@@ -638,96 +487,65 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "public/js/nteam/nteam.earth.js",
+					"buffer": 3,
+					"file": "public/js/flock/world.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3093,
+						"buffer_size": 135,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1928,
-								1928
+								23,
+								23
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 886.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "public/js/nteam/nteam.UX.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1672,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1442,
-								1442
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 486.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "public/libs/nteam/stats.min.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2309,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2309,
-								2309
-							]
-						],
-						"settings":
-						{
-							"auto_name": "// stats.js - http://github.com/mrdoob/stats.js",
 							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/js/flock/dist/flock.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 108.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -787,6 +605,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"clie",
+				"routes\\client.js"
+			],
 			[
 				"cost",
 				"public\\js\\nteam\\nteam.cost.js"
@@ -881,7 +703,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 225.0,
+	"side_bar_width": 237.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
