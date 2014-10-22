@@ -16,6 +16,14 @@ module.exports = function($) {
     });
     server.route({
         method: 'GET',
+        path: '/storify',
+        handler: function(request, reply) {
+            reply.view('storify');
+        }
+    });
+
+    server.route({
+        method: 'GET',
         path: '/',
         handler: function(request, reply) {
             reply.view('index');
