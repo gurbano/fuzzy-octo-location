@@ -30,7 +30,7 @@
     "good": "^2.3.0",
     "hapi": "^6.9.0",
     "inherits": "^2.0.1",
-    "mongoose": "^3.8.16",
+    "mongoose": "^3.8.17",
     "paralleljs": "^0.2.1",
     "path": "^0.4.9",
     "ticker": "^0.1.0",
