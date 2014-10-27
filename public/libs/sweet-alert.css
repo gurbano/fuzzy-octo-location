@@ -603,3 +603,17 @@
   -webkit-animation: pulseWarningIns 0.75s infinite alternate;
   -moz-animation: pulseWarningIns 0.75s infinite alternate;
   animation: pulseWarningIns 0.75s infinite alternate; }
+
+/**/
+
+.sweet-alert form{
+  border: 1px dotted black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.sweet-alert form label{
+  text-align: left;
+}
+.sweet-alert form input{
+  text-align: right;
+}

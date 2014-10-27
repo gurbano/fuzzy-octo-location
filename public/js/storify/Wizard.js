@@ -2,14 +2,15 @@ var helper = require('./Helper.js')().get();
 
 module.exports = Wizard;
 
-function Wizard(steps, endCallback) {
+function Wizard(title, steps, endCallback) {
     if (!(this instanceof Wizard)) return new Wizard(steps);
+    this.title = title;
     this.steps = [];
     this.endCallback = endCallback;
     this.current = 0;
     this.Step = Step;
     this.getHelper = function(obj) {
-        return new FormHelper(obj)
+        return new FormHelper(obj);
     };
     this.context = {};
     for (var i = 0; i < steps.length; i++) {
@@ -68,7 +69,7 @@ Step.prototype.go = function(_context) { // <-- context comes from wizard
     setTimeout(
         function() {
             swwi({
-                    title: "Wizard - step " + (context.wizard.current + 1) + "/" + context.wizard.steps.length,
+                    title: context.wizard.title + "(" + (context.wizard.current + 1) + "/" + context.wizard.steps.length + ")",
                     text: self.data.text,
                     type: "info" || self.data.type,
                     showCancelButton: !self.first,
@@ -106,21 +107,22 @@ function FormHelper(handler) {
     this.$form = $(document.createElement('form'));
     this.$handler = $(this.handler);
     this.$handler.append(this.$form);
+    this.fields = [];
     return this;
 }
+FormHelper.prototype.focus = function() {
+	this.fields[0].focus();
+};
 
 FormHelper.prototype.addField = function(label, value, field, onChange) {
     var _label = $(document.createElement('label')).html(label);
-
     this.$form.append(_label);
     this.$form.append(field);
-
+    this.$form.append('<br>');
+    this.fields.push(field);
     if (value) field.val(value);
-
-    field.focus();
     return this;
-
-}
+};
 
 FormHelper.prototype.addTextField = function(label, value, onChange) {
     var _input = $(document.createElement('input')).attr('type', 'text').change(function() {
@@ -141,4 +143,12 @@ FormHelper.prototype.addSelect = function(label, value, data, onChange) {
         onChange(s.val());
     });    
     return this.addField(label, value, s, onChange);
+};
+
+FormHelper.prototype.addDateField = function(label, value, onChange) {
+    var _input = $(document.createElement('input')).attr('type', 'text').change(function() {
+        onChange(_input.val());
+    });
+    _input.datepicker();
+    return this.addField(label, value, _input, onChange);
 };

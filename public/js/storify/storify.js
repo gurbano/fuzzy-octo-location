@@ -2,7 +2,7 @@ var Storify = {}; //namespace
 
 var Helper = require('./Helper.js');
 var StoryFactory = require('./StoryFactory.js');
-//watchify .\public\js\storify\storify.js .\public\js\storify\dist\storify.bundle.js
+//watchify .\public\js\storify\storify.js -o .\public\js\storify\dist\storify.bundle.js
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
@@ -42,7 +42,7 @@ var startStorify = function(err, user) {
             confirmButtonText: "Can't wait to tell a Story!",
             closeOnConfirm: true
         }, function() {
-            new Wizard([step1, step2, step3], //STEPS
+            new Wizard('Create a story', [step1 ],//, step2, step3], //STEPS
                 function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
                     GLOBALS.pb.set(100);
 
@@ -58,23 +58,30 @@ var startStorify = function(err, user) {
 
 var step1 = {
     first: true,
+    last : true,
     data: {        
         text: ''
     },
     callback: function(obj, context) {
         GLOBALS.pb.set(10);
-        context.variable = 100;
-        context.tipo = '';
+        context.title = 'My first story';
         context.wizard.getHelper(obj)
-            .addTextField('Title', context.variable, function(value) {
-                context.variable = value;
+            .addTextField('Title', context.title, function(value) {
+                context.title = value;
             })
-            .addSelect('Type', context.tipo, ['uno', 'due', 'tre'], function(value) {
-                context.tipo = value;
-            });
+            .addTextField('Description', context.description, function(value) {
+                context.description = value;
+            })
+            .addDateField('From', context.from, function(value) {
+                context.from = value;
+            }).addDateField('To', context.to, function(value) {
+                context.to = value;
+            }).focus();
         console.info(obj, context);
     }
 };
+
+/*
 var step2 = {
     data: {
         text: 'step 2'
@@ -97,3 +104,4 @@ var step3 = {
         console.info(obj, context);
     }
 };
+*/

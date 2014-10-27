@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"Z:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -23,7 +23,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 module.exports = Event;
 function Event(opts){
@@ -34,7 +34,7 @@ function Event(opts){
 	this.data = opts.data || {};
 	return this;
 }
-},{"./EventType.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
+},{"./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
 module.exports ={
 	GENERIC : 000,
 	POSITION : 001,
@@ -42,7 +42,7 @@ module.exports ={
 	VIDEO  :200,
 	MUSIC  :300
 };
-},{}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 var GpsEvent = require('./GpsEvent.js');
 var Event = require('./Event.js');
@@ -70,7 +70,7 @@ Frame.prototype.getEventsByType = function(type) {
 	};
 	return ret;
 };
-},{"./Event.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
+},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
 var inherits = require('inherits');
 var Event = require('./Event.js');
 
@@ -82,7 +82,7 @@ function GpsEvent(opts){
 	this.type = EventType.POSITION;
 	return this;
 }
-},{"./Event.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","inherits":"Z:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
+},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
 module.exports = Helper;
 
 function Helper() {
@@ -106,7 +106,7 @@ Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
 
-},{}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
 var Helper = require('./Helper.js');
 module.exports = Story;
@@ -121,7 +121,7 @@ function Story(opts){
 	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
-},{"./Helper.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
 var Story = require('./Story.js');
 var Helper = require('./Helper.js');
 
@@ -134,7 +134,7 @@ function StoryFactory(opts){
 StoryFactory.prototype.generate = function() {
 
 };
-},{"./Helper.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
 var Frame = require('./Frame.js');
 
 module.exports = Timeline;
@@ -147,19 +147,20 @@ function Timeline(opts){
 	this.end = opts.end || 0; // delta minutes between frames
 	return this;
 }
-},{"./Frame.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
+},{"./Frame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
 var helper = require('./Helper.js')().get();
 
 module.exports = Wizard;
 
-function Wizard(steps, endCallback) {
+function Wizard(title, steps, endCallback) {
     if (!(this instanceof Wizard)) return new Wizard(steps);
+    this.title = title;
     this.steps = [];
     this.endCallback = endCallback;
     this.current = 0;
     this.Step = Step;
     this.getHelper = function(obj) {
-        return new FormHelper(obj)
+        return new FormHelper(obj);
     };
     this.context = {};
     for (var i = 0; i < steps.length; i++) {
@@ -218,7 +219,7 @@ Step.prototype.go = function(_context) { // <-- context comes from wizard
     setTimeout(
         function() {
             swwi({
-                    title: "Wizard - step " + (context.wizard.current + 1) + "/" + context.wizard.steps.length,
+                    title: context.wizard.title + "(" + (context.wizard.current + 1) + "/" + context.wizard.steps.length + ")",
                     text: self.data.text,
                     type: "info" || self.data.type,
                     showCancelButton: !self.first,
@@ -256,21 +257,22 @@ function FormHelper(handler) {
     this.$form = $(document.createElement('form'));
     this.$handler = $(this.handler);
     this.$handler.append(this.$form);
+    this.fields = [];
     return this;
 }
+FormHelper.prototype.focus = function() {
+	this.fields[0].focus();
+};
 
 FormHelper.prototype.addField = function(label, value, field, onChange) {
     var _label = $(document.createElement('label')).html(label);
-
     this.$form.append(_label);
     this.$form.append(field);
-
+    this.$form.append('<br>');
+    this.fields.push(field);
     if (value) field.val(value);
-
-    field.focus();
     return this;
-
-}
+};
 
 FormHelper.prototype.addTextField = function(label, value, onChange) {
     var _input = $(document.createElement('input')).attr('type', 'text').change(function() {
@@ -293,12 +295,20 @@ FormHelper.prototype.addSelect = function(label, value, data, onChange) {
     return this.addField(label, value, s, onChange);
 };
 
-},{"./Helper.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
+FormHelper.prototype.addDateField = function(label, value, onChange) {
+    var _input = $(document.createElement('input')).attr('type', 'text').change(function() {
+        onChange(_input.val());
+    });
+    _input.datepicker();
+    return this.addField(label, value, _input, onChange);
+};
+
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
 var Helper = require('./Helper.js');
 var StoryFactory = require('./StoryFactory.js');
-//watchify .\public\js\storify\storify.js .\public\js\storify\dist\storify.bundle.js
+//watchify .\public\js\storify\storify.js -o .\public\js\storify\dist\storify.bundle.js
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
@@ -338,7 +348,7 @@ var startStorify = function(err, user) {
             confirmButtonText: "Can't wait to tell a Story!",
             closeOnConfirm: true
         }, function() {
-            new Wizard([step1, step2, step3], //STEPS
+            new Wizard('Create a story', [step1 ],//, step2, step3], //STEPS
                 function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
                     GLOBALS.pb.set(100);
 
@@ -354,23 +364,30 @@ var startStorify = function(err, user) {
 
 var step1 = {
     first: true,
+    last : true,
     data: {        
         text: ''
     },
     callback: function(obj, context) {
         GLOBALS.pb.set(10);
-        context.variable = 100;
-        context.tipo = '';
+        context.title = 'My first story';
         context.wizard.getHelper(obj)
-            .addTextField('Title', context.variable, function(value) {
-                context.variable = value;
+            .addTextField('Title', context.title, function(value) {
+                context.title = value;
             })
-            .addSelect('Type', context.tipo, ['uno', 'due', 'tre'], function(value) {
-                context.tipo = value;
-            });
+            .addTextField('Description', context.description, function(value) {
+                context.description = value;
+            })
+            .addDateField('From', context.from, function(value) {
+                context.from = value;
+            }).addDateField('To', context.to, function(value) {
+                context.to = value;
+            }).focus();
         console.info(obj, context);
     }
 };
+
+/*
 var step2 = {
     data: {
         text: 'step 2'
@@ -393,5 +410,6 @@ var step3 = {
         console.info(obj, context);
     }
 };
+*/
 
-},{"./Helper.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js"}]},{},["Z:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js"}]},{},["C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);

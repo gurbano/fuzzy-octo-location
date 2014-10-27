@@ -1,0 +1,1 @@
+watchify .\public\js\storify\storify.js -o .\public\js\storify\dist\storify.bundle.js
