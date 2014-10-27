@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -23,7 +23,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 module.exports = Event;
 function Event(opts){
@@ -34,7 +34,7 @@ function Event(opts){
 	this.data = opts.data || {};
 	return this;
 }
-},{"./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
+},{"./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
 module.exports ={
 	GENERIC : 000,
 	POSITION : 001,
@@ -42,7 +42,7 @@ module.exports ={
 	VIDEO  :200,
 	MUSIC  :300
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 var GpsEvent = require('./GpsEvent.js');
 var Event = require('./Event.js');
@@ -70,7 +70,7 @@ Frame.prototype.getEventsByType = function(type) {
 	};
 	return ret;
 };
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
 var inherits = require('inherits');
 var Event = require('./Event.js');
 
@@ -81,8 +81,10 @@ function GpsEvent(opts){
 
 	this.type = EventType.POSITION;
 	return this;
-}
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
+};
+
+inherits(GpsEvent,Event);
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
 module.exports = Helper;
 
 function Helper() {
@@ -106,7 +108,21 @@ Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
 
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
+Helper.prototype.extend = function(a,b) {
+	for (var key in b) {
+      if (b.hasOwnProperty(key)) {
+        a[key] = b[key];
+      }
+    }
+
+    return a;
+};
+
+Helper.prototype.maximize = function($div) {
+    $div.width($(window).width());
+    $div.height($(window).height());
+};
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
 var Helper = require('./Helper.js');
 module.exports = Story;
@@ -121,7 +137,7 @@ function Story(opts){
 	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
 var Story = require('./Story.js');
 var Helper = require('./Helper.js');
 
@@ -134,7 +150,7 @@ function StoryFactory(opts){
 StoryFactory.prototype.generate = function() {
 
 };
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
 var Frame = require('./Frame.js');
 
 module.exports = Timeline;
@@ -147,7 +163,7 @@ function Timeline(opts){
 	this.end = opts.end || 0; // delta minutes between frames
 	return this;
 }
-},{"./Frame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
+},{"./Frame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
 var helper = require('./Helper.js')().get();
 
 module.exports = Wizard;
@@ -303,7 +319,131 @@ FormHelper.prototype.addDateField = function(label, value, onChange) {
     return this.addField(label, value, _input, onChange);
 };
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
+module.exports = SEngine;
+
+function SEngine(opts){
+	if (!(this instanceof SEngine)) return new SEngine(opts);
+	this.modules = {};
+
+	return this;
+};
+
+/**
+ * Start the engine
+ * @param  {[type]} modules -- CLASS NAMES !!!!! NOT OBJECT
+ * @return {[type]} this
+ */
+SEngine.prototype.start = function(modules) { //modules contains class name !!!!!
+	for (var i = 0; i < modules.length; i++) {
+		var smodule = modules[i];
+		this.modules[smodule.name] = smodule.start();
+		
+	};
+	
+	return this;
+};
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js":[function(require,module,exports){
+var SModule = require('./SModule.js');
+var inherits = require('inherits');
+var helper = require('../Helper.js')();
+
+module.exports = GMapModule;
+
+/**
+ * GMAP MODULE
+ * !!! DOM NOT READY YET WHEN CALLED
+ * manages integration with google maps
+ *
+ * @param {Object} opts
+ */
+function GMapModule(opts) {
+    if (!(this instanceof GMapModule)) return new GMapModule(opts);
+    /*CALL SUPERCLASS*/
+    SModule.call(this, {
+        name: 'GMapModule',
+        id: 'GMAP'
+    });
+
+    this.selector = opts.selector; // where the map will be displayed
+
+    this.mapOptions = {
+        center: new google.maps.LatLng(41.54, 12.30),
+        disableDefaultUI: true,
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
+
+
+    return this;
+}
+
+inherits(GMapModule, SModule);
+
+GMapModule.prototype.postInit = function() {
+    console.info('GMapModule started');
+    this.$elector = $(document.getElementById(this.selector));
+    this.adjustSize();
+    this.map = new google.maps.Map(document.getElementById(this.selector), this.mapOptions);
+
+
+    return this;
+};
+
+GMapModule.prototype.adjustSize = function() {
+	var $elector = this.$elector;
+	helper.maximize($elector);
+    $(window).resize(
+    	function(){
+    		helper.maximize($elector);
+    	});
+};
+
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
+module.exports = SModule;
+var inherits = require('inherits');
+var helper = require('../Helper.js')();
+
+function SModule(opts) {
+    if (!(this instanceof SModule)) return new SModule(opts);
+    opts = helper.extend({},opts);
+    /*Common ops*/
+    this.name = opts.name || 'Generic module';
+    this.id = opts.id || 'SModule';
+    this.postInit = opts.postInit || this.postInit;
+    return this;
+};
+
+/**
+ * performs common operations
+ *  - if callback is defined, then it is executed. //anonymous modules
+ *  - if not, if the 'abstract' method postInit is executed. // modules extending this
+ *
+ * !!! args unchecked if you pass callback you have to pass params ({})
+ *
+ * @param {Map} opttions override the default [ name,  ]
+ * @param  {Function} callback -- default is function(engine) {  return engine;  }
+ * @return {[type]}
+ */
+SModule.prototype.start = function(callback) {
+
+
+    /*starts the module*/
+    if (callback) {
+        return callback(this);
+    } else {
+        return this.postInit();
+    }
+};
+
+SModule.prototype.postInit = function() {
+    console.warn('default post init called. is quite strange, isnt it?');
+    console.info(this.name + '[' + this.id + ']' + ' started');
+    return this;
+};
+
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
 var Helper = require('./Helper.js');
@@ -312,23 +452,31 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    GLOBALS.usm.start(false)
-        .login({
-            method: 'facebook'
-        }, function success(user) {
-            console.info("You are signed in to Facebook");
-            console.info(user);
-            $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-            startStorify(null, user);
-        }, function failure(err) {
-            console.info(err, null);
+    var goSocial = false;
+    if (goSocial) {
+        GLOBALS.usm.start(false)
+            .login({
+                method: 'facebook'
+            }, function success(user) {
+                console.info("You are signed in to Facebook");
+                console.info(user);
+                $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+                startStorify(null, user);
+            }, function failure(err) {
+                console.info(err, null);
 
-        });
-}
+            });
+    } else {
+        startStorify(null, null);
+    }
+};
 
 //require Story --> Timeline --> Frame --> Event
 var Story = require('./Story.js');
 var Wizard = require('./Wizard.js');
+var SEngine = require('./engine/SEngine.js');
+var SModule = require('./modules/SModule.js');
+var GMapModule = require('./modules/GMapModule.js');
 
 
 var startStorify = function(err, user) {
@@ -341,31 +489,60 @@ var startStorify = function(err, user) {
         });
         return;
     } else {
-        swal({ //WELCOME PAGE
-            title: "Welcome " + user.first_name,
-            text: "Here you will create your first story.\n Are you ready?",
-            type: "success",
-            confirmButtonText: "Can't wait to tell a Story!",
-            closeOnConfirm: true
-        }, function() {
-            new Wizard('Create a story', [step1 ],//, step2, step3], //STEPS
-                function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
-                    GLOBALS.pb.set(100);
-
-                    console.info(new Story({
-                        author: user.id
-                    }));
-                    console.info(context);
-                }).start();
-        });
+        var engine = new SEngine().start(
+            [ //MODULES
+                new GMapModule({
+                    selector: 'map-canvas'
+                }), onTheRockModule, new SModule() //generic module
+            ]
+        );
 
     }
-}
+};
+
+var onTheRockModule = new SModule({
+    name: 'onTheRockModule',
+    id: 'ONTHEROCK',
+    postInit: function() {
+        console.debug('anonymous module');
+        return this;
+    }
+});
+
+
+
+
+
+
+
+
+
+/*SKIP WIZARD NOW
+        if (false) {
+            swal({ //WELCOME PAGE
+                title: "Welcome " + user.first_name,
+                text: "Here you will create your first story.\n Are you ready?",
+                type: "success",
+                confirmButtonText: "Can't wait to tell a Story!",
+                closeOnConfirm: true
+            }, function() {
+                new Wizard('Create a story', [step1], //, step2, step3], //STEPS
+                    function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
+                        GLOBALS.pb.set(100);
+
+                        console.info(new Story({
+                            author: user.id
+                        }));
+                        console.info(context);
+                    }).start();
+            });
+        }
+
 
 var step1 = {
     first: true,
-    last : true,
-    data: {        
+    last: true,
+    data: {
         text: ''
     },
     callback: function(obj, context) {
@@ -386,8 +563,8 @@ var step1 = {
         console.info(obj, context);
     }
 };
+require()
 
-/*
 var step2 = {
     data: {
         text: 'step 2'
@@ -410,6 +587,8 @@ var step3 = {
         console.info(obj, context);
     }
 };
+
+
 */
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js"}]},{},["C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/GMapModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);

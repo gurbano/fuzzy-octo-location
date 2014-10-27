@@ -8,4 +8,6 @@ function GpsEvent(opts){
 
 	this.type = EventType.POSITION;
 	return this;
-}
+};
+
+inherits(GpsEvent,Event);

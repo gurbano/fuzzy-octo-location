@@ -20,3 +20,18 @@ Helper.prototype.deepCopy = function(oldObject) {
 Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
+
+Helper.prototype.extend = function(a,b) {
+	for (var key in b) {
+      if (b.hasOwnProperty(key)) {
+        a[key] = b[key];
+      }
+    }
+
+    return a;
+};
+
+Helper.prototype.maximize = function($div) {
+    $div.width($(window).width());
+    $div.height($(window).height());
+};

@@ -10,7 +10,7 @@
         title: '',
         text: '',
         type: null,
-        allowOutsideClick: false,
+        allowOutsideClick: true,
         showCancelButton: false,
         closeOnConfirm: true,
         closeOnCancel: true,
@@ -346,7 +346,7 @@
           outsideClickIsAllowed = modal.getAttribute('data-allow-ouside-click') === 'true';
 
       if (!clickedOnModal && !clickedOnModalChild && modalIsVisible && outsideClickIsAllowed) {
-        closeModal();
+        //closeModal(); //GU
       }
     };
 
@@ -417,7 +417,7 @@
     }
 
     previousWindowKeyDown = window.onkeydown;
-    window.onkeydown = handleKeyDown;
+    //window.onkeydown = handleKeyDown; //GU
 
     function handleOnBlur(e) {
       var $targetElement = e.target || e.srcElement,
@@ -449,7 +449,7 @@
 
     $okButton.onblur = handleOnBlur;
     $cancelButton.onblur = handleOnBlur;
-
+/* //GU
     window.onfocus = function() {
       // When the user has focused away and focused back from the whole window.
       window.setTimeout(function() {
@@ -461,6 +461,7 @@
         }
       }, 0);
     };
+    */
   };
 
   /**

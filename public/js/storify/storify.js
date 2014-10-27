@@ -6,23 +6,31 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    GLOBALS.usm.start(false)
-        .login({
-            method: 'facebook'
-        }, function success(user) {
-            console.info("You are signed in to Facebook");
-            console.info(user);
-            $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-            startStorify(null, user);
-        }, function failure(err) {
-            console.info(err, null);
+    var goSocial = false;
+    if (goSocial) {
+        GLOBALS.usm.start(false)
+            .login({
+                method: 'facebook'
+            }, function success(user) {
+                console.info("You are signed in to Facebook");
+                console.info(user);
+                $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+                startStorify(null, user);
+            }, function failure(err) {
+                console.info(err, null);
 
-        });
-}
+            });
+    } else {
+        startStorify(null, null);
+    }
+};
 
 //require Story --> Timeline --> Frame --> Event
 var Story = require('./Story.js');
 var Wizard = require('./Wizard.js');
+var SEngine = require('./engine/SEngine.js');
+var SModule = require('./modules/SModule.js');
+var GMapModule = require('./modules/GMapModule.js');
 
 
 var startStorify = function(err, user) {
@@ -35,31 +43,60 @@ var startStorify = function(err, user) {
         });
         return;
     } else {
-        swal({ //WELCOME PAGE
-            title: "Welcome " + user.first_name,
-            text: "Here you will create your first story.\n Are you ready?",
-            type: "success",
-            confirmButtonText: "Can't wait to tell a Story!",
-            closeOnConfirm: true
-        }, function() {
-            new Wizard('Create a story', [step1 ],//, step2, step3], //STEPS
-                function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
-                    GLOBALS.pb.set(100);
-
-                    console.info(new Story({
-                        author: user.id
-                    }));
-                    console.info(context);
-                }).start();
-        });
+        var engine = new SEngine().start(
+            [ //MODULES
+                new GMapModule({
+                    selector: 'map-canvas'
+                }), onTheRockModule, new SModule() //generic module
+            ]
+        );
 
     }
-}
+};
+
+var onTheRockModule = new SModule({
+    name: 'onTheRockModule',
+    id: 'ONTHEROCK',
+    postInit: function() {
+        console.debug('anonymous module');
+        return this;
+    }
+});
+
+
+
+
+
+
+
+
+
+/*SKIP WIZARD NOW
+        if (false) {
+            swal({ //WELCOME PAGE
+                title: "Welcome " + user.first_name,
+                text: "Here you will create your first story.\n Are you ready?",
+                type: "success",
+                confirmButtonText: "Can't wait to tell a Story!",
+                closeOnConfirm: true
+            }, function() {
+                new Wizard('Create a story', [step1], //, step2, step3], //STEPS
+                    function(context) { //FUNCTION TO BE EXCECUTED AT THE END OF THE WIZARD
+                        GLOBALS.pb.set(100);
+
+                        console.info(new Story({
+                            author: user.id
+                        }));
+                        console.info(context);
+                    }).start();
+            });
+        }
+
 
 var step1 = {
     first: true,
-    last : true,
-    data: {        
+    last: true,
+    data: {
         text: ''
     },
     callback: function(obj, context) {
@@ -80,8 +117,8 @@ var step1 = {
         console.info(obj, context);
     }
 };
+require()
 
-/*
 var step2 = {
     data: {
         text: 'step 2'
@@ -104,4 +141,6 @@ var step3 = {
         console.info(obj, context);
     }
 };
+
+
 */

@@ -1,0 +1,31 @@
+.c1{
+	color: #624E50;
+}
+.c2{
+	color: ##93A2A2;
+}
+.c3{
+	color: #F1667D;
+}
+.c4{
+	color: #3F8C97;
+}
+.c5{
+	color: #F9F8E4;
+}
+
+/**
+ * http://coolors.co/624e50-93a2a2-f1667d-3f8c97-f9f8e4
+ */
+#timeline-wrapper{
+	width: 100%;
+	position: fixed;;
+	bottom: 0;
+}
+#timeline{
+	width:1440px;
+	height: 40px;
+	background-color: #F9F8E4;
+	opacity: 0.4;
+	margin: 0 auto;
+}

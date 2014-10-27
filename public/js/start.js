@@ -2,24 +2,24 @@ function sign(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
 $(document).ready(function() {
     console.info('started');
-    hello.init({
-        facebook: '44687033716'
-        //,windows: WINDOWS_CLIENT_ID,
-        //google: GOOGLE_CLIENT_ID
-    }, {
-        redirect_uri: document.URL
-    });
+    // hello.init({
+    //     facebook: '44687033716'
+    //     //,windows: WINDOWS_CLIENT_ID,
+    //     //google: GOOGLE_CLIENT_ID
+    // }, {
+    //     redirect_uri: document.URL
+    // });
     console.info(document.URL);
 
     //$(".dial").knob();
+    $('#main').width($(window).width());
     $('#main').height($(window).height());
     $(window).resize(function() {
+        $('#main').width($(window).width());
         $('#main').height($(window).height());
     });
     var GLOBALS = {};
-    GLOBALS.usm = new Usm({
-
-    });
+    GLOBALS.usm = new Usm({});
     GLOBALS.pb = new _pb($("#progress-bar"));
     if (init) {
         console.info('calling init');

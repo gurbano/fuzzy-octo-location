@@ -1,8 +1,22 @@
 <% include partials/head %>
-<div id="main" >
-	
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization,geometry"></script>
+    <style type="text/css">
+    #map-canvas {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+    </style>
+    <div id="main">
 
-</div>
-<link rel="stylesheet" type="text/css" href="css/storify/storify.css"/>
-<script src="/js/storify/dist/storify.bundle.js"></script>
-<% include partials/foot %>
+        <div id="map-canvas">
+
+        </div>
+        <% include partials/storify/UI-edit %>
+    </div>
+    <link rel="stylesheet" type="text/css" href="css/storify/storify.css" />
+    <script src="/js/storify/dist/storify.bundle.js"></script>
+    <% include partials/foot %>
