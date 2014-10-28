@@ -24,8 +24,6 @@ function SModule(opts) {
  * @return {[type]}
  */
 SModule.prototype.start = function(callback) {
-
-
     /*starts the module*/
     if (callback) {
         return callback(this);
@@ -39,3 +37,10 @@ SModule.prototype.postInit = function() {
     console.info(this.name + '[' + this.id + ']' + ' started');
     return this;
 };
+
+SModule.prototype.update = function(frame) {
+    console.warn('default update called. is quite strange, isnt it?');
+    console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
+    return this;
+};
+

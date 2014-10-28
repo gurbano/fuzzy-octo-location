@@ -27,10 +27,12 @@ init = function(_GLOBALS) {
 
 //require Story --> Timeline --> Frame --> Event
 var Story = require('./Story.js');
+var StoryFactory = require('./StoryFactory.js');
 var Wizard = require('./Wizard.js');
 var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var GMapModule = require('./modules/GMapModule.js');
+var TimelineModule = require('./modules/TimelineModule.js');
 
 
 var startStorify = function(err, user) {
@@ -43,11 +45,17 @@ var startStorify = function(err, user) {
         });
         return;
     } else {
+
+        var story = new StoryFactory({}).generate();
         var engine = new SEngine().start(
             [ //MODULES
+                new TimelineModule(story.timeline,{
+                    selector: 'timeline'
+                }),
                 new GMapModule({
                     selector: 'map-canvas'
-                }), onTheRockModule, new SModule() //generic module
+                }), 
+                onTheRockModule
             ]
         );
 
@@ -58,7 +66,7 @@ var onTheRockModule = new SModule({
     name: 'onTheRockModule',
     id: 'ONTHEROCK',
     postInit: function() {
-        console.debug('anonymous module');
+        console.info('All modules started');
         return this;
     }
 });

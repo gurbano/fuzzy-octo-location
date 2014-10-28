@@ -40,8 +40,6 @@ GMapModule.prototype.postInit = function() {
     this.$elector = $(document.getElementById(this.selector));
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById(this.selector), this.mapOptions);
-
-
     return this;
 };
 

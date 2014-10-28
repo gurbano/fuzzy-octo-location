@@ -1,0 +1,9 @@
+working on:
+1 - TimelineModule
+	- visualizzazione giornaliera
+	- dragger per selezionare il frame
+	- notifica altri moduli
+
+2 - SModule
+	- aggiungere tab generico alla timeline
+	- metodo update(frame)
