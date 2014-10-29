@@ -1,11 +1,15 @@
-
 var Simulator = function(dataDisplayer) {
     var self = this;
     self.dd = dataDisplayer;
     self.start = function(data, _callback) {
 
-        $.get('/assets/data/nteam/countries-hires.json', function(data) {
-            console.info(data);
+        $.get('/assets/data/nteam/countries-hires.geojson', function(data) {
+            console.info($.toJSON(data));
+            for (var feature in data.features) {
+                //longitude = feature.geometry.coordinates.0;
+                //latitude = feature.geometry.coordinates.1;
+                
+            }
         });
 
 
@@ -57,7 +61,7 @@ var Simulator = function(dataDisplayer) {
         //     self.countries = data;
         //     console.info('added ' + count + ' countries');
         //     console.info('added ' + objs + ' objs');
-            
+
         //     /*self.dd.drawMovingObject({
         //             "lat": 42.83333333,
         //             "lng": 12.83333333
@@ -70,9 +74,9 @@ var Simulator = function(dataDisplayer) {
 
         //     _callback();
         // });
-        
 
-         _callback();
+
+        _callback();
     }
 
 
