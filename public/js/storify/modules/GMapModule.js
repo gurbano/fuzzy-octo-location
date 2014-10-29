@@ -55,7 +55,10 @@ GMapModule.prototype.postInit = function() {
         self.map.setCenter(center);
         console.info('resize', center);
     });
-
+    this.marker = new google.maps.Marker({
+        position: this.mapOptions.center,
+        map: this.map
+    });
 
     return this;
 };
@@ -72,13 +75,18 @@ GMapModule.prototype.adjustSize = function() {
 
 GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
-    this.debounce(
-        function() {
-            //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
-            //console.info(frame.getPosition());
-            self.updatePosition(frame.getPositionEvent().position);
-        },300
-    );   
+    this.marker.setPosition(frame.getPositionEvent().position);
+    if (this.editMode) { //in edit mode just move the mark
+        
+    } else {
+        this.debounce(
+            function() {
+                //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+                //console.info(frame.getPosition());
+                self.updatePosition(frame.getPositionEvent().position);
+            }, 1000 / 33
+        );
+    }
 };
 
 GMapModule.prototype.updatePosition = function(position, opt) {

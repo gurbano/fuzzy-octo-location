@@ -1,9 +1,15 @@
 working on:
 1 - TimelineModule
-	- visualizzazione giornaliera
-	- dragger per selezionare il frame
-	- notifica altri moduli
+	- visualizza data quando si dragga
+	
 
 2 - SModule
 	- aggiungere tab generico alla timeline
-	- metodo update(frame)
+	- creare modalità edit e modalità visualizzazione
+		- in modalità edit 
+			- ogni modulo mostrerà componenti diverse (tipo bottoni per aggiungere eventi oppure la timeline)
+			- ogni modulo può creare eventi di ogni tipo.sottotipo (es: evento popup.foto, evento play.video, evento music.kick) 
+				che vengono aggiunti all'event pooler 
+		- in modalità visualizzazione / play, il modulo richiederà all'event pooler una lista di eventi a cui è interessato (bufferizzandola) 
+		basati sul frame attualmente in riproduzione. il moudulo quindi tratterà questi eventi come meglio vuole 
+	- la mo

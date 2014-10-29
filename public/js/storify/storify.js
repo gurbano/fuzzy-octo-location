@@ -77,22 +77,23 @@ var startStorify = function(err, user) {
         var tmm = new TimelineModule(story, {
             selector: 'timeline'
         });
-        var gmm = new GMapModule({
-            selector: 'map-canvas'
-        });
+         var gmm = new GMapModule({
+             selector: 'map-canvas'
+         }).attachTo(tmm).require(tmm);
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
             postInit: function() {
                 console.info('All modules started');
-                tmm.attach(gmm);
                 return this;
             }
         });
 
         var engine = new SEngine().start(
             [ //MODULES
-                tmm, gmm, postInitializer
+                tmm,
+                gmm
+                ,postInitializer
             ]
         );
 

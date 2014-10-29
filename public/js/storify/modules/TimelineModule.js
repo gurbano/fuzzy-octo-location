@@ -74,10 +74,7 @@ TimelineModule.prototype.postInit = function() {
     });
     return this;
 };
-TimelineModule.prototype.attach = function(module) {
-    this.listeners.push(module);
-    return this;
-};
+
 TimelineModule.prototype.notify = function() {
     var frame = this.$dragger.pickFrame();
     for (var i = 0; i < this.listeners.length; i++) {

@@ -9,6 +9,8 @@ function SModule(opts) {
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
     this.postInit = opts.postInit || this.postInit;
+    this.editMode =  opts.editMode || [];
+    this.requirement = opts.requirement || [];
     return this;
 };
 
@@ -51,4 +53,18 @@ SModule.prototype.debounce = function(callback, delay) {
         callback();
         this.lastCall = now;
     }
+};
+
+SModule.prototype.attach = function(module) {
+    this.listeners = this.listeners || {};
+    this.listeners.push(module);
+    return this;
+};
+SModule.prototype.attachTo = function(target) {
+    target.attach(this);
+    return this;
+};
+SModule.prototype.require = function(target) {
+    target.attach(this);
+    return this;
 };

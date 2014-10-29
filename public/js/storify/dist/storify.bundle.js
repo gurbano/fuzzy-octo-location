@@ -539,7 +539,10 @@ GMapModule.prototype.postInit = function() {
         self.map.setCenter(center);
         console.info('resize', center);
     });
-
+    this.marker = new google.maps.Marker({
+        position: this.mapOptions.center,
+        map: this.map
+    });
 
     return this;
 };
@@ -556,13 +559,18 @@ GMapModule.prototype.adjustSize = function() {
 
 GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
-    this.debounce(
-        function() {
-            //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
-            //console.info(frame.getPosition());
-            self.updatePosition(frame.getPositionEvent().position);
-        },300
-    );   
+    this.marker.setPosition(frame.getPositionEvent().position);
+    if (this.editMode) { //in edit mode just move the mark
+        
+    } else {
+        this.debounce(
+            function() {
+                //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+                //console.info(frame.getPosition());
+                self.updatePosition(frame.getPositionEvent().position);
+            }, 1000 / 33
+        );
+    }
 };
 
 GMapModule.prototype.updatePosition = function(position, opt) {
@@ -570,6 +578,7 @@ GMapModule.prototype.updatePosition = function(position, opt) {
 
     this.map.setCenter(position);
 };
+
 },{"../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
 module.exports = SModule;
 var inherits = require('inherits');
@@ -582,6 +591,8 @@ function SModule(opts) {
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
     this.postInit = opts.postInit || this.postInit;
+    this.editMode =  opts.editMode || [];
+    this.requirement = opts.requirement || [];
     return this;
 };
 
@@ -626,6 +637,19 @@ SModule.prototype.debounce = function(callback, delay) {
     }
 };
 
+SModule.prototype.attach = function(module) {
+    this.listeners = this.listeners || {};
+    this.listeners.push(module);
+    return this;
+};
+SModule.prototype.attachTo = function(target) {
+    target.attach(this);
+    return this;
+};
+SModule.prototype.require = function(target) {
+    target.attach(this);
+    return this;
+};
 },{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
@@ -703,10 +727,7 @@ TimelineModule.prototype.postInit = function() {
     });
     return this;
 };
-TimelineModule.prototype.attach = function(module) {
-    this.listeners.push(module);
-    return this;
-};
+
 TimelineModule.prototype.notify = function() {
     var frame = this.$dragger.pickFrame();
     for (var i = 0; i < this.listeners.length; i++) {
@@ -798,22 +819,23 @@ var startStorify = function(err, user) {
         var tmm = new TimelineModule(story, {
             selector: 'timeline'
         });
-        var gmm = new GMapModule({
-            selector: 'map-canvas'
-        });
+         var gmm = new GMapModule({
+             selector: 'map-canvas'
+         }).attachTo(tmm).require(tmm);
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
             postInit: function() {
                 console.info('All modules started');
-                tmm.attach(gmm);
                 return this;
             }
         });
 
         var engine = new SEngine().start(
             [ //MODULES
-                tmm, gmm, postInitializer
+                tmm,
+                gmm
+                ,postInitializer
             ]
         );
 
