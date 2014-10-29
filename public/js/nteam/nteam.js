@@ -16,12 +16,24 @@ init = function(_GLOBALS) {
     };
 
 
-    GLOBALS.usm.start();
-    GLOBALS.usm.requireFacebook(function(err, user) {
-        $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+    var goSocial = true;
+    if (goSocial) {
+        GLOBALS.usm.start(false)
+            .login({
+                method: 'facebook'
+            }, function success(user) {
+                console.info("You are signed in to Facebook");
+                console.info(user);
+                $('#profilepic').css('background-image', 'url(' + user.picture + ')');
+                startApplication();
+            }, function failure(err) {
+                console.info(err, null);
+
+            });
+    } else {
         startApplication();
 
-    });
+    }
 
 
 };
