@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -23,7 +23,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 module.exports = Event;
 function Event(opts){
@@ -31,18 +31,20 @@ function Event(opts){
 	this.type = EventType.GENERIC;
 	this.start_frame = opts.start_frame || 0;
 	this.end_frame = opts.end_frame ||0;
+	this.end_time = opts.end_time || 0;
+	this.start_time = opts.start_time ||0;
 	this.data = opts.data || {};
 	return this;
 }
-},{"./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
+},{"./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
 module.exports ={
-	GENERIC : 000,
-	POSITION : 001,
-	PHOTO : 100,
-	VIDEO  :200,
-	MUSIC  :300
+	GENERIC : {id : 000, type : 'GENERIC'},
+	POSITION : {id : 100, type : 'POSITION'},
+	PHOTO : {id : 200, type : 'PHOTO'},
+	VIDEO  :{id : 300, type : 'VIDEO'},
+	MUSIC  :{id : 400, type : 'MUSIC'},
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 var GpsEvent = require('./GpsEvent.js');
 var Event = require('./Event.js');
@@ -52,14 +54,18 @@ module.exports = Frame;
 function Frame(opts){
 	if (!(this instanceof Frame)) return new Frame(opts);
 	this.index = opts.index || 0; // index of the frame, relative to the timeline
-	this.time =  opts.time || 0; // date of the frame in ms
-	this.events = opts.events || [];
-	if (this.getEventsByType(EventType.POSITION).length==0){ //if no position is set, generate a new one (either from options or from null)
-		this.events.push(opts.gps || new GpsEvent(opts.position || {}) ); //position infos
-	}
+	this.time =  opts.time || 0; // Date
+	this.events = opts.events || []; //cache degli eventi
 	return this;
-};
+}
 
+Frame.prototype.getPositionEvent = function(first_argument) {
+	for (var i = 0; i < this.events.length; i++) {
+		if (this.events[i].type === EventType.POSITION){
+			return this.events[i];
+		}
+	}
+};
 
 Frame.prototype.getEventsByType = function(type) {
 	var ret =[];
@@ -67,24 +73,25 @@ Frame.prototype.getEventsByType = function(type) {
 		if (this.events[i].type === type){
 			ret.push(this.events[i]);
 		}
-	};
+	}
 	return ret;
 };
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
 var inherits = require('inherits');
 var Event = require('./Event.js');
+var EventType = require('./EventType.js');
 
 module.exports = GpsEvent;
 function GpsEvent(opts){
 	if (!(this instanceof GpsEvent)) return new GpsEvent(opts);
-	Event.call(this);
-
+	Event.call(this,opts);
+	this.position = opts.position || new google.maps.LatLng(0, 0);
 	this.type = EventType.POSITION;
 	return this;
 };
 
 inherits(GpsEvent,Event);
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
 module.exports = Helper;
 
 function Helper() {
@@ -93,7 +100,7 @@ function Helper() {
     return this;
 }
 Helper.prototype.get = function() {
-	return this;
+    return this;
 };
 Helper.prototype.dateToString = function(date) {
     return $.formatDateTime(this.DATE_FORMAT, date);
@@ -108,11 +115,11 @@ Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
 
-Helper.prototype.extend = function(a,b) {
-	for (var key in b) {
-      if (b.hasOwnProperty(key)) {
-        a[key] = b[key];
-      }
+Helper.prototype.extend = function(a, b) {
+    for (var key in b) {
+        if (b.hasOwnProperty(key)) {
+            a[key] = b[key];
+        }
     }
 
     return a;
@@ -122,10 +129,91 @@ Helper.prototype.maximize = function($div) {
     $div.width($(window).width());
     $div.height($(window).height());
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
+
+Helper.prototype.debounce = function(func, threshold, execAsap) {
+    var timeout;
+
+    return function debounced() {
+        var obj = this,
+            args = arguments;
+
+        function delayed() {
+            if (!execAsap)
+                func.apply(obj, args);
+            timeout = null;
+        };
+
+        if (timeout)
+            clearTimeout(timeout);
+        else if (execAsap)
+            func.apply(obj, args);
+
+        timeout = setTimeout(delayed, threshold || 100);
+    };
+};
+
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
+(function($,sr){
+
+  // debouncing function from John Hann
+  // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+  var debounce = function (func, threshold, execAsap) {
+      var timeout;
+
+      return function debounced () {
+          var obj = this, args = arguments;
+          function delayed () {
+              if (!execAsap)
+                  func.apply(obj, args);
+              timeout = null; 
+          };
+
+          if (timeout)
+              clearTimeout(timeout);
+          else if (execAsap)
+              func.apply(obj, args);
+
+          timeout = setTimeout(delayed, threshold || 100); 
+      };
+  }
+    // smartresize 
+    jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+
+})(jQuery,'smartresize');
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
 var Helper = require('./Helper.js');
 module.exports = Story;
+
+
+
+/**
+ * Class Story
+ *  -  TIMELINE {
+ *  	contiene i frames, ha dei metodi tipo
+ *  		- getFrameAtX() // x= [time, percentage, index]
+ *  		- getFramesFrom(start,end).each()
+ *  		- getStart, getEnd
+ *  		+ trim, add, 
+ *  }
+ *  -  EVENTPOOLER {
+ *  	contiene la lista delle fonti
+ *  	contiene una cache degli eventi scannati dalle varie fonti
+ *  	quando carica un evento da una fonte lo trasforma in un Event
+ *  	/**** POSSIBILE IMPLEMENTAZIONE : bind a browser event
+ *   		ad ogni evento associa un trigger che risponde and un ev = requested timestart, timend, callback
+ *   		quando un ev requested è lanciato, l'evento controlla se timestart e timend rientrano nel range e in caso esegue la callback
+ * 		contiene dei metodi tipo
+ * 		metodo principale : getEvents(start,end,callback){
+ *   		trigger requested timestart timend callback     		
+ * 		}
+ * 	-  StoryUI - espone tutti i metodi per la visualizzazione (tipo getEvents, , )
+ * 	-  StoryCrafter - espone tutti i metodi per modificare la storia (tipo setEvents, , )
+ *  
+ *  }
+ *  
+ * @param {[type]} opts [description]
+ */
 function Story(opts){
 	if (!(this instanceof Story)) return new Story(opts);
 	this.helper = new Helper();
@@ -137,7 +225,7 @@ function Story(opts){
 	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
 var Story = require('./Story.js');
 var Helper = require('./Helper.js');
 
@@ -151,20 +239,69 @@ function StoryFactory(opts){
 StoryFactory.prototype.generate = function() {
 	return new Story(this.opts);
 };
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
 var Frame = require('./Frame.js');
 
 module.exports = Timeline;
 
-function Timeline(opts){
-	if (!(this instanceof Timeline)) return new Timeline(opts);
-	this.scale = opts.scale || 1; // delta minutes between frames
-	this.frames = opts.frames || []; 
-	this.start = opts.start || 0; // delta minutes between frames
-	this.end = opts.end || 0; // delta minutes between frames
-	return this;
+function Timeline(opts) {
+    if (!(this instanceof Timeline)) return new Timeline(opts);
+    this.scale = opts.scale || 1; // delta minutes between frames
+    this.frames = opts.frames || [];
+    this.start = opts.start || 0; // ms
+    this.end = opts.end || 0; // ms
+    this.events = opts.events || [];
+
+    this.initialize();
+
+    return this;
 }
-},{"./Frame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
+
+/**
+ * 1- crea l'array di Frame
+ * @return list of events created during initialization
+ */
+
+Timeline.prototype.initialize = function() {
+    console.warn('starting initialization');
+    var GpsEvent = require('./GpsEvent.js');
+    var startMs = this.start.getTime();
+    var endMs = this.end.getTime();
+    var diffMs = endMs - startMs;
+    var diffm = diffMs / 1000 / 60;
+    var diffh = diffm / 60;
+    var diffd = diffh / 24;
+    var self = this; //things are gonna get messy
+    var lat = GLOBALS.position.coords.latitude;
+    var lng = GLOBALS.position.coords.longitude;
+    var ev = new GpsEvent({
+        position: new google.maps.LatLng(lat, lng),
+        start_frame : 0,
+        end_frame : diffm-1,
+        start_time : startMs,
+        end_time : endMs
+    });
+
+    this.steps = diffm / this.scale;
+    for (var i = 0; i < this.steps; i++) {        
+        var frame = new Frame({
+            index: i,
+            time: startMs + (i * 1000 * 60 * this.scale),
+            events: [ev] //cache is initialized 
+        });
+        this.frames.push(frame);
+    }
+    this.events.push(ev);
+};
+
+
+
+Timeline.prototype.getFrameAtPerc = function(_p) {
+    var percentage = Math.max(0, Math.min(_p,100));
+    var offset = ((percentage / 100) * (this.steps -1)).toFixed(0);
+    return this.frames[offset];
+};
+},{"./Frame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js","./GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
 var helper = require('./Helper.js')().get();
 
 module.exports = Wizard;
@@ -320,7 +457,7 @@ FormHelper.prototype.addDateField = function(label, value, onChange) {
     return this.addField(label, value, _input, onChange);
 };
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
 module.exports = SEngine;
 
 function SEngine(opts){
@@ -344,10 +481,12 @@ SEngine.prototype.start = function(modules) { //modules contains class name !!!!
 	
 	return this;
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
+var smartresize = require('../Smartresize.js');
 var helper = require('../Helper.js')();
+var EventType = require('../EventType.js');
 
 module.exports = GMapModule;
 
@@ -376,37 +515,69 @@ function GMapModule(opts) {
     };
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
 
-
     return this;
 }
 
 inherits(GMapModule, SModule);
 
 GMapModule.prototype.postInit = function() {
+    var self = this; //things are gonna get nasty
     console.info('GMapModule started');
     this.$elector = $(document.getElementById(this.selector));
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById(this.selector), this.mapOptions);
+    var center;
+
+    function calculateCenter() {
+        center = self.map.getCenter();
+    }
+    google.maps.event.addDomListener(this.map, 'idle', function() {
+        calculateCenter();
+        console.info('idle', center);
+    });
+    $(window).smartresize(function() {
+        self.map.setCenter(center);
+        console.info('resize', center);
+    });
+
+
     return this;
 };
 
 GMapModule.prototype.adjustSize = function() {
-	var $elector = this.$elector;
-	helper.maximize($elector);
-    $(window).resize(
-    	function(){
-    		helper.maximize($elector);
-    	});
+    var $elector = this.$elector;
+    helper.maximize($elector);
+    $(window).smartresize(
+        function() {
+            helper.maximize($elector);
+        });
 };
 
-},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
+
+GMapModule.prototype.onFramePicked = function(frame) {
+    var self = this; //things are gonna get nasty
+    this.debounce(
+        function() {
+            //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+            //console.info(frame.getPosition());
+            self.updatePosition(frame.getPositionEvent().position);
+        },300
+    );   
+};
+
+GMapModule.prototype.updatePosition = function(position, opt) {
+    var options = opt || {};
+
+    this.map.setCenter(position);
+};
+},{"../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
 module.exports = SModule;
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
 
 function SModule(opts) {
     if (!(this instanceof SModule)) return new SModule(opts);
-    opts = helper.extend({},opts);
+    opts = helper.extend({}, opts);
     /*Common ops*/
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
@@ -440,17 +611,26 @@ SModule.prototype.postInit = function() {
     return this;
 };
 
-SModule.prototype.update = function(frame) {
-    console.warn('default update called. is quite strange, isnt it?');
+SModule.prototype.onFramePicked = function(frame) {
+    console.warn('default onFramePicked called. is quite strange, isnt it?');
     console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
     return this;
 };
 
+SModule.prototype.debounce = function(callback, delay) {
+    this.lastCall = this.lastCall || 0;
+    var now = new Date().getTime();
+    if (now - this.lastCall > delay) {
+        callback();
+        this.lastCall = now;
+    }
+};
 
-},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
+var smartresize = require('../Smartresize.js');
 
 module.exports = TimelineModule;
 
@@ -461,7 +641,7 @@ module.exports = TimelineModule;
  *
  * @param {Object} opts
  */
-function TimelineModule(timeline,opts) {
+function TimelineModule(story, opts) {
     if (!(this instanceof TimelineModule)) return new TimelineModule(opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, {
@@ -470,16 +650,57 @@ function TimelineModule(timeline,opts) {
     });
     this.selector = opts.selector; // timeline wrapper
     this.listeners = [];
-    this.timeline = timeline;
+    this.story = story; //story.js object
     return this;
 }
 
 inherits(TimelineModule, SModule);
 
+
+/**
+ * DOM READY HERE
+ * @return {[type]} [description]
+ */
 TimelineModule.prototype.postInit = function() {
-    console.info('TimelineModule started');
+    console.info('TimelineModule started', this.story.timeline);
+    var self = this; //things are gonna get nasty
+
     this.$elector = $(document.getElementById(this.selector));
     this.$elector.show();
+
+    $(window).smartresize(function() {
+        self.$dragger.setPosition(self._bk);
+    });
+
+    this.$dragger = $($('<div class="draggable"></div>'));
+    this.$elector.append(this.$dragger);
+    this._bk = 0;
+
+    this.$dragger.getMaxPx = function() {
+        return (self.$elector.width() - self.$dragger.width());
+    }
+    this.$dragger.getPosition = function() {
+        return (100 * (self.$dragger[0].offsetLeft / self.$dragger.getMaxPx()).toFixed(10));
+    }
+    this.$dragger.setPosition = function(percentage) {
+        var offset = (percentage / 100) * self.$dragger.getMaxPx();
+        //console.info(offset);
+        self.$dragger.css('left', offset);
+    }
+    this.$dragger.pickFrame = function() {
+        return self.story.timeline.getFrameAtPerc(self.$dragger.getPosition());
+    }
+    this.$dragger.draggable({
+        containment: "parent",
+        drag: function() {
+            //console.info(new Date(self.$dragger.pickFrame().time));
+            //helper.debounce(self.notify)();
+            self.notify();
+        },
+        stop: function() {
+
+        }
+    });
     return this;
 };
 TimelineModule.prototype.attach = function(module) {
@@ -487,13 +708,17 @@ TimelineModule.prototype.attach = function(module) {
     return this;
 };
 TimelineModule.prototype.notify = function() {
-    
+    var frame = this.$dragger.pickFrame();
+    for (var i = 0; i < this.listeners.length; i++) {
+        var listener = this.listeners[i];
+        if (listener.onFramePicked) {
+            listener.onFramePicked(frame);
+        }
+    };
     return this;
 };
 
-
-
-},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
 var Helper = require('./Helper.js');
@@ -511,13 +736,28 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                startStorify(null, user);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        GLOBALS.position = position;
+                        startStorify(null, user);
+                    });
+                } else {
+                    startStorify(null, user);
+                }
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        startStorify(null, null);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                GLOBALS.position = position;
+                startStorify(null, null);
+            });
+        } else {
+            startStorify(null, null);
+        }
+
     }
 };
 
@@ -542,30 +782,43 @@ var startStorify = function(err, user) {
         return;
     } else {
 
-        var story = new StoryFactory({}).generate();
+        var story = new StoryFactory({
+            title: 'USA',
+            description: '#Roadtrip #California #Nevada #Burningman',
+            timelineOpts: {
+                start: new Date('08/08/2014'),
+                end: new Date('08/18/2014'),
+                scale: 10 //1 frame every 10 minutes.
+            },
+        }).generate();
+        //console.info($.toJSON(story));
+        console.info(story);
+
+        /*CREATE MODULES*/
+        var tmm = new TimelineModule(story, {
+            selector: 'timeline'
+        });
+        var gmm = new GMapModule({
+            selector: 'map-canvas'
+        });
+        var postInitializer = new SModule({
+            name: 'onTheRockModule',
+            id: 'ONTHEROCK',
+            postInit: function() {
+                console.info('All modules started');
+                tmm.attach(gmm);
+                return this;
+            }
+        });
+
         var engine = new SEngine().start(
             [ //MODULES
-                new TimelineModule(story.timeline,{
-                    selector: 'timeline'
-                }),
-                new GMapModule({
-                    selector: 'map-canvas'
-                }), 
-                onTheRockModule
+                tmm, gmm, postInitializer
             ]
         );
 
     }
 };
-
-var onTheRockModule = new SModule({
-    name: 'onTheRockModule',
-    id: 'ONTHEROCK',
-    postInit: function() {
-        console.info('All modules started');
-        return this;
-    }
-});
 
 
 
@@ -649,4 +902,4 @@ var step3 = {
 
 */
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js","./engine/SEngine.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/GMapModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js","./modules/SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/GMapModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);

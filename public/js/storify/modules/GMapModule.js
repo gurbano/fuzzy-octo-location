@@ -1,6 +1,8 @@
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
+var smartresize = require('../Smartresize.js');
 var helper = require('../Helper.js')();
+var EventType = require('../EventType.js');
 
 module.exports = GMapModule;
 
@@ -29,25 +31,58 @@ function GMapModule(opts) {
     };
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
 
-
     return this;
 }
 
 inherits(GMapModule, SModule);
 
 GMapModule.prototype.postInit = function() {
+    var self = this; //things are gonna get nasty
     console.info('GMapModule started');
     this.$elector = $(document.getElementById(this.selector));
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById(this.selector), this.mapOptions);
+    var center;
+
+    function calculateCenter() {
+        center = self.map.getCenter();
+    }
+    google.maps.event.addDomListener(this.map, 'idle', function() {
+        calculateCenter();
+        console.info('idle', center);
+    });
+    $(window).smartresize(function() {
+        self.map.setCenter(center);
+        console.info('resize', center);
+    });
+
+
     return this;
 };
 
 GMapModule.prototype.adjustSize = function() {
-	var $elector = this.$elector;
-	helper.maximize($elector);
-    $(window).resize(
-    	function(){
-    		helper.maximize($elector);
-    	});
+    var $elector = this.$elector;
+    helper.maximize($elector);
+    $(window).smartresize(
+        function() {
+            helper.maximize($elector);
+        });
+};
+
+
+GMapModule.prototype.onFramePicked = function(frame) {
+    var self = this; //things are gonna get nasty
+    this.debounce(
+        function() {
+            //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+            //console.info(frame.getPosition());
+            self.updatePosition(frame.getPositionEvent().position);
+        },300
+    );   
+};
+
+GMapModule.prototype.updatePosition = function(position, opt) {
+    var options = opt || {};
+
+    this.map.setCenter(position);
 };

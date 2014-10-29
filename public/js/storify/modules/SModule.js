@@ -4,7 +4,7 @@ var helper = require('../Helper.js')();
 
 function SModule(opts) {
     if (!(this instanceof SModule)) return new SModule(opts);
-    opts = helper.extend({},opts);
+    opts = helper.extend({}, opts);
     /*Common ops*/
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
@@ -38,9 +38,17 @@ SModule.prototype.postInit = function() {
     return this;
 };
 
-SModule.prototype.update = function(frame) {
-    console.warn('default update called. is quite strange, isnt it?');
+SModule.prototype.onFramePicked = function(frame) {
+    console.warn('default onFramePicked called. is quite strange, isnt it?');
     console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
     return this;
 };
 
+SModule.prototype.debounce = function(callback, delay) {
+    this.lastCall = this.lastCall || 0;
+    var now = new Date().getTime();
+    if (now - this.lastCall > delay) {
+        callback();
+        this.lastCall = now;
+    }
+};

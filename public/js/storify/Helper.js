@@ -6,7 +6,7 @@ function Helper() {
     return this;
 }
 Helper.prototype.get = function() {
-	return this;
+    return this;
 };
 Helper.prototype.dateToString = function(date) {
     return $.formatDateTime(this.DATE_FORMAT, date);
@@ -21,11 +21,11 @@ Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
 
-Helper.prototype.extend = function(a,b) {
-	for (var key in b) {
-      if (b.hasOwnProperty(key)) {
-        a[key] = b[key];
-      }
+Helper.prototype.extend = function(a, b) {
+    for (var key in b) {
+        if (b.hasOwnProperty(key)) {
+            a[key] = b[key];
+        }
     }
 
     return a;
@@ -34,4 +34,26 @@ Helper.prototype.extend = function(a,b) {
 Helper.prototype.maximize = function($div) {
     $div.width($(window).width());
     $div.height($(window).height());
+};
+
+Helper.prototype.debounce = function(func, threshold, execAsap) {
+    var timeout;
+
+    return function debounced() {
+        var obj = this,
+            args = arguments;
+
+        function delayed() {
+            if (!execAsap)
+                func.apply(obj, args);
+            timeout = null;
+        };
+
+        if (timeout)
+            clearTimeout(timeout);
+        else if (execAsap)
+            func.apply(obj, args);
+
+        timeout = setTimeout(delayed, threshold || 100);
+    };
 };

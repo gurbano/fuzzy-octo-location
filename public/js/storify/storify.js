@@ -15,13 +15,28 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                startStorify(null, user);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        GLOBALS.position = position;
+                        startStorify(null, user);
+                    });
+                } else {
+                    startStorify(null, user);
+                }
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        startStorify(null, null);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                GLOBALS.position = position;
+                startStorify(null, null);
+            });
+        } else {
+            startStorify(null, null);
+        }
+
     }
 };
 
@@ -46,30 +61,43 @@ var startStorify = function(err, user) {
         return;
     } else {
 
-        var story = new StoryFactory({}).generate();
+        var story = new StoryFactory({
+            title: 'USA',
+            description: '#Roadtrip #California #Nevada #Burningman',
+            timelineOpts: {
+                start: new Date('08/08/2014'),
+                end: new Date('08/18/2014'),
+                scale: 10 //1 frame every 10 minutes.
+            },
+        }).generate();
+        //console.info($.toJSON(story));
+        console.info(story);
+
+        /*CREATE MODULES*/
+        var tmm = new TimelineModule(story, {
+            selector: 'timeline'
+        });
+        var gmm = new GMapModule({
+            selector: 'map-canvas'
+        });
+        var postInitializer = new SModule({
+            name: 'onTheRockModule',
+            id: 'ONTHEROCK',
+            postInit: function() {
+                console.info('All modules started');
+                tmm.attach(gmm);
+                return this;
+            }
+        });
+
         var engine = new SEngine().start(
             [ //MODULES
-                new TimelineModule(story.timeline,{
-                    selector: 'timeline'
-                }),
-                new GMapModule({
-                    selector: 'map-canvas'
-                }), 
-                onTheRockModule
+                tmm, gmm, postInitializer
             ]
         );
 
     }
 };
-
-var onTheRockModule = new SModule({
-    name: 'onTheRockModule',
-    id: 'ONTHEROCK',
-    postInit: function() {
-        console.info('All modules started');
-        return this;
-    }
-});
 
 
 

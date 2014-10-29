@@ -1,7 +1,7 @@
 module.exports ={
-	GENERIC : 000,
-	POSITION : 001,
-	PHOTO : 100,
-	VIDEO  :200,
-	MUSIC  :300
+	GENERIC : {id : 000, type : 'GENERIC'},
+	POSITION : {id : 100, type : 'POSITION'},
+	PHOTO : {id : 200, type : 'PHOTO'},
+	VIDEO  :{id : 300, type : 'VIDEO'},
+	MUSIC  :{id : 400, type : 'MUSIC'},
 };
