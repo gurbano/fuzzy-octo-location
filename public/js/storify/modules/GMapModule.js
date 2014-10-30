@@ -49,11 +49,11 @@ GMapModule.prototype.postInit = function() {
     }
     google.maps.event.addDomListener(this.map, 'idle', function() {
         calculateCenter();
-        console.info('idle', center);
+        //console.info('idle', center);
     });
     $(window).smartresize(function() {
         self.map.setCenter(center);
-        console.info('resize', center);
+        //console.info('resize', center);
     });
     this.marker = new google.maps.Marker({
         position: this.mapOptions.center,
@@ -68,7 +68,7 @@ GMapModule.prototype.adjustSize = function() {
     helper.maximize($elector);
     $(window).smartresize(
         function() {
-            helper.maximize($elector);
+            helper.maximize($elector);  
         });
 };
 
@@ -77,7 +77,7 @@ GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
     this.marker.setPosition(frame.getPositionEvent().position);
     if (this.editMode) { //in edit mode just move the mark
-        
+
     } else {
         this.debounce(
             function() {

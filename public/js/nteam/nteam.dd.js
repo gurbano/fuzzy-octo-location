@@ -61,7 +61,7 @@ DataDisplayer.prototype.drawMovingObject = function(start, end, speed) {
     var obj = new MovingObject(
         self.drawCube(start.lat, start.lng, 5) //mesh
         , start, end, speed);
-    //self.movingObjects.push(obj);
+    self.movingObjects.push(obj);
 }
 var materials = {};
 materials.cubeMat = new THREE.MeshLambertMaterial({

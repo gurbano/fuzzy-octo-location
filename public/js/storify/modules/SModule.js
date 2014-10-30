@@ -9,7 +9,7 @@ function SModule(opts) {
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
     this.postInit = opts.postInit || this.postInit;
-    this.editMode =  opts.editMode || [];
+    this.editMode =  opts.editMode || false;
     this.requirement = opts.requirement || [];
     return this;
 };

@@ -533,11 +533,11 @@ GMapModule.prototype.postInit = function() {
     }
     google.maps.event.addDomListener(this.map, 'idle', function() {
         calculateCenter();
-        console.info('idle', center);
+        //console.info('idle', center);
     });
     $(window).smartresize(function() {
         self.map.setCenter(center);
-        console.info('resize', center);
+        //console.info('resize', center);
     });
     this.marker = new google.maps.Marker({
         position: this.mapOptions.center,
@@ -552,7 +552,7 @@ GMapModule.prototype.adjustSize = function() {
     helper.maximize($elector);
     $(window).smartresize(
         function() {
-            helper.maximize($elector);
+            helper.maximize($elector);  
         });
 };
 
@@ -561,7 +561,7 @@ GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
     this.marker.setPosition(frame.getPositionEvent().position);
     if (this.editMode) { //in edit mode just move the mark
-        
+
     } else {
         this.debounce(
             function() {
@@ -591,7 +591,7 @@ function SModule(opts) {
     this.name = opts.name || 'Generic module';
     this.id = opts.id || 'SModule';
     this.postInit = opts.postInit || this.postInit;
-    this.editMode =  opts.editMode || [];
+    this.editMode =  opts.editMode || false;
     this.requirement = opts.requirement || [];
     return this;
 };
@@ -692,18 +692,20 @@ TimelineModule.prototype.postInit = function() {
     this.$elector = $(document.getElementById(this.selector));
     this.$elector.show();
 
-    $(window).smartresize(function() {
-        self.$dragger.setPosition(self._bk);
-    });
 
     this.$dragger = $($('<div class="draggable"></div>'));
     this.$elector.append(this.$dragger);
     this._bk = 0;
 
+    $(window).smartresize(function() {
+        self.$dragger.setPosition(self._bk);
+    });
+
     this.$dragger.getMaxPx = function() {
         return (self.$elector.width() - self.$dragger.width());
     }
     this.$dragger.getPosition = function() {
+        console.info(self.$dragger.offset());
         return (100 * (self.$dragger[0].offsetLeft / self.$dragger.getMaxPx()).toFixed(10));
     }
     this.$dragger.setPosition = function(percentage) {
@@ -717,12 +719,12 @@ TimelineModule.prototype.postInit = function() {
     this.$dragger.draggable({
         containment: "parent",
         drag: function() {
-            //console.info(new Date(self.$dragger.pickFrame().time));
+            console.info(new Date(self.$dragger.pickFrame().time));
             //helper.debounce(self.notify)();
             self.notify();
         },
         stop: function() {
-
+            self._bk = self.$dragger.getPosition(); 
         }
     });
     return this;
@@ -757,28 +759,17 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        GLOBALS.position = position;
-                        startStorify(null, user);
-                    });
-                } else {
+                GLOBALS.usm.getPosition(function(err,position){
+                    GLOBALS.position = position || {coords : {latitude:0, longitude:0}};
                     startStorify(null, user);
-                }
+                },5000);                
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                GLOBALS.position = position;
-                startStorify(null, null);
-            });
-        } else {
-            startStorify(null, null);
-        }
-
+        GLOBALS.position = {coords : {latitude:0, longitude:0}};
+        startStorify(null, null);
     }
 };
 
@@ -819,9 +810,9 @@ var startStorify = function(err, user) {
         var tmm = new TimelineModule(story, {
             selector: 'timeline'
         });
-         var gmm = new GMapModule({
-             selector: 'map-canvas'
-         }).attachTo(tmm).require(tmm);
+        var gmm = new GMapModule({
+            selector: 'map-canvas',
+        }).attachTo(tmm).require(tmm);
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
@@ -834,8 +825,7 @@ var startStorify = function(err, user) {
         var engine = new SEngine().start(
             [ //MODULES
                 tmm,
-                gmm
-                ,postInitializer
+                gmm, postInitializer
             ]
         );
 

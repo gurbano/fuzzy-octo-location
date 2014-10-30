@@ -39,18 +39,20 @@ TimelineModule.prototype.postInit = function() {
     this.$elector = $(document.getElementById(this.selector));
     this.$elector.show();
 
-    $(window).smartresize(function() {
-        self.$dragger.setPosition(self._bk);
-    });
 
     this.$dragger = $($('<div class="draggable"></div>'));
     this.$elector.append(this.$dragger);
     this._bk = 0;
 
+    $(window).smartresize(function() {
+        self.$dragger.setPosition(self._bk);
+    });
+
     this.$dragger.getMaxPx = function() {
         return (self.$elector.width() - self.$dragger.width());
     }
     this.$dragger.getPosition = function() {
+        console.info(self.$dragger.offset());
         return (100 * (self.$dragger[0].offsetLeft / self.$dragger.getMaxPx()).toFixed(10));
     }
     this.$dragger.setPosition = function(percentage) {
@@ -64,12 +66,12 @@ TimelineModule.prototype.postInit = function() {
     this.$dragger.draggable({
         containment: "parent",
         drag: function() {
-            //console.info(new Date(self.$dragger.pickFrame().time));
+            console.info(new Date(self.$dragger.pickFrame().time));
             //helper.debounce(self.notify)();
             self.notify();
         },
         stop: function() {
-
+            self._bk = self.$dragger.getPosition(); 
         }
     });
     return this;

@@ -18,6 +18,26 @@ var Usm = function(_options) {
         self.user = getUserFromCookie();
         return self;
     };
+    self.getPosition = function(__callback, delay) {
+        var options = {
+            enableHighAccuracy: true,
+            timeout: delay || 2000,
+            maximumAge: 0
+        };
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    __callback(null, position);
+                },
+                function(position) {
+                    __callback(err, null);
+                },
+                options
+            );
+        } else {
+            __callback(null, null);
+        }
+    }
     self.login = function(__options, success, failure) {
         if (!__options.method) {
             failure('method required as parameter.');

@@ -15,28 +15,17 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        GLOBALS.position = position;
-                        startStorify(null, user);
-                    });
-                } else {
+                GLOBALS.usm.getPosition(function(err,position){
+                    GLOBALS.position = position || {coords : {latitude:0, longitude:0}};
                     startStorify(null, user);
-                }
+                },5000);                
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                GLOBALS.position = position;
-                startStorify(null, null);
-            });
-        } else {
-            startStorify(null, null);
-        }
-
+        GLOBALS.position = {coords : {latitude:0, longitude:0}};
+        startStorify(null, null);
     }
 };
 
@@ -77,9 +66,9 @@ var startStorify = function(err, user) {
         var tmm = new TimelineModule(story, {
             selector: 'timeline'
         });
-         var gmm = new GMapModule({
-             selector: 'map-canvas'
-         }).attachTo(tmm).require(tmm);
+        var gmm = new GMapModule({
+            selector: 'map-canvas',
+        }).attachTo(tmm).require(tmm);
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
@@ -92,8 +81,7 @@ var startStorify = function(err, user) {
         var engine = new SEngine().start(
             [ //MODULES
                 tmm,
-                gmm
-                ,postInitializer
+                gmm, postInitializer
             ]
         );
 
