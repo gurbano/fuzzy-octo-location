@@ -1,3 +1,7 @@
+#UI-EDIT{
+	
+}
+
 .c1{
 	color: #624E50;
 }
@@ -17,19 +21,25 @@
 /**
  * http://coolors.co/624e50-93a2a2-f1667d-3f8c97-f9f8e4
  */
-#timeline-wrapper{
+.timeline-wrapper{
 	width: 100%;
-	position: fixed;;
-	bottom: 20px;
+	height: 100%;
+	position: relative;
+	z-index: 1000;
 }
-#timeline{
-	display: none;
+.module_timeline{
 	width:100%;
 	height: 40px;
 	background-color: #624e50;
 	opacity: 0.6;
 	margin: 0 auto;
 	text-align: right;
+	position: absolute;
+	bottom: 0px;
+	z-index: 1000;
+}
+
+#timeline{
 }
 #timeline span{
 	font-family: 'Roboto', sans-serif;

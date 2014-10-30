@@ -68,3 +68,13 @@ SModule.prototype.require = function(target) {
     target.attach(this);
     return this;
 };
+
+SModule.prototype.createTimelineUI = function(id, parent) {
+    this.$timeline = $($('<div id="'+ id +'" class="module_timeline"></div>'));
+    parent.append(this.$timeline);
+    return this.$timeline;
+};
+
+SModule.prototype.getTimelineUI = function() {
+    return this.$timeline;
+};

@@ -6,7 +6,7 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    var goSocial = false;
+    var goSocial = true;
     if (goSocial) {
         GLOBALS.usm.start(false)
             .login({
@@ -37,6 +37,7 @@ var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var GMapModule = require('./modules/GMapModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
+var EarthModule = require('./modules/Earthmodule.js');
 
 
 var startStorify = function(err, user) {
@@ -60,15 +61,23 @@ var startStorify = function(err, user) {
             },
         }).generate();
         //console.info($.toJSON(story));
-        console.info(story);
+        //console.info(story);
 
         /*CREATE MODULES*/
         var tmm = new TimelineModule(story, {
-            selector: 'timeline'
+            UIedit: $('#UI-EDIT'),
+            UIview: $('#UI-VIEW')
         });
         var gmm = new GMapModule({
-            selector: 'map-canvas',
+            parent: $('#main')
         }).attachTo(tmm).require(tmm);
+
+        
+        var earthModule = new EarthModule({
+            parent:$('#UI-EDIT')
+        });
+
+
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
@@ -81,7 +90,10 @@ var startStorify = function(err, user) {
         var engine = new SEngine().start(
             [ //MODULES
                 tmm,
-                gmm, postInitializer
+                gmm, 
+                earthModule,
+
+                postInitializer
             ]
         );
 

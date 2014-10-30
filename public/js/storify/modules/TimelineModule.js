@@ -19,7 +19,7 @@ function TimelineModule(story, opts) {
         name: 'TimelineModule',
         id: 'GMAP'
     });
-    this.selector = opts.selector; // timeline wrapper
+    this.UIedit = opts.UIedit; // timeline wrapper
     this.listeners = [];
     this.story = story; //story.js object
     return this;
@@ -36,12 +36,16 @@ TimelineModule.prototype.postInit = function() {
     console.info('TimelineModule started', this.story.timeline);
     var self = this; //things are gonna get nasty
 
-    this.$elector = $(document.getElementById(this.selector));
-    this.$elector.show();
-
-
+    /*CREATE AND APPEND THE MODULE UI*/
+    this.$timeline = $($('<div class="module_timeline"></div>'));
+    this.$timeline.show();
     this.$dragger = $($('<div class="draggable"></div>'));
-    this.$elector.append(this.$dragger);
+    this.$timeline.append(this.$dragger);
+
+
+    this.UIedit.append(this.$timeline);
+
+
     this._bk = 0;
 
     $(window).smartresize(function() {
@@ -49,7 +53,7 @@ TimelineModule.prototype.postInit = function() {
     });
 
     this.$dragger.getMaxPx = function() {
-        return (self.$elector.width() - self.$dragger.width());
+        return (self.$timeline.width() - self.$dragger.width());
     }
     this.$dragger.getPosition = function() {
         console.info(self.$dragger.offset());

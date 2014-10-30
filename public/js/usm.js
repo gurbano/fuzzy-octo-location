@@ -30,7 +30,7 @@ var Usm = function(_options) {
                     __callback(null, position);
                 },
                 function(position) {
-                    __callback(err, null);
+                    __callback({err: 'KO'}, null);
                 },
                 options
             );

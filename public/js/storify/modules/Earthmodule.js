@@ -15,7 +15,7 @@ function EarthModule(opts) {
         id: 'EARTH'
     });
 
-    this.selector = opts.selector; // where the map will be displayed
+    this.parent = opts.parent; // where the map will be displayed
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
 
     return this;
@@ -26,9 +26,7 @@ inherits(EarthModule, SModule);
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
-    this.$elector = $(document.getElementById(this.selector));
-
-    /**/
+    this.createTimelineUI('EarthModuleTBar', this.parent);
     
 
 

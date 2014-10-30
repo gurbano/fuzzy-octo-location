@@ -21,7 +21,7 @@ function GMapModule(opts) {
         id: 'GMAP'
     });
 
-    this.selector = opts.selector; // where the map will be displayed
+    this.parent = opts.parent; // where the map will be displayed
 
     this.mapOptions = {
         center: new google.maps.LatLng(41.54, 12.30),
@@ -39,9 +39,10 @@ inherits(GMapModule, SModule);
 GMapModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('GMapModule started');
-    this.$elector = $(document.getElementById(this.selector));
+    this.$elector = $($("<div id='map-canvas'></div>"));
+    this.parent.append(this.$elector);
     this.adjustSize();
-    this.map = new google.maps.Map(document.getElementById(this.selector), this.mapOptions);
+    this.map = new google.maps.Map(document.getElementById('map-canvas'), this.mapOptions);
     var center;
 
     function calculateCenter() {
