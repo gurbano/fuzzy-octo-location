@@ -26,9 +26,8 @@ inherits(EarthModule, SModule);
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
-    this.createTimelineUI('EarthModuleTBar', this.parent);
-    
-
+    var bar = this.createTimelineUI('EarthModuleTBar', this.parent);
+    bar.css('bottom','50px');
 
     return this;
 };

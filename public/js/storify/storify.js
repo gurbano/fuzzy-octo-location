@@ -57,7 +57,7 @@ var startStorify = function(err, user) {
             timelineOpts: {
                 start: new Date('08/08/2014'),
                 end: new Date('08/18/2014'),
-                scale: 10 //1 frame every 10 minutes.
+            scale: 10 //1 frame every 10 minutes.
             },
         }).generate();
         //console.info($.toJSON(story));
