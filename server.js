@@ -29,7 +29,7 @@ $.put('controllers/fuzzy', require('./controller/fuzzy')($.get('models/event')))
 $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
 $.put('fsmanager', require('./modules/fsmanager')($)); //
-
+$.put('storify', require('./modules/server_storify')($)); //
 
 
 /*Load routes*/
@@ -39,6 +39,7 @@ require('./routes/rest')($);
 require('./routes/admin')($);
 require('./routes/fuzzy')($); //project fuzzy-octo-locator
 require('./routes/nteam')($); //Project newteam
+require('./routes/routes_storify')($); //Project storify
 
 
 /*PACKS:

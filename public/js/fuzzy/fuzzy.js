@@ -342,6 +342,7 @@ var DataHolder = function() {
         var ts = t - d / 2;
         return -2 * c * ts * ts / (d * d) + 2 * c * ts / d + c / 2 + b;
     }
+    
     var toEvent = function(data) {
         var ret = {};
         ret.id = new Date().getTime();

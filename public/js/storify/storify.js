@@ -15,16 +15,26 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                GLOBALS.usm.getPosition(function(err,position){
-                    GLOBALS.position = position || {coords : {latitude:0, longitude:0}};
+                GLOBALS.usm.getPosition(function(err, position) {
+                    GLOBALS.position = position || {
+                        coords: {
+                            latitude: 0,
+                            longitude: 0
+                        }
+                    };
                     startStorify(null, user);
-                },5000);                
+                }, 5000);
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        GLOBALS.position = {coords : {latitude:0, longitude:0}};
+        GLOBALS.position = {
+            coords: {
+                latitude: 0,
+                longitude: 0
+            }
+        };
         startStorify(null, null);
     }
 };
@@ -55,26 +65,26 @@ var startStorify = function(err, user) {
             title: 'USA',
             description: '#Roadtrip #California #Nevada #Burningman',
             timelineOpts: {
-                start: new Date('08/08/2014'),
-                end: new Date('08/18/2014'),
-            scale: 10 //1 frame every 10 minutes.
+                start: new Date('09/01/2014'),
+                end: new Date('09/02/2014'),
+                scale: 1/10 //1 frame every 1 minutes.
             },
         }).generate();
         //console.info($.toJSON(story));
-        //console.info(story);
+        console.info(story);
 
         /*CREATE MODULES*/
         var tmm = new TimelineModule(story, {
             UIedit: $('#UI-EDIT'),
             UIview: $('#UI-VIEW')
         });
-        var gmm = new GMapModule({
+        var gmm = new GMapModule(story, {
             parent: $('#main')
         }).attachTo(tmm).require(tmm);
 
-        
+
         var earthModule = new EarthModule({
-            parent:$('#UI-EDIT')
+            parent: $('#UI-EDIT')
         });
 
 
@@ -90,7 +100,7 @@ var startStorify = function(err, user) {
         var engine = new SEngine().start(
             [ //MODULES
                 tmm,
-                gmm, 
+                gmm,
                 earthModule,
 
                 postInitializer

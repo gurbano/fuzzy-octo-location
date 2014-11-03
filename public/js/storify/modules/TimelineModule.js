@@ -19,11 +19,39 @@ function TimelineModule(story, opts) {
         name: 'TimelineModule',
         id: 'GMAP'
     });
+    this.current = 0; //index of the current frame
     this.UIedit = opts.UIedit; // timeline wrapper
     this.listeners = [];
     this.story = story; //story.js object
+    var self = this; //things are gonna get nasty
+    $(document).keydown(function(e) {
+        switch (e.which) {
+            case 37: // left
+                self.goToFrame(self.current - 1);
+                break;
+
+            case 38: // up
+                break;
+
+            case 39: // right
+                self.goToFrame(self.current + 1);
+                break;
+
+            case 40: // down
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
+
+
+
     return this;
 }
+
+
 
 inherits(TimelineModule, SModule);
 
@@ -33,7 +61,7 @@ inherits(TimelineModule, SModule);
  * @return {[type]} [description]
  */
 TimelineModule.prototype.postInit = function() {
-    console.info('TimelineModule started', this.story.timeline);
+    //console.info('TimelineModule started', this.story.timeline);
     var self = this; //things are gonna get nasty
 
     /*CREATE AND APPEND THE MODULE UI*/
@@ -49,45 +77,64 @@ TimelineModule.prototype.postInit = function() {
     this._bk = 0;
 
     $(window).smartresize(function() {
-        self.$dragger.setPosition(self._bk);
+        self.$dragger.notify();
     });
-
     this.$dragger.getMaxPx = function() {
         return (self.$timeline.width() - self.$dragger.width());
-    }
+    };
     this.$dragger.getPosition = function() {
-        console.info(self.$dragger.offset());
         return (100 * (self.$dragger[0].offsetLeft / self.$dragger.getMaxPx()).toFixed(10));
-    }
+    };
     this.$dragger.setPosition = function(percentage) {
         var offset = (percentage / 100) * self.$dragger.getMaxPx();
-        //console.info(offset);
         self.$dragger.css('left', offset);
-    }
-    this.$dragger.pickFrame = function() {
-        return self.story.timeline.getFrameAtPerc(self.$dragger.getPosition());
-    }
+    };
+    this.$dragger.notify = function() {
+        var index = self.current;
+        self.$dragger.setPosition(self.story.timeline.getPercAtFrame(self.current, 10)); //In case the frame is changed,update position
+    };
     this.$dragger.draggable({
         containment: "parent",
         drag: function() {
-            console.info(new Date(self.$dragger.pickFrame().time));
-            //helper.debounce(self.notify)();
+            self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
             self.notify();
         },
         stop: function() {
-            self._bk = self.$dragger.getPosition(); 
+            self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
+            self.notify();
         }
     });
+
+    this.dateDisplay = $("<span></span>");
+    this.$dragger.append(this.dateDisplay);
+
     return this;
+};
+TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(index, self.story.timeline.steps - 1));;
+    self.notify();
+};
+TimelineModule.prototype.pickFrame = function() {
+    var self = this; //things are gonna get nasty
+    return self.story.timeline.frames[self.current];
 };
 
 TimelineModule.prototype.notify = function() {
-    var frame = this.$dragger.pickFrame();
-    for (var i = 0; i < this.listeners.length; i++) {
-        var listener = this.listeners[i];
-        if (listener.onFramePicked) {
-            listener.onFramePicked(frame);
+    var frame = this.pickFrame();
+    if (frame) {
+        for (var i = 0; i < this.listeners.length; i++) {
+            var listener = this.listeners[i];
+            if (listener.onFramePicked) {
+                listener.onFramePicked(frame);
+            }
         }
-    };
+        this.$dragger.notify();
+        this.dateDisplay.html(helper.dateToString(new Date(frame.time)));
+        
+
+        //console.info(frame);
+
+    }
     return this;
 };

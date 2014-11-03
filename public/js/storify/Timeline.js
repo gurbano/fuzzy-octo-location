@@ -1,4 +1,5 @@
 var Frame = require('./Frame.js');
+var helper = require('./Helper.js')();
 
 module.exports = Timeline;
 
@@ -9,9 +10,9 @@ function Timeline(opts) {
     this.start = opts.start || 0; // ms
     this.end = opts.end || 0; // ms
     this.events = opts.events || [];
-
-    this.initialize();
-
+    if (opts.saved) {} else {
+        this.initialize();
+    }
     return this;
 }
 
@@ -20,9 +21,9 @@ function Timeline(opts) {
  * @return list of events created during initialization
  */
 
+
+
 Timeline.prototype.initialize = function() {
-    console.warn('starting initialization');
-    var GpsEvent = require('./GpsEvent.js');
     var startMs = this.start.getTime();
     var endMs = this.end.getTime();
     var diffMs = endMs - startMs;
@@ -32,30 +33,53 @@ Timeline.prototype.initialize = function() {
     var self = this; //things are gonna get messy
     var lat = GLOBALS.position.coords.latitude;
     var lng = GLOBALS.position.coords.longitude;
-    var ev = new GpsEvent({
-        position: new google.maps.LatLng(lat, lng),
-        start_frame : 0,
-        end_frame : diffm-1,
-        start_time : startMs,
-        end_time : endMs
-    });
 
-    this.steps = diffm / this.scale;
-    for (var i = 0; i < this.steps; i++) {        
+
+    this.steps = (diffm / this.scale).toFixed(0);
+    for (var i = 0; i < this.steps; i++) {
         var frame = new Frame({
             index: i,
             time: startMs + (i * 1000 * 60 * this.scale),
-            events: [ev] //cache is initialized 
+            events: [] //cache is initialized 
         });
         this.frames.push(frame);
     }
-    this.events.push(ev);
+    //console.info('Timeline initialized', this.start,this.end, ' steps: ',this.steps);
+    //console.info(this);
 };
 
-
-
+Timeline.prototype.getMsStep = function() {
+    return this.scale * 60 * 1000;
+};
+Timeline.prototype.getPercAtFrame = function(_f, _precision) {
+    var precision = _precision || 2;
+    var frameIndex = Math.max(0, Math.min(_f, this.steps - 1));
+    var offset = ((frameIndex / (this.steps - 1)) * (100)).toFixed(precision);
+    return offset;
+};
 Timeline.prototype.getFrameAtPerc = function(_p) {
-    var percentage = Math.max(0, Math.min(_p,100));
-    var offset = ((percentage / 100) * (this.steps -1)).toFixed(0);
+    var percentage = Math.max(0, Math.min(_p, 100));
+    var offset = ((percentage / 100) * (this.steps - 1)).toFixed(0);
     return this.frames[offset];
+};
+
+Timeline.prototype.extend = function(newstart, newend) {
+    //console.info(this.frames, helper.shallowCopy(this.frames));
+    var frameCopy = helper.shallowCopy(this.frames);
+    this.start = newstart;
+    this.end = newend;
+    this.frames = [];
+    for (var i = this.events.length - 1; i >= 0; i--) {
+        if (this.events[i].subtype && this.events[i].subtype === '__auto') {
+            this.events = this.events.splice(i, 1); //index, howmany
+        }
+    };
+    this.initialize();
+};
+
+Timeline.prototype.addEvent = function(event) {
+    this.events.push(event);
+    for (var i = event.start_frame; i <= event.end_frame; i++) {
+        this.frames[i].events.push(event); //cache
+    };
 };

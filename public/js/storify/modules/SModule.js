@@ -65,13 +65,14 @@ SModule.prototype.attachTo = function(target) {
     return this;
 };
 SModule.prototype.require = function(target) {
-    target.attach(this);
+    //target.attach(this);
     return this;
 };
 
 SModule.prototype.createTimelineUI = function(id, parent) {
     this.$timeline = $($('<div id="'+ id +'" class="module_timeline"></div>'));
     parent.append(this.$timeline);
+    this.$timeline.append("<span>"+id+"</span>");
     return this.$timeline;
 };
 

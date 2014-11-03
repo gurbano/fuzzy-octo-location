@@ -14,13 +14,6 @@ module.exports = function($) {
             reply.view('flock');
         }
     });
-    server.route({
-        method: 'GET',
-        path: '/storify',
-        handler: function(request, reply) {
-            reply.view('storify');
-        }
-    });
 
     server.route({
         method: 'GET',

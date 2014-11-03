@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -23,20 +23,23 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 module.exports = Event;
-function Event(opts){
-	if (!(this instanceof Event)) return new Event(opts);
-	this.type = EventType.GENERIC;
-	this.start_frame = opts.start_frame || 0;
-	this.end_frame = opts.end_frame ||0;
-	this.end_time = opts.end_time || 0;
-	this.start_time = opts.start_time ||0;
-	this.data = opts.data || {};
-	return this;
+
+function Event(opts) {
+    if (!(this instanceof Event)) return new Event(opts);
+    this.type = EventType.GENERIC;
+    this.start_frame = opts.start_frame || 0;
+    this.end_frame = opts.end_frame || 0;
+    this.end_time = opts.end_time || 0;
+    this.start_time = opts.start_time || 0;
+    this.data = opts.data || {};
+    this.subtype = opts.subtype || {};
+    return this;
 }
-},{"./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
+
+},{"./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
 module.exports ={
 	GENERIC : {id : 000, type : 'GENERIC'},
 	POSITION : {id : 100, type : 'POSITION'},
@@ -44,7 +47,7 @@ module.exports ={
 	VIDEO  :{id : 300, type : 'VIDEO'},
 	MUSIC  :{id : 400, type : 'MUSIC'},
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 var GpsEvent = require('./GpsEvent.js');
 var Event = require('./Event.js');
@@ -76,7 +79,7 @@ Frame.prototype.getEventsByType = function(type) {
 	}
 	return ret;
 };
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
 var inherits = require('inherits');
 var Event = require('./Event.js');
 var EventType = require('./EventType.js');
@@ -86,17 +89,24 @@ function GpsEvent(opts){
 	if (!(this instanceof GpsEvent)) return new GpsEvent(opts);
 	Event.call(this,opts);
 	this.position = opts.position || new google.maps.LatLng(0, 0);
+	this.speed = opts.speed || 0;
+	this.distance = opts.distance || 0; //m
+	this.real_time = opts.real_time || 0; //ms date
+	this.isReal = opts.isReal || false;
+	this.interpolated = opts.interpolated || false;
+	this.next = opts.next || {};
+	this.prev = opts.prev || {};
 	this.type = EventType.POSITION;
 	return this;
 };
 
 inherits(GpsEvent,Event);
-},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
+},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
 module.exports = Helper;
 
 function Helper() {
     if (!(this instanceof Helper)) return new Helper();
-    this.DATE_FORMAT = 'hh:ii dd/mm/y';
+    this.DATE_FORMAT = 'dd mmm hh:ii';
     return this;
 }
 Helper.prototype.get = function() {
@@ -104,6 +114,15 @@ Helper.prototype.get = function() {
 };
 Helper.prototype.dateToString = function(date) {
     return $.formatDateTime(this.DATE_FORMAT, date);
+};
+Helper.prototype.msToString = function(date) {
+    return $.formatDateTime(this.DATE_FORMAT, new Date(date));
+};
+Helper.prototype.deltaToString = function(delta) {
+    var deltaS = ((delta / 1000) % 60).toFixed(0);
+    var deltaM = ((delta / 1000 / 60) % 60).toFixed(0);
+    var deltaH = ((delta / 1000 / 60 / 60) % 24).toFixed(0);
+    return deltaH + 'h ' + deltaM + 'm ' + deltaS + 's';
 };
 Helper.prototype.stringToDate = function(s) {
     return new Date(s);
@@ -152,7 +171,37 @@ Helper.prototype.debounce = function(func, threshold, execAsap) {
     };
 };
 
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
+Helper.prototype.distance = function(from, to) {
+    try {
+        return google.maps.geometry.spherical.computeDistanceBetween(from, to);
+    } catch (e) {
+        return 0;
+    }
+};
+Helper.prototype.speedMS = function(from, to, ms) {
+    var m = google.maps.geometry.spherical.computeDistanceBetween(from, to);
+    var speed = m / (1000 * ms);
+    return speed;
+};
+Helper.prototype.speedKmH = function(from, to, ms) {
+    var speedKm = (this.speedMS(from, to, ms) //m/s
+        * 60 // m/min
+        * 60 // m/h
+    ) / 1000; //km/h
+    return speedKm;
+};
+
+
+
+
+
+Helper.prototype.easeInOutQuad = function(t, b, c, d) {
+    if (t < d / 2) return 2 * c * t * t / (d * d) + b;
+    var ts = t - d / 2;
+    return -2 * c * ts * ts / (d * d) + 2 * c * ts / d + c / 2 + b;
+}
+
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
 (function($,sr){
 
   // debouncing function from John Hann
@@ -180,7 +229,7 @@ Helper.prototype.debounce = function(func, threshold, execAsap) {
     jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
 })(jQuery,'smartresize');
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
 var Helper = require('./Helper.js');
 module.exports = Story;
@@ -225,7 +274,7 @@ function Story(opts){
 	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
 var Story = require('./Story.js');
 var Helper = require('./Helper.js');
 
@@ -239,8 +288,9 @@ function StoryFactory(opts){
 StoryFactory.prototype.generate = function() {
 	return new Story(this.opts);
 };
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
 var Frame = require('./Frame.js');
+var helper = require('./Helper.js')();
 
 module.exports = Timeline;
 
@@ -251,9 +301,9 @@ function Timeline(opts) {
     this.start = opts.start || 0; // ms
     this.end = opts.end || 0; // ms
     this.events = opts.events || [];
-
-    this.initialize();
-
+    if (opts.saved) {} else {
+        this.initialize();
+    }
     return this;
 }
 
@@ -262,9 +312,9 @@ function Timeline(opts) {
  * @return list of events created during initialization
  */
 
+
+
 Timeline.prototype.initialize = function() {
-    console.warn('starting initialization');
-    var GpsEvent = require('./GpsEvent.js');
     var startMs = this.start.getTime();
     var endMs = this.end.getTime();
     var diffMs = endMs - startMs;
@@ -274,34 +324,58 @@ Timeline.prototype.initialize = function() {
     var self = this; //things are gonna get messy
     var lat = GLOBALS.position.coords.latitude;
     var lng = GLOBALS.position.coords.longitude;
-    var ev = new GpsEvent({
-        position: new google.maps.LatLng(lat, lng),
-        start_frame : 0,
-        end_frame : diffm-1,
-        start_time : startMs,
-        end_time : endMs
-    });
 
-    this.steps = diffm / this.scale;
-    for (var i = 0; i < this.steps; i++) {        
+
+    this.steps = (diffm / this.scale).toFixed(0);
+    for (var i = 0; i < this.steps; i++) {
         var frame = new Frame({
             index: i,
             time: startMs + (i * 1000 * 60 * this.scale),
-            events: [ev] //cache is initialized 
+            events: [] //cache is initialized 
         });
         this.frames.push(frame);
     }
-    this.events.push(ev);
+    //console.info('Timeline initialized', this.start,this.end, ' steps: ',this.steps);
+    //console.info(this);
 };
 
-
-
+Timeline.prototype.getMsStep = function() {
+    return this.scale * 60 * 1000;
+};
+Timeline.prototype.getPercAtFrame = function(_f, _precision) {
+    var precision = _precision || 2;
+    var frameIndex = Math.max(0, Math.min(_f, this.steps - 1));
+    var offset = ((frameIndex / (this.steps - 1)) * (100)).toFixed(precision);
+    return offset;
+};
 Timeline.prototype.getFrameAtPerc = function(_p) {
-    var percentage = Math.max(0, Math.min(_p,100));
-    var offset = ((percentage / 100) * (this.steps -1)).toFixed(0);
+    var percentage = Math.max(0, Math.min(_p, 100));
+    var offset = ((percentage / 100) * (this.steps - 1)).toFixed(0);
     return this.frames[offset];
 };
-},{"./Frame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
+
+Timeline.prototype.extend = function(newstart, newend) {
+    //console.info(this.frames, helper.shallowCopy(this.frames));
+    var frameCopy = helper.shallowCopy(this.frames);
+    this.start = newstart;
+    this.end = newend;
+    this.frames = [];
+    for (var i = this.events.length - 1; i >= 0; i--) {
+        if (this.events[i].subtype && this.events[i].subtype === '__auto') {
+            this.events = this.events.splice(i, 1); //index, howmany
+        }
+    };
+    this.initialize();
+};
+
+Timeline.prototype.addEvent = function(event) {
+    this.events.push(event);
+    for (var i = event.start_frame; i <= event.end_frame; i++) {
+        this.frames[i].events.push(event); //cache
+    };
+};
+
+},{"./Frame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js","./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js":[function(require,module,exports){
 var helper = require('./Helper.js')().get();
 
 module.exports = Wizard;
@@ -457,7 +531,7 @@ FormHelper.prototype.addDateField = function(label, value, onChange) {
     return this.addField(label, value, _input, onChange);
 };
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
 module.exports = SEngine;
 
 function SEngine(opts){
@@ -481,7 +555,7 @@ SEngine.prototype.start = function(modules) { //modules contains class name !!!!
 	
 	return this;
 };
-},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../Smartresize.js');
@@ -510,8 +584,8 @@ inherits(EarthModule, SModule);
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
-    var bar = this.createTimelineUI('EarthModuleTBar', this.parent);
-    bar.css('bottom','50px');
+    //var bar = this.createTimelineUI('EarthModuleTBar', this.parent);
+    //bar.css('bottom','100px');
 
     return this;
 };
@@ -530,7 +604,7 @@ EarthModule.prototype.onRender = function(frame) {
     var self = this; //things are gonna get nasty
    
 };
-},{"../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js":[function(require,module,exports){
+},{"../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../Smartresize.js');
@@ -546,7 +620,7 @@ module.exports = GMapModule;
  *
  * @param {Object} opts
  */
-function GMapModule(opts) {
+function GMapModule(story, opts) {
     if (!(this instanceof GMapModule)) return new GMapModule(opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, {
@@ -563,7 +637,7 @@ function GMapModule(opts) {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
-
+    this.story = story; //story.js object
     return this;
 }
 
@@ -576,6 +650,24 @@ GMapModule.prototype.postInit = function() {
     this.parent.append(this.$elector);
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById('map-canvas'), this.mapOptions);
+
+    this.bar = this.createTimelineUI('GMapModuleTBar', this.parent);
+    this.bar.css('bottom', '50px');
+
+    var myDropzone = new Dropzone("div#GMapModuleTBar", {
+        url: "/storify/uploadKML"
+    });
+    myDropzone.on("success", function(file, res) {
+        //console.info(res);
+        self.importKML(res);
+    });
+    myDropzone.on("complete", function(file) {
+
+    });
+    myDropzone.on("uploadprogress", function(file, progress) {
+
+    });
+    this.drop = myDropzone;
     var center;
 
     function calculateCenter() {
@@ -597,29 +689,90 @@ GMapModule.prototype.postInit = function() {
     return this;
 };
 
+
+var GMapModuleImporter = require('./GMapModule/GMapModuleImporter.js');
+GMapModule.prototype.importKML = function(res, opts) {
+    var start = new Date(res.start)
+    var end = new Date(res.end)
+    if (this.story.timeline.start.getTime() > start.getTime()) {
+        //console.info('need to extend start', this.story.timeline.start, start);
+        this.story.timeline.extend(start, this.story.timeline.end);
+    }
+    if (this.story.timeline.end.getTime() < end.getTime()) {
+        //console.info('need to extend end', this.story.timeline.end, end);
+        this.story.timeline.extend(this.story.timeline.start, end);
+    }
+    console.info('Importing events ', res);
+    var importer = new GMapModuleImporter(this);
+    var events = importer.importGoogleLocation({
+        postProcessing: [{
+            func: importer.pp.fixNeighbours,
+            opts: {
+                name: 'fixNeighbours'
+            }
+        }, {
+            func: importer.pp.interpolator,
+            opts: {
+                name: 'interpolator',
+                sensXY: 10, //m
+                sensT: 0.5 * 60 * 60 * 1000// 30 min
+            }
+        }, {
+            func: importer.pp.reducer,
+            opts: {
+                name: 'reducer'
+            }
+        }]
+    }, res, this.story.timeline); //timeline is needed to get infos about frame, scale etc.etc.
+
+    var real = 0;
+    var num = 0;
+    var interpolated = 0;
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        this.story.timeline.addEvent(event);
+        num++;
+        if (event.isReal) real++;
+        if (event.interpolated) interpolated++;
+    };
+    console.info('**********END IMPORT KML************');
+    console.info(this.story.timeline);
+};
+
 GMapModule.prototype.adjustSize = function() {
     var $elector = this.$elector;
     helper.maximize($elector);
     $(window).smartresize(
         function() {
-            helper.maximize($elector);  
+            helper.maximize($elector);
         });
 };
 
 
 GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
-    this.marker.setPosition(frame.getPositionEvent().position);
-    if (this.editMode) { //in edit mode just move the mark
+    var ev = frame.getPositionEvent();
+    if (ev) {
+       // console.info('frameTime: ' + helper.dateToString(new Date(ev.end_time)) + ' --- real time: ' + helper.dateToString(new Date(ev.real_time)));
+        
+        //console.info('*****FRAME '+ev.index+' DUMP');
+        //console.info( ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')' );
+        console.info(ev.prev.index + ' ---> ' + ev.index + (ev.interpolated ? '*' : '' ) + ' ---> ' + ev.next.index );
+        //console.info(ev);
+        this.marker.setPosition(frame.getPositionEvent().position);
 
-    } else {
-        this.debounce(
-            function() {
-                //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
-                //console.info(frame.getPosition());
-                self.updatePosition(frame.getPositionEvent().position);
-            }, 1000 / 33
-        );
+        if (this.editMode) { //in edit mode just move the mark
+
+        } else {
+            self.updatePosition(frame.getPositionEvent().position);
+            // this.debounce(
+            //     function() {
+            //         //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+            //         //console.info(frame.getPosition());
+            //         self.updatePosition(frame.getPositionEvent().position);
+            //     }, 1000 / 33
+            // );
+        }
     }
 };
 
@@ -629,7 +782,189 @@ GMapModule.prototype.updatePosition = function(position, opt) {
     this.map.setCenter(position);
 };
 
-},{"../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
+},{"../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./GMapModule/GMapModuleImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule\\GMapModuleImporter.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule\\GMapModuleImporter.js":[function(require,module,exports){
+module.exports = GMapModuleImporter;
+var helper = require('../../Helper.js')();
+/**
+ * GMAP MODULE
+ * !!! DOM NOT READY YET WHEN CALLED
+ * manages integration with google maps
+ *
+ * @param {Object} opts
+ */
+var LOCAL = {};
+
+function GMapModuleImporter(parent, opts) {
+    var self = this; //things are gonna get nasty
+    this.parent = parent;
+
+    this.pp = {};
+    /**
+     * go trough the events.
+     *     for each event x, search the followers, until it finds a real one.
+     *     then x.next is set as the latter
+     * @param  {[type]} events [description]
+     * @return {[type]}        [description]
+     */
+    this.pp.fixNeighbours = function(opts, events) {
+        var now = new Date().getTime();
+        console.info('*** postProcessing fixNeighbours started');
+        for (var i = 0; i < events.length; i++) {
+            if (i > 0) {
+                for (var y = i - 1; y >= 0; y--) { //fix prev
+                    var prev = events[y];
+                    if (prev.isReal) {
+                        events[i].prev = prev;
+                        events[i].postProcessingInfo.push('fixNeighbours - fixed prev');
+                        break;
+                    }
+                }
+            } else {
+                events[0].prev = events[0];
+            }
+            if (i < events.length - 1) {
+                for (var y = i + 1; y < events.length; y++) { //fix next
+                    var succ = events[y];
+                    if (succ.isReal) {
+                        events[i].next = succ;
+                        events[i].postProcessingInfo.push('fixNeighbours - fixed succ');
+                        break;
+                    }
+                };
+            } else {
+                events[events.length - 1].next = events[events.length - 1];
+            }
+        };
+        console.info('*** postProcessing fixNeighbours ended in ' + (new Date().getTime() - now) + 'ms');
+        return events;
+    }; // fix neighbours 
+    /**
+     * if event
+     *     !isReal && //we don't have a relevation in the frame time slot
+     *     delta_meters(next,prev) > threshold1 && // we interpolate only if the 'user' has moved (not sleeping)
+     *     delta_time(next,prev) > threshold2 //we interpolate only ove rthreshold
+     * @param  {[type]} opts   [description]
+     * @param  {[type]} events [description]
+     * @return {[type]}        [description]
+     */
+    this.pp.interpolator = function(opts, events) {
+        var interpolate = function(ev, pre, post) {
+            var time = (ev.end_time + ev.start_time) /2;
+            var newLat = helper.easeInOutQuad(
+                Number(time- pre.real_time), //elapsed -- steps 
+                Number(pre.position.lat()), //
+                Number(post.position.lat()) - Number(pre.position.lat()),
+                Number(post.real_time) - Number(pre.real_time)
+            );
+            var newLng = helper.easeInOutQuad(
+                Number(time - pre.real_time), //elapsed -- steps 
+                Number(pre.position.lng()), //
+                Number(post.position.lng()) - Number(pre.position.lng()),
+                Number(post.real_time) - Number(pre.real_time)
+            );
+            ev.interpolated = true;
+            ev.position = new google.maps.LatLng(newLat, newLng);
+            events[i].postProcessingInfo.push('interpolator - interpolated');
+        };
+        var th_meters = opts.sensXY || 3; //x meters * minute
+        var th_time = opts.sensT || 2 * 60 * 60 * 1000; //2 hours
+        for (var i = 0; i < events.length; i++) {
+            var ev = events[i];
+            if (!ev.isReal) {
+                var distance = helper.distance(ev.next.position, ev.prev.position);
+                var elapsed = ev.next.real_time - ev.prev.real_time;
+                if ((th_meters * ev.scale) <= distance) {
+                    if ((th_time) <= elapsed) {
+                        interpolate(ev,ev.prev,ev.next);
+                    }
+                }
+            }
+        };
+
+
+        return events;
+    }; // interpolate 
+    this.pp.reducer = function(opts, events) {
+        return events;
+    }; // interpolate 
+
+    return self;
+}
+var GpsEvent = require('../../GpsEvent.js');
+GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timeline) {
+    var self = this; //things are gonna get nasty
+    var events = [];
+    var lastIndex = 0;
+    var frames = timeline.frames;
+    var gevents = values.ret;
+    /*RAW IMPORT*/
+    var index = 0;
+    var ev = new GpsEvent({
+        position: new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
+        start_frame: 0,
+        end_frame: 0,
+        start_time: frames[0].time,
+        end_time: frames[0].time + timeline.getMsStep(),
+        real_time: new Date(gevents[0].when).getTime(),
+        subtype: '__google'
+    });
+    ev.postProcessingInfo = [];
+    ev.scale = timeline.scale;
+    ev.index = index++;
+    events.push(ev);
+    lastIndex = 1;
+    var between = function(_date, _start, _end) {
+        return _date >= _start && _date <= _end;
+    }
+    for (var i = 1; i < frames.length; i++) { //cycle through all frames
+        var frameTime = frames[i].time;
+        var skipped = 0;
+        for (var y = lastIndex; y < gevents.length; y++) {
+            var valTime = new Date(gevents[y].when).getTime();
+            if (valTime <= frameTime) {
+                skipped++;
+            } else {
+                lastIndex = y;
+                var real_time = new Date(gevents[lastIndex].when).getTime();
+                var included = between(real_time, frameTime, frameTime + timeline.getMsStep());
+                //found the first event after the frame. add an event with the info from the event before
+                var ev = new GpsEvent({
+                    position: new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
+                    real_time: real_time,
+                    isReal: included,
+                    start_frame: i,
+                    end_frame: i,
+                    start_time: frameTime,
+                    end_time: frameTime + timeline.getMsStep(),
+                    subtype: '__google',
+                    distance: helper.distance(new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
+                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng)).toFixed(2),
+                    speed: helper.speedKmH(
+                        new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
+                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
+                        timeline.getMsStep()
+                    ).toFixed(2)
+                });
+                ev.postProcessingInfo = [];
+                ev.scale = timeline.scale;
+                ev.index = index++;
+                events.push(ev);
+                //console.info(i, '/', frames.length, ' skipped ', skipped, 'real: ', real, ' delta (', helper.deltaToString(ev.real_time - ev.end_time) ,')');
+                //console.info(i, included, ev.isReal, helper.deltaToString(ev.real_time - ev.end_time) );
+                break;
+            }
+        }
+    }
+    if (opts.postProcessing) {
+        for (var i = 0; i < opts.postProcessing.length; i++) {
+            console.info(events.length, 'calling post processor', opts.postProcessing[i].opts.name);
+            events = opts.postProcessing[i].func(opts.postProcessing[i].opts, events);
+        };
+    }
+    return events;
+};
+
+},{"../../GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js","../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
 module.exports = SModule;
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
@@ -697,20 +1032,21 @@ SModule.prototype.attachTo = function(target) {
     return this;
 };
 SModule.prototype.require = function(target) {
-    target.attach(this);
+    //target.attach(this);
     return this;
 };
 
 SModule.prototype.createTimelineUI = function(id, parent) {
     this.$timeline = $($('<div id="'+ id +'" class="module_timeline"></div>'));
     parent.append(this.$timeline);
+    this.$timeline.append("<span>"+id+"</span>");
     return this.$timeline;
 };
 
 SModule.prototype.getTimelineUI = function() {
     return this.$timeline;
 };
-},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
@@ -732,11 +1068,39 @@ function TimelineModule(story, opts) {
         name: 'TimelineModule',
         id: 'GMAP'
     });
+    this.current = 0; //index of the current frame
     this.UIedit = opts.UIedit; // timeline wrapper
     this.listeners = [];
     this.story = story; //story.js object
+    var self = this; //things are gonna get nasty
+    $(document).keydown(function(e) {
+        switch (e.which) {
+            case 37: // left
+                self.goToFrame(self.current - 1);
+                break;
+
+            case 38: // up
+                break;
+
+            case 39: // right
+                self.goToFrame(self.current + 1);
+                break;
+
+            case 40: // down
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
+
+
+
     return this;
 }
+
+
 
 inherits(TimelineModule, SModule);
 
@@ -746,7 +1110,7 @@ inherits(TimelineModule, SModule);
  * @return {[type]} [description]
  */
 TimelineModule.prototype.postInit = function() {
-    console.info('TimelineModule started', this.story.timeline);
+    //console.info('TimelineModule started', this.story.timeline);
     var self = this; //things are gonna get nasty
 
     /*CREATE AND APPEND THE MODULE UI*/
@@ -762,50 +1126,69 @@ TimelineModule.prototype.postInit = function() {
     this._bk = 0;
 
     $(window).smartresize(function() {
-        self.$dragger.setPosition(self._bk);
+        self.$dragger.notify();
     });
-
     this.$dragger.getMaxPx = function() {
         return (self.$timeline.width() - self.$dragger.width());
-    }
+    };
     this.$dragger.getPosition = function() {
-        console.info(self.$dragger.offset());
         return (100 * (self.$dragger[0].offsetLeft / self.$dragger.getMaxPx()).toFixed(10));
-    }
+    };
     this.$dragger.setPosition = function(percentage) {
         var offset = (percentage / 100) * self.$dragger.getMaxPx();
-        //console.info(offset);
         self.$dragger.css('left', offset);
-    }
-    this.$dragger.pickFrame = function() {
-        return self.story.timeline.getFrameAtPerc(self.$dragger.getPosition());
-    }
+    };
+    this.$dragger.notify = function() {
+        var index = self.current;
+        self.$dragger.setPosition(self.story.timeline.getPercAtFrame(self.current, 10)); //In case the frame is changed,update position
+    };
     this.$dragger.draggable({
         containment: "parent",
         drag: function() {
-            console.info(new Date(self.$dragger.pickFrame().time));
-            //helper.debounce(self.notify)();
+            self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
             self.notify();
         },
         stop: function() {
-            self._bk = self.$dragger.getPosition(); 
+            self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
+            self.notify();
         }
     });
+
+    this.dateDisplay = $("<span></span>");
+    this.$dragger.append(this.dateDisplay);
+
     return this;
+};
+TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(index, self.story.timeline.steps - 1));;
+    self.notify();
+};
+TimelineModule.prototype.pickFrame = function() {
+    var self = this; //things are gonna get nasty
+    return self.story.timeline.frames[self.current];
 };
 
 TimelineModule.prototype.notify = function() {
-    var frame = this.$dragger.pickFrame();
-    for (var i = 0; i < this.listeners.length; i++) {
-        var listener = this.listeners[i];
-        if (listener.onFramePicked) {
-            listener.onFramePicked(frame);
+    var frame = this.pickFrame();
+    if (frame) {
+        for (var i = 0; i < this.listeners.length; i++) {
+            var listener = this.listeners[i];
+            if (listener.onFramePicked) {
+                listener.onFramePicked(frame);
+            }
         }
-    };
+        this.$dragger.notify();
+        this.dateDisplay.html(helper.dateToString(new Date(frame.time)));
+        
+
+        //console.info(frame);
+
+    }
     return this;
 };
 
-},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
+},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
 var Helper = require('./Helper.js');
@@ -823,16 +1206,26 @@ init = function(_GLOBALS) {
                 console.info("You are signed in to Facebook");
                 console.info(user);
                 $('#profilepic').css('background-image', 'url(' + user.picture + ')');
-                GLOBALS.usm.getPosition(function(err,position){
-                    GLOBALS.position = position || {coords : {latitude:0, longitude:0}};
+                GLOBALS.usm.getPosition(function(err, position) {
+                    GLOBALS.position = position || {
+                        coords: {
+                            latitude: 0,
+                            longitude: 0
+                        }
+                    };
                     startStorify(null, user);
-                },5000);                
+                }, 5000);
             }, function failure(err) {
                 console.info(err, null);
 
             });
     } else {
-        GLOBALS.position = {coords : {latitude:0, longitude:0}};
+        GLOBALS.position = {
+            coords: {
+                latitude: 0,
+                longitude: 0
+            }
+        };
         startStorify(null, null);
     }
 };
@@ -863,26 +1256,26 @@ var startStorify = function(err, user) {
             title: 'USA',
             description: '#Roadtrip #California #Nevada #Burningman',
             timelineOpts: {
-                start: new Date('08/08/2014'),
-                end: new Date('08/18/2014'),
-            scale: 10 //1 frame every 10 minutes.
+                start: new Date('09/01/2014'),
+                end: new Date('09/02/2014'),
+                scale: 1/10 //1 frame every 1 minutes.
             },
         }).generate();
         //console.info($.toJSON(story));
-        //console.info(story);
+        console.info(story);
 
         /*CREATE MODULES*/
         var tmm = new TimelineModule(story, {
             UIedit: $('#UI-EDIT'),
             UIview: $('#UI-VIEW')
         });
-        var gmm = new GMapModule({
+        var gmm = new GMapModule(story, {
             parent: $('#main')
         }).attachTo(tmm).require(tmm);
 
-        
+
         var earthModule = new EarthModule({
-            parent:$('#UI-EDIT')
+            parent: $('#UI-EDIT')
         });
 
 
@@ -898,7 +1291,7 @@ var startStorify = function(err, user) {
         var engine = new SEngine().start(
             [ //MODULES
                 tmm,
-                gmm, 
+                gmm,
                 earthModule,
 
                 postInitializer
@@ -990,4 +1383,4 @@ var step3 = {
 
 */
 
-},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js","./engine/SEngine.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/Earthmodule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/GMapModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js","./modules/SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./Wizard.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Wizard.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/Earthmodule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/GMapModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js"]);
