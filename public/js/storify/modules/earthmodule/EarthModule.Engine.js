@@ -33,8 +33,8 @@ EarthModuleEngine.prototype.start = function() {
 };
 
 EarthModuleEngine.prototype.render = function(self) {
-    console.info('render');
     self.parent.hw.renderer.render(self.parent.sm.scene, self.parent.hw.camera);
+    self.parent.hw.controls.update();
     requestAnimationFrame(function() {
         self.render(self);
     });    

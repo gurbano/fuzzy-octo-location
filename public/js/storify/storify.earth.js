@@ -47,7 +47,7 @@ var SModule = require('./modules/SModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 
-
+var GMapModule = require('./modules/GMapModule.js');
 
 
 var startStorify = function(err, user) {
@@ -82,10 +82,15 @@ var startStorify = function(err, user) {
         /*EDIT*/
         /*VIEW*/
         var earthModule = new EarthModule({
-            parent: $('#main')
-            ,enabled: true
+            parent: $('#main'),
+            enabled: true
         }).attachTo(tmm);
 
+
+        var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
+            parent: $('#main'),
+            enabled: false
+        }).attachTo(tmm).require('tmm', tmm);
         /*POSTINIZIALIZER*/
         var postInitializer = new SModule({
             name: 'onTheRockModule',
@@ -98,8 +103,9 @@ var startStorify = function(err, user) {
 
         var engine = new SEngine().start(
             [ //MODULES
-                tmm, //timneline
                 earthModule,
+                tmm, //timneline                
+                //gmm,
                 postInitializer // anonymous module on complete
             ]
         );

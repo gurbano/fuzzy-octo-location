@@ -1,5 +1,14 @@
 var helper = require('../../Helper.js')();
 
+var EARTH_SIZE = 600;
+var POS_X = 0;
+var POS_Y = 0;
+var POS_Z = 2800;
+
+var POS_X_L = 120800;
+var POS_Y_L = 0;
+var POS_Z_L = 120800;
+
 module.exports = EarthModuleObjEarth;
 
 function EarthModuleObjEarth(parent, opts) {
@@ -33,17 +42,18 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     //EARTH
     self.loadTexture([{
             id: 'planet',
-            file: 'images/2_no_clouds_4k.jpg'
+            file: '/assets/images/nteam/2_no_clouds_4k.jpg'
         }, {
             id: 'bump',
-            file: 'images/elev_bump_4k.jpg'
+            file: '/assets/images/nteam/elev_bump_4k.jpg'
         }, {
             id: 'specular',
-            file: 'images/water_4k.png'
+            file: '/assets/images/nteam/water_4k.png'
         }, ],
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
                 subscene.add(earth);
+                self.addLights(subscene);
             });
         }
     );
@@ -60,6 +70,14 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     return self;
 };
 
+
+EarthModuleObjEarth.prototype.addLights = function(scene) {
+    var self = this; //things are gonna get nasty
+    self.light = new THREE.DirectionalLight(0xffaaaa, 1);
+    self.light.position.set(POS_X_L, POS_Y_L, POS_Z_L);
+    self.light.lookAt(POS_X, POS_Y, POS_Z);
+    scene.add(self.light);
+};
 EarthModuleObjEarth.prototype.addBackground = function(scene) {
     var radius = 3500;
     var segments = 32;
@@ -75,16 +93,18 @@ EarthModuleObjEarth.prototype.addBackground = function(scene) {
 
 
 EarthModuleObjEarth.prototype.loadTexture = function(textures, callback, ret) {
-    ret = ret || {};    
-    if(textures.length === 0){
+    var self = this; //things are gonna get nasty
+
+    ret = ret || {};
+    console.info('Loading textures  [' + ret.lenght + '/' + textures.lenght + ']');
+    if (textures.length === 0) {
         callback(ret);
-    }else{
-        var id = textures[0].id;
-        var file = textures[0].file;
-        THREE.ImageUtils.loadTexture(file, undefined, function(texture){
-            console.info(texture);
+    } else {
+        var id = textures[textures.length - 1].id;
+        var file = textures[textures.length - 1].file;
+        THREE.ImageUtils.loadTexture(file, undefined, function(texture) {
             ret[id] = texture;
-            self.loadTexture(textures.splice(0,1),callback,ret);
+            self.loadTexture(textures.splice(0, textures.length - 1), callback, ret);
         });
     }
 };
@@ -106,5 +126,5 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
         })
     );
 
-    return mesh;
+    callback(mesh);
 };
