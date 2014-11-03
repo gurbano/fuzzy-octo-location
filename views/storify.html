@@ -1,5 +1,6 @@
 <% include partials/head %>
-    <script type="text/javascript" src="/libs/dropzone.js"></script>    
+    <link rel="stylesheet" type="text/css" href="css/storify/storify.css" />
+
     <style type="text/css">
     #map-canvas {
         height: 100%;
@@ -10,11 +11,19 @@
         left: 0px;
     }
     </style>
-    <div id="main">   
-    <% include partials/storify/UI-edit %>
+    <div id="main">
+        <% include partials/storify/UI-edit %>
+            <% include partials/storify/UI-view %>
     </div>
-    <link rel="stylesheet" type="text/css" href="css/storify/storify.css" />
+    <link rel="import" href="http://www.polymer-project.org/components/font-roboto/roboto.html">
+    <script type="text/javascript" src="/libs/dropzone.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.js"></script>
+    <script src="/libs/nteam/three.TrackballControls.js"></script>
+    <script src="/libs/nteam/stats.min.js"></script>
+    <script src="/libs/fonts/droid/droid_serif_bold.typeface.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization,geometry"></script>
+
+    <!-- START APPLICATION -->
+
     <script src="/js/storify/dist/storify.bundle.js"></script>
-    <script type="text/javascript" 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVzd4DmZi7gTTxGgl1xxu-dt9z-IOnRvc&libraries=visualization,geometry"></script>
     <% include partials/foot %>

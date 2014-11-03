@@ -1,0 +1,44 @@
+{
+  "name": "material-design-icons",
+  "version": "1.0.0",
+  "description": "Material Design icons by Google",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/material-design-icons"
+  },
+  "keywords": [
+    "icons",
+    "material",
+    "material-design",
+    "google"
+  ],
+  "author": {
+    "name": "Material Design Authors"
+  },
+  "license": "CC-BY-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/google/material-design-icons/issues"
+  },
+  "homepage": "https://github.com/google/material-design-icons",
+  "_id": "material-design-icons@1.0.0",
+  "dist": {
+    "shasum": "cab86827bd05d3b600ca99c65cafa3d8f73c8842",
+    "tarball": "http://registry.npmjs.org/material-design-icons/-/material-design-icons-1.0.0.tgz"
+  },
+  "_from": "material-design-icons@",
+  "_npmVersion": "1.3.26",
+  "_npmUser": {
+    "name": "addyosmani",
+    "email": "addyosmani@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "addyosmani",
+      "email": "addyosmani@gmail.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "cab86827bd05d3b600ca99c65cafa3d8f73c8842",
+  "_resolved": "https://registry.npmjs.org/material-design-icons/-/material-design-icons-1.0.0.tgz"
+}

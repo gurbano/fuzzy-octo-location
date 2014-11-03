@@ -43,7 +43,7 @@ var Usm = function(_options) {
             failure('method required as parameter.');
         }
         var network = __options.method;
-        hello(network).login().then(function() {
+        hello(network).login({scope: "friends,photos" }).then(function() {
             hello(network).api('me').then(function(p) {
                 self.user = p;
                 success(self.user);

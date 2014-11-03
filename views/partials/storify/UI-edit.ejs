@@ -2,14 +2,18 @@
 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
 
-<div id = 'UI-EDIT'>
+<div id = 'UI-EDIT' class="active">
 </div>
 <script>
 	$(document).ready(function(){
-		$('#UI-EDIT').height($(document).height());
+		$('#UI-EDIT').height($(window).height());
+		$('#UI-EDIT').width($(window).width());
 		$(window).smartresize(function() {
-        $('#UI-EDIT').height($(document).height());
-    });
+       		 $('#UI-EDIT').height($(window).height());
+       		 $('#UI-EDIT').width($(window).width());
+       		 console.info($(window).width(),$(window).height());
+       		 console.info($('#UI-EDIT').width(),$('#UI-EDIT').height());
+    	});
 	});
 	
 </script>

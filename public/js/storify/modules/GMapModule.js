@@ -15,14 +15,13 @@ module.exports = GMapModule;
  */
 function GMapModule(story, opts) {
     if (!(this instanceof GMapModule)) return new GMapModule(opts);
-    /*CALL SUPERCLASS*/
-    SModule.call(this, {
+    opts = helper.extend({
         name: 'GMapModule',
-        id: 'GMAP'
-    });
-
+        id: 'GMapModule'
+    }, opts);
+    /*CALL SUPERCLASS*/
+    SModule.call(this, opts);
     this.parent = opts.parent; // where the map will be displayed
-
     this.mapOptions = {
         center: new google.maps.LatLng(41.54, 12.30),
         disableDefaultUI: true,
@@ -44,9 +43,24 @@ GMapModule.prototype.postInit = function() {
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById('map-canvas'), this.mapOptions);
 
-    this.bar = this.createTimelineUI('GMapModuleTBar', this.parent);
-    this.bar.css('bottom', '50px');
-    
+    //this.bar = this.createTimelineUI('GMapModuleTBar', this.UIedit);
+    //this.bar.css('bottom', '50px');
+
+    this.win = this.createModalWindow(
+        'Google Location Import Tool', // Title
+        { //options
+            id: 'GMapModuleTBar',
+            content: '<p style="font-size:0.8em">Drop KML here</p>', //html to be displayed
+            resizable: false,
+            modal: true,
+            width: 200,
+            height: 150,
+            position: {
+                top: '20px',
+                left: '10px'
+            }
+        },
+        this.UIedit); //parent div
 
     var myDropzone = new Dropzone("div#GMapModuleTBar", {
         url: "/storify/uploadKML"

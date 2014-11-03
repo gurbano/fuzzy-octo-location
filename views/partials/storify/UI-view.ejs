@@ -6,10 +6,14 @@
 </div>
 <script>
 	$(document).ready(function(){
-		$('#UI-VIEW').height($(document).height());
+		$('#UI-VIEW').height($(window).height());
+		$('#UI-VIEW').width($(window).width());
 		$(window).smartresize(function() {
-        $('#UI-VIEW').height($(document).height());
-    });
+       		 $('#UI-VIEW').height($(window).height());
+       		 $('#UI-VIEW').width($(window).width());
+       		 console.info($(window).width(),$(window).height());
+       		 console.info($('#UI-VIEW').width(),$('#UI-VIEW').height());
+    	});
 	});
 	
 </script>

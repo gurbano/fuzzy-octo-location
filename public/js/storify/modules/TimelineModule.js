@@ -14,13 +14,13 @@ module.exports = TimelineModule;
  */
 function TimelineModule(story, opts) {
     if (!(this instanceof TimelineModule)) return new TimelineModule(opts);
-    /*CALL SUPERCLASS*/
-    SModule.call(this, {
+    opts = helper.extend({
         name: 'TimelineModule',
         id: 'GMAP'
-    });
+    }, opts);
+    /*CALL SUPERCLASS*/
+    SModule.call(this, opts);
     this.current = 0; //index of the current frame
-    this.UIedit = opts.UIedit; // timeline wrapper
     this.listeners = [];
     this.story = story; //story.js object
     var self = this; //things are gonna get nasty
@@ -63,7 +63,7 @@ inherits(TimelineModule, SModule);
 TimelineModule.prototype.postInit = function() {
     //console.info('TimelineModule started', this.story.timeline);
     var self = this; //things are gonna get nasty
-
+    console.info('TimelineModule  started');
     /*CREATE AND APPEND THE MODULE UI*/
     this.$timeline = $($('<div class="module_timeline"></div>'));
     this.$timeline.show();
@@ -147,7 +147,9 @@ TimelineModule.prototype.togglePlay = function() {
     if (!self.playback) self.playback = false;
     self.playback = !self.playback;
     if (self.playback) {
-        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 500);
+        self.playbackTimeout = setTimeout(function() {
+            self.autoplay();
+        }, 500);
     } else {
         self.playbackTimeout = null;
     }
@@ -157,5 +159,7 @@ TimelineModule.prototype.autoplay = function() {
     var self = this; //things are gonna get nasty
     self.goToFrame(self.current + 1);
     if (self.playback)
-        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 200);
+        self.playbackTimeout = setTimeout(function() {
+            self.autoplay();
+        }, 500);
 };

@@ -47,8 +47,17 @@ var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var GMapModule = require('./modules/GMapModule.js');
 var SModule = require('./modules/SModule.js');
+var ModulesManager = require('./modules/ModulesManager.js');
+//SOURCES
+var SourcesManager = require('./modules/SourcesManager.js');
+var PlayBackModule = require('./modules/PlayBackModule.js');
+
 var TimelineModule = require('./modules/TimelineModule.js');
+var EditSwitch = require('./modules/UI/UISwitcher.js');
 var EarthModule = require('./modules/Earthmodule.js');
+var DisplayPathModule = require('./modules/DisplayPath.js');
+var FacebookSourcesModule = require('./modules/sources/FacebookSourcesModule.js');
+
 
 
 var startStorify = function(err, user) {
@@ -75,85 +84,38 @@ var startStorify = function(err, user) {
         console.info(story);
 
         /*CREATE MODULES*/
-        var tmm = new TimelineModule(story, {
-            UIedit: $('#UI-EDIT'),
-            UIview: $('#UI-VIEW')
+        /*SUPERMODULES*/
+        var uiSwitcher = new EditSwitch({ //Move marker, show map ecc.ecc.
+            parent: $('#main'),enabled:true
         });
+        var mm = new ModulesManager({
+            parent: $('#main'),enabled:true
+        });
+        /*SOURCES*/
+        var sm = new SourcesManager({enabled:true}).attachTo(mm);
+        var fsm = new FacebookSourcesModule({story:story, enabled:false}).attachTo(sm);
+
+        /*TIMELINE*/
+        var tmm = new TimelineModule(story, {enabled:true}).attachTo(mm);
+        /*EDIT*/
+
         var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
-            parent: $('#main')
-        }).attachTo(tmm).require(tmm);
+            parent: $('#main'),enabled:false
+        }).attachTo(mm).attachTo(tmm).require('tmm', tmm);
 
-        var playback = new SModule({
-            name: 'playback',
-            id: 'PLAYBACK',
-            postInit: function() {
-                console.info('playback  started');
-                $(document).keydown(function(e) {
-                    switch (e.which) {
-                        case 32: //space bar
-                            tmm.togglePlay();
-                            return;
-                        default:
-                            return; // exit this handler for other keys
-                    }
-                    e.preventDefault(); // prevent the default action (scroll / move caret)
-                });
-                return this;
-            }
-        }).require(tmm);
+        //attached to modules manager, attached to timeline, require google maps 
+        var displayPath = new DisplayPathModule({ //Move marker, show map ecc.ecc.
+            parent: $('#main'),enabled:true
+        }).attachTo(mm).attachTo(tmm).require('gmm', gmm); 
 
 
-        /**/
-        var interpolator = new SModule({
-            name: 'show-interpolation',
-            id: 'SHOW_INTERPOLATION',
-            postInit: function() {
-                console.info('show-interpolation  started');
-                return this;
-            },
-            callbacks: {
-                onFramePicked: function(frame) {
-                    var ev = frame.getPositionEvent();
-
-                    if (ev) {
-                        console.info(ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')');
-                        console.info(ev.position);
-                        if (ev.interpolated) {
-                            gmm.poly.setMap(null); //reset path
-                            gmm.poly = new google.maps.Polyline({
-                                path: [ev.prev.position, ev.next.position],
-                                strokeColor: '#FF0000',
-                                strokeOpacity: 0.6,
-                                strokeWeight: 3
-                            });
-                            gmm.poly.setMap(gmm.map);
-                        } else {
-                            gmm.poly.setMap(null); //reset path
-                            gmm.poly = new google.maps.Polyline({
-                                path: [],
-                                strokeColor: '#000000',
-                                strokeOpacity: 1.0,
-                                strokeWeight: 4
-                            });
-                            if (ev.skipped.length > 0) {
-                                gmm.poly.getPath().push(ev.prev.position);
-                                for (var i = 0; i < ev.skipped.length; i++) {
-                                    gmm.poly.getPath().push(ev.skipped[i]);
-                                };
-                                gmm.poly.getPath().push(ev.position);
-                            }
-                            gmm.poly.setMap(gmm.map);
-                        }
-                    }
-                }
-            }
-        }).attachTo(tmm).require(gmm);
-
+        /*VIEW*/
+        var playback = new PlayBackModule({enabled:true}).attachTo(mm).require('tmm', tmm);
         var earthModule = new EarthModule({
-            parent: $('#UI-EDIT')
-        });
+            parent: $('#main')
+        }).attachTo(mm);
 
-
+        /*POSTINIZIALIZER*/
         var postInitializer = new SModule({
             name: 'onTheRockModule',
             id: 'ONTHEROCK',
@@ -165,13 +127,15 @@ var startStorify = function(err, user) {
 
         var engine = new SEngine().start(
             [ //MODULES
+                mm, //module manager
+                sm, //sources manager
+                fsm, //facebook source module
                 tmm, //timneline
                 gmm, //google maps
-                playback,
-                interpolator,
-                earthModule,
-
-                postInitializer
+                playback, //playback bar 
+                displayPath, //display interpolated paths and skipped events on gmap
+                uiSwitcher, // switch between edit and view
+                postInitializer // anonymous module on complete
             ]
         );
 

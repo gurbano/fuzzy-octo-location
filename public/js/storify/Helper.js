@@ -3,6 +3,7 @@ module.exports = Helper;
 function Helper() {
     if (!(this instanceof Helper)) return new Helper();
     this.DATE_FORMAT = 'dd MM hh:ii';
+    this.FB_DATE = 'dd/mm/yyyy hh:ii'
     return this;
 }
 Helper.prototype.get = function() {
@@ -10,6 +11,9 @@ Helper.prototype.get = function() {
 };
 Helper.prototype.dateToString = function(date) {
     return $.formatDateTime(this.DATE_FORMAT, date);
+};
+Helper.prototype.toFbDate = function(date) {
+    return date.getTime();
 };
 Helper.prototype.msToString = function(date) {
     return $.formatDateTime(this.DATE_FORMAT, new Date(date));
@@ -29,7 +33,12 @@ Helper.prototype.deepCopy = function(oldObject) {
 Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
-
+Helper.prototype.random = function(min,max) {
+    return Math.random() * (max - min) + min;
+};
+Helper.prototype.randomInt = function(min,max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 Helper.prototype.extend = function(a, b) {
     for (var key in b) {
         if (b.hasOwnProperty(key)) {

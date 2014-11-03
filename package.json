@@ -30,6 +30,7 @@
     "good": "^2.3.0",
     "hapi": "^6.11.1",
     "inherits": "^2.0.1",
+    "material-design-icons": "^1.0.0",
     "mongoose": "^3.8.17",
     "paralleljs": "^0.2.1",
     "path": "^0.4.9",
