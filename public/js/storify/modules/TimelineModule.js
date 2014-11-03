@@ -130,11 +130,32 @@ TimelineModule.prototype.notify = function() {
             }
         }
         this.$dragger.notify();
-        this.dateDisplay.html(helper.dateToString(new Date(frame.time)));
-        
+        this.dateDisplay.html(helper.dateToString(new Date(frame.time)) + '(' + frame.index + ')');
+
 
         //console.info(frame);
 
     }
     return this;
+};
+
+
+
+TimelineModule.prototype.togglePlay = function() {
+    var self = this; //things are gonna get nasty
+    if (self.playbackTimeout) clearTimeout(self.playbackTimeout); //remove previous timeout
+    if (!self.playback) self.playback = false;
+    self.playback = !self.playback;
+    if (self.playback) {
+        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 500);
+    } else {
+        self.playbackTimeout = null;
+    }
+};
+
+TimelineModule.prototype.autoplay = function() {
+    var self = this; //things are gonna get nasty
+    self.goToFrame(self.current + 1);
+    if (self.playback)
+        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 200);
 };

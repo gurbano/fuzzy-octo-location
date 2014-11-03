@@ -64,9 +64,9 @@ function GMapModuleImporter(parent, opts) {
      */
     this.pp.interpolator = function(opts, events) {
         var interpolate = function(ev, pre, post) {
-            var time = (ev.end_time + ev.start_time) /2;
+            var time = (ev.end_time + ev.start_time) / 2;
             var newLat = helper.easeInOutQuad(
-                Number(time- pre.real_time), //elapsed -- steps 
+                Number(time - pre.real_time), //elapsed -- steps 
                 Number(pre.position.lat()), //
                 Number(post.position.lat()) - Number(pre.position.lat()),
                 Number(post.real_time) - Number(pre.real_time)
@@ -90,7 +90,7 @@ function GMapModuleImporter(parent, opts) {
                 var elapsed = ev.next.real_time - ev.prev.real_time;
                 if ((th_meters * ev.scale) <= distance) {
                     if ((th_time) <= elapsed) {
-                        interpolate(ev,ev.prev,ev.next);
+                        interpolate(ev, ev.prev, ev.next);
                     }
                 }
             }
@@ -134,15 +134,23 @@ GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timel
     for (var i = 1; i < frames.length; i++) { //cycle through all frames
         var frameTime = frames[i].time;
         var skipped = 0;
+        var skippedPoints = [];
         for (var y = lastIndex; y < gevents.length; y++) {
+
             var valTime = new Date(gevents[y].when).getTime();
             if (valTime <= frameTime) {
                 skipped++;
+                skippedPoints.push(new google.maps.LatLng(gevents[y].where.lat, gevents[y].where.lng));
             } else {
+                var dist = helper.distance(
+                    new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
+                    new google.maps.LatLng(gevents[y].where.lat, gevents[y].where.lng)
+                ).toFixed(2);
                 lastIndex = y;
                 var real_time = new Date(gevents[lastIndex].when).getTime();
                 var included = between(real_time, frameTime, frameTime + timeline.getMsStep());
                 //found the first event after the frame. add an event with the info from the event before
+
                 var ev = new GpsEvent({
                     position: new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
                     real_time: real_time,
@@ -152,13 +160,9 @@ GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timel
                     start_time: frameTime,
                     end_time: frameTime + timeline.getMsStep(),
                     subtype: '__google',
-                    distance: helper.distance(new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
-                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng)).toFixed(2),
-                    speed: helper.speedKmH(
-                        new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
-                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
-                        timeline.getMsStep()
-                    ).toFixed(2)
+                    distance: dist,
+                    speed: (dist / timeline.scale).toFixed(2),
+                    skipped: skippedPoints
                 });
                 ev.postProcessingInfo = [];
                 ev.scale = timeline.scale;

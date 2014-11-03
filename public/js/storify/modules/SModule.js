@@ -11,6 +11,7 @@ function SModule(opts) {
     this.postInit = opts.postInit || this.postInit;
     this.editMode =  opts.editMode || false;
     this.requirement = opts.requirement || [];
+    this.callbacks = opts.callbacks || {};
     return this;
 };
 
@@ -41,8 +42,13 @@ SModule.prototype.postInit = function() {
 };
 
 SModule.prototype.onFramePicked = function(frame) {
+    if (this.callbacks && this.callbacks.onFramePicked){
+        this.callbacks.onFramePicked(frame);
+        return;
+    }
     console.warn('default onFramePicked called. is quite strange, isnt it?');
     console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
+    
     return this;
 };
 

@@ -2,7 +2,7 @@ module.exports = Helper;
 
 function Helper() {
     if (!(this instanceof Helper)) return new Helper();
-    this.DATE_FORMAT = 'dd mmm hh:ii';
+    this.DATE_FORMAT = 'dd MM hh:ii';
     return this;
 }
 Helper.prototype.get = function() {

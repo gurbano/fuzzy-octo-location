@@ -14,6 +14,7 @@ function GpsEvent(opts){
 	this.interpolated = opts.interpolated || false;
 	this.next = opts.next || {};
 	this.prev = opts.prev || {};
+	this.skipped = opts.skipped || [];
 	this.type = EventType.POSITION;
 	return this;
 };

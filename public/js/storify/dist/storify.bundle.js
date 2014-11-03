@@ -96,6 +96,7 @@ function GpsEvent(opts){
 	this.interpolated = opts.interpolated || false;
 	this.next = opts.next || {};
 	this.prev = opts.prev || {};
+	this.skipped = opts.skipped || [];
 	this.type = EventType.POSITION;
 	return this;
 };
@@ -106,7 +107,7 @@ module.exports = Helper;
 
 function Helper() {
     if (!(this instanceof Helper)) return new Helper();
-    this.DATE_FORMAT = 'dd mmm hh:ii';
+    this.DATE_FORMAT = 'dd MM hh:ii';
     return this;
 }
 Helper.prototype.get = function() {
@@ -653,6 +654,7 @@ GMapModule.prototype.postInit = function() {
 
     this.bar = this.createTimelineUI('GMapModuleTBar', this.parent);
     this.bar.css('bottom', '50px');
+    
 
     var myDropzone = new Dropzone("div#GMapModuleTBar", {
         url: "/storify/uploadKML"
@@ -686,6 +688,14 @@ GMapModule.prototype.postInit = function() {
         map: this.map
     });
 
+    this.poly = new google.maps.Polyline({
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        path: []
+    });
+    this.poly.setMap(this.map);
+
     return this;
 };
 
@@ -715,7 +725,7 @@ GMapModule.prototype.importKML = function(res, opts) {
             opts: {
                 name: 'interpolator',
                 sensXY: 10, //m
-                sensT: 0.5 * 60 * 60 * 1000// 30 min
+                sensT: 0.5 * 60 * 60 * 1000 // 30 min
             }
         }, {
             func: importer.pp.reducer,
@@ -753,34 +763,46 @@ GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
     var ev = frame.getPositionEvent();
     if (ev) {
-       // console.info('frameTime: ' + helper.dateToString(new Date(ev.end_time)) + ' --- real time: ' + helper.dateToString(new Date(ev.real_time)));
-        
-        //console.info('*****FRAME '+ev.index+' DUMP');
-        //console.info( ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')' );
-        console.info(ev.prev.index + ' ---> ' + ev.index + (ev.interpolated ? '*' : '' ) + ' ---> ' + ev.next.index );
-        //console.info(ev);
         this.marker.setPosition(frame.getPositionEvent().position);
+
 
         if (this.editMode) { //in edit mode just move the mark
 
         } else {
             self.updatePosition(frame.getPositionEvent().position);
-            // this.debounce(
-            //     function() {
-            //         //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
-            //         //console.info(frame.getPosition());
-            //         self.updatePosition(frame.getPositionEvent().position);
-            //     }, 1000 / 33
-            // );
+
         }
     }
 };
 
+
+
 GMapModule.prototype.updatePosition = function(position, opt) {
     var options = opt || {};
-
     this.map.setCenter(position);
 };
+
+
+
+
+
+
+
+
+
+// this.debounce(
+//     function() {
+//         //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+//         //console.info(frame.getPosition());
+//         self.updatePosition(frame.getPositionEvent().position);
+//     }, 1000 / 33
+// );
+
+// console.info('frameTime: ' + helper.dateToString(new Date(ev.end_time)) + ' --- real time: ' + helper.dateToString(new Date(ev.real_time)));
+
+//console.info('*****FRAME '+ev.index+' DUMP');
+//console.info( ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')' );
+//console.info(ev.prev.index + ' ---> ' + ev.index + (ev.interpolated ? '*' : '' ) + ' ---> ' + ev.next.index );
 
 },{"../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./GMapModule/GMapModuleImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule\\GMapModuleImporter.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\GMapModule\\GMapModuleImporter.js":[function(require,module,exports){
 module.exports = GMapModuleImporter;
@@ -849,9 +871,9 @@ function GMapModuleImporter(parent, opts) {
      */
     this.pp.interpolator = function(opts, events) {
         var interpolate = function(ev, pre, post) {
-            var time = (ev.end_time + ev.start_time) /2;
+            var time = (ev.end_time + ev.start_time) / 2;
             var newLat = helper.easeInOutQuad(
-                Number(time- pre.real_time), //elapsed -- steps 
+                Number(time - pre.real_time), //elapsed -- steps 
                 Number(pre.position.lat()), //
                 Number(post.position.lat()) - Number(pre.position.lat()),
                 Number(post.real_time) - Number(pre.real_time)
@@ -875,7 +897,7 @@ function GMapModuleImporter(parent, opts) {
                 var elapsed = ev.next.real_time - ev.prev.real_time;
                 if ((th_meters * ev.scale) <= distance) {
                     if ((th_time) <= elapsed) {
-                        interpolate(ev,ev.prev,ev.next);
+                        interpolate(ev, ev.prev, ev.next);
                     }
                 }
             }
@@ -919,15 +941,23 @@ GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timel
     for (var i = 1; i < frames.length; i++) { //cycle through all frames
         var frameTime = frames[i].time;
         var skipped = 0;
+        var skippedPoints = [];
         for (var y = lastIndex; y < gevents.length; y++) {
+
             var valTime = new Date(gevents[y].when).getTime();
             if (valTime <= frameTime) {
                 skipped++;
+                skippedPoints.push(new google.maps.LatLng(gevents[y].where.lat, gevents[y].where.lng));
             } else {
+                var dist = helper.distance(
+                    new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
+                    new google.maps.LatLng(gevents[y].where.lat, gevents[y].where.lng)
+                ).toFixed(2);
                 lastIndex = y;
                 var real_time = new Date(gevents[lastIndex].when).getTime();
                 var included = between(real_time, frameTime, frameTime + timeline.getMsStep());
                 //found the first event after the frame. add an event with the info from the event before
+
                 var ev = new GpsEvent({
                     position: new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
                     real_time: real_time,
@@ -937,13 +967,9 @@ GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timel
                     start_time: frameTime,
                     end_time: frameTime + timeline.getMsStep(),
                     subtype: '__google',
-                    distance: helper.distance(new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
-                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng)).toFixed(2),
-                    speed: helper.speedKmH(
-                        new google.maps.LatLng(gevents[lastIndex - 1].where.lat, gevents[lastIndex - 1].where.lng),
-                        new google.maps.LatLng(gevents[lastIndex].where.lat, gevents[lastIndex].where.lng),
-                        timeline.getMsStep()
-                    ).toFixed(2)
+                    distance: dist,
+                    speed: (dist / timeline.scale).toFixed(2),
+                    skipped: skippedPoints
                 });
                 ev.postProcessingInfo = [];
                 ev.scale = timeline.scale;
@@ -978,6 +1004,7 @@ function SModule(opts) {
     this.postInit = opts.postInit || this.postInit;
     this.editMode =  opts.editMode || false;
     this.requirement = opts.requirement || [];
+    this.callbacks = opts.callbacks || {};
     return this;
 };
 
@@ -1008,8 +1035,13 @@ SModule.prototype.postInit = function() {
 };
 
 SModule.prototype.onFramePicked = function(frame) {
+    if (this.callbacks && this.callbacks.onFramePicked){
+        this.callbacks.onFramePicked(frame);
+        return;
+    }
     console.warn('default onFramePicked called. is quite strange, isnt it?');
     console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
+    
     return this;
 };
 
@@ -1179,8 +1211,8 @@ TimelineModule.prototype.notify = function() {
             }
         }
         this.$dragger.notify();
-        this.dateDisplay.html(helper.dateToString(new Date(frame.time)));
-        
+        this.dateDisplay.html(helper.dateToString(new Date(frame.time)) + '(' + frame.index + ')');
+
 
         //console.info(frame);
 
@@ -1188,10 +1220,31 @@ TimelineModule.prototype.notify = function() {
     return this;
 };
 
+
+
+TimelineModule.prototype.togglePlay = function() {
+    var self = this; //things are gonna get nasty
+    if (self.playbackTimeout) clearTimeout(self.playbackTimeout); //remove previous timeout
+    if (!self.playback) self.playback = false;
+    self.playback = !self.playback;
+    if (self.playback) {
+        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 500);
+    } else {
+        self.playbackTimeout = null;
+    }
+};
+
+TimelineModule.prototype.autoplay = function() {
+    var self = this; //things are gonna get nasty
+    self.goToFrame(self.current + 1);
+    if (self.playback)
+        self.playbackTimeout = setTimeout(function(){self.autoplay();}, 200);
+};
+
 },{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
-var Helper = require('./Helper.js');
+var helper = require('./Helper.js')();
 var StoryFactory = require('./StoryFactory.js');
 //watchify .\public\js\storify\storify.js -o .\public\js\storify\dist\storify.bundle.js
 
@@ -1237,6 +1290,7 @@ var Wizard = require('./Wizard.js');
 var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var GMapModule = require('./modules/GMapModule.js');
+var SModule = require('./modules/SModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 
@@ -1258,7 +1312,7 @@ var startStorify = function(err, user) {
             timelineOpts: {
                 start: new Date('09/01/2014'),
                 end: new Date('09/02/2014'),
-                scale: 1/10 //1 frame every 1 minutes.
+                scale: 1 //1 frame every 1 minutes.
             },
         }).generate();
         //console.info($.toJSON(story));
@@ -1269,10 +1323,75 @@ var startStorify = function(err, user) {
             UIedit: $('#UI-EDIT'),
             UIview: $('#UI-VIEW')
         });
-        var gmm = new GMapModule(story, {
+        var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
             parent: $('#main')
         }).attachTo(tmm).require(tmm);
 
+        var playback = new SModule({
+            name: 'playback',
+            id: 'PLAYBACK',
+            postInit: function() {
+                console.info('playback  started');
+                $(document).keydown(function(e) {
+                    switch (e.which) {
+                        case 32: //space bar
+                            tmm.togglePlay();
+                            return;
+                        default:
+                            return; // exit this handler for other keys
+                    }
+                    e.preventDefault(); // prevent the default action (scroll / move caret)
+                });
+                return this;
+            }
+        }).require(tmm);
+
+
+        /**/
+        var interpolator = new SModule({
+            name: 'show-interpolation',
+            id: 'SHOW_INTERPOLATION',
+            postInit: function() {
+                console.info('show-interpolation  started');
+                return this;
+            },
+            callbacks: {
+                onFramePicked: function(frame) {
+                    var ev = frame.getPositionEvent();
+
+                    if (ev) {
+                        console.info(ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')');
+                        console.info(ev.position);
+                        if (ev.interpolated) {
+                            gmm.poly.setMap(null); //reset path
+                            gmm.poly = new google.maps.Polyline({
+                                path: [ev.prev.position, ev.next.position],
+                                strokeColor: '#FF0000',
+                                strokeOpacity: 0.6,
+                                strokeWeight: 3
+                            });
+                            gmm.poly.setMap(gmm.map);
+                        } else {
+                            gmm.poly.setMap(null); //reset path
+                            gmm.poly = new google.maps.Polyline({
+                                path: [],
+                                strokeColor: '#000000',
+                                strokeOpacity: 1.0,
+                                strokeWeight: 4
+                            });
+                            if (ev.skipped.length > 0) {
+                                gmm.poly.getPath().push(ev.prev.position);
+                                for (var i = 0; i < ev.skipped.length; i++) {
+                                    gmm.poly.getPath().push(ev.skipped[i]);
+                                };
+                                gmm.poly.getPath().push(ev.position);
+                            }
+                            gmm.poly.setMap(gmm.map);
+                        }
+                    }
+                }
+            }
+        }).attachTo(tmm).require(gmm);
 
         var earthModule = new EarthModule({
             parent: $('#UI-EDIT')
@@ -1290,8 +1409,10 @@ var startStorify = function(err, user) {
 
         var engine = new SEngine().start(
             [ //MODULES
-                tmm,
-                gmm,
+                tmm, //timneline
+                gmm, //google maps
+                playback,
+                interpolator,
                 earthModule,
 
                 postInitializer

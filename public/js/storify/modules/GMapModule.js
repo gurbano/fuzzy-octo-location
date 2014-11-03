@@ -46,6 +46,7 @@ GMapModule.prototype.postInit = function() {
 
     this.bar = this.createTimelineUI('GMapModuleTBar', this.parent);
     this.bar.css('bottom', '50px');
+    
 
     var myDropzone = new Dropzone("div#GMapModuleTBar", {
         url: "/storify/uploadKML"
@@ -79,6 +80,14 @@ GMapModule.prototype.postInit = function() {
         map: this.map
     });
 
+    this.poly = new google.maps.Polyline({
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        path: []
+    });
+    this.poly.setMap(this.map);
+
     return this;
 };
 
@@ -108,7 +117,7 @@ GMapModule.prototype.importKML = function(res, opts) {
             opts: {
                 name: 'interpolator',
                 sensXY: 10, //m
-                sensT: 0.5 * 60 * 60 * 1000// 30 min
+                sensT: 0.5 * 60 * 60 * 1000 // 30 min
             }
         }, {
             func: importer.pp.reducer,
@@ -146,31 +155,43 @@ GMapModule.prototype.onFramePicked = function(frame) {
     var self = this; //things are gonna get nasty
     var ev = frame.getPositionEvent();
     if (ev) {
-       // console.info('frameTime: ' + helper.dateToString(new Date(ev.end_time)) + ' --- real time: ' + helper.dateToString(new Date(ev.real_time)));
-        
-        //console.info('*****FRAME '+ev.index+' DUMP');
-        //console.info( ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')' );
-        console.info(ev.prev.index + ' ---> ' + ev.index + (ev.interpolated ? '*' : '' ) + ' ---> ' + ev.next.index );
-        //console.info(ev);
         this.marker.setPosition(frame.getPositionEvent().position);
+
 
         if (this.editMode) { //in edit mode just move the mark
 
         } else {
             self.updatePosition(frame.getPositionEvent().position);
-            // this.debounce(
-            //     function() {
-            //         //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
-            //         //console.info(frame.getPosition());
-            //         self.updatePosition(frame.getPositionEvent().position);
-            //     }, 1000 / 33
-            // );
+
         }
     }
 };
 
+
+
 GMapModule.prototype.updatePosition = function(position, opt) {
     var options = opt || {};
-
     this.map.setCenter(position);
 };
+
+
+
+
+
+
+
+
+
+// this.debounce(
+//     function() {
+//         //console.info(self.name + '[' + self.id + ']' + ' updated ', frame);
+//         //console.info(frame.getPosition());
+//         self.updatePosition(frame.getPositionEvent().position);
+//     }, 1000 / 33
+// );
+
+// console.info('frameTime: ' + helper.dateToString(new Date(ev.end_time)) + ' --- real time: ' + helper.dateToString(new Date(ev.real_time)));
+
+//console.info('*****FRAME '+ev.index+' DUMP');
+//console.info( ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')' );
+//console.info(ev.prev.index + ' ---> ' + ev.index + (ev.interpolated ? '*' : '' ) + ' ---> ' + ev.next.index );
