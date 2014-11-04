@@ -62,7 +62,7 @@ EarthModuleHardware.prototype.start = function() {
     /*
     CONTROLS
      */
-    self.controls = new THREE.TrackballControls(self.camera);
+    self.controls = new THREE.TrackballControls(self.camera,document.getElementById('UI-VIEW'));
     self.controls.rotateSpeed = 1.0;
     self.controls.zoomSpeed = 1.2;
     self.controls.panSpeed = 0.8;

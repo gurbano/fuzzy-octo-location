@@ -39,6 +39,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
 
     //STARFIELD
     self.addBackground(subscene);
+    self.addLights(subscene);
+
     //EARTH
     self.loadTexture([{
             id: 'planet',
@@ -53,7 +55,7 @@ EarthModuleObjEarth.prototype.start = function(callback) {
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
                 subscene.add(earth);
-                self.addLights(subscene);
+                self.addClouds(earth);
             });
         }
     );
@@ -70,6 +72,22 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     return self;
 };
 
+
+EarthModuleObjEarth.prototype.addClouds = function(scene) {
+    var radius = EARTH_SIZE;
+    var segments = 32;
+    var self = this; //things are gonna get nasty
+    var mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(radius + 5, segments, segments),
+        new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.8
+        })
+    );
+    scene.add(mesh);
+};
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
     var self = this; //things are gonna get nasty
@@ -96,7 +114,7 @@ EarthModuleObjEarth.prototype.loadTexture = function(textures, callback, ret) {
     var self = this; //things are gonna get nasty
 
     ret = ret || {};
-    console.info('Loading textures  [' + ret.lenght + '/' + textures.lenght + ']');
+    console.info('Loading textures  [' + ret.length + '/' + textures.length + ']');
     if (textures.length === 0) {
         callback(ret);
     } else {

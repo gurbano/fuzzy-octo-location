@@ -95,7 +95,7 @@ TimelineModule.prototype.postInit = function() {
     };
     this.$dragger.draggable({
         containment: "parent",
-        drag: function() {
+        drag: function(event) {
             self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
             self.notify();
         },

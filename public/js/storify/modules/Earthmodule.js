@@ -36,7 +36,6 @@ EarthModule.prototype.postInit = function() {
     self.earth = new EARTH(self,{}).start();
     self.engine = new Engine(self,{}).start();
 
-
     return this;
 };
 
