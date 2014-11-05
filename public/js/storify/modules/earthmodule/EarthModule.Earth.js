@@ -42,7 +42,7 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     self.addLights(subscene);
 
     //EARTH
-    self.loadTexture([{
+    hw.loadTexture([{ //Big textures, ask for help from hw module
             id: 'planet',
             file: '/assets/images/nteam/2_no_clouds_4k.jpg'
         }, {
@@ -95,6 +95,8 @@ EarthModuleObjEarth.prototype.addLights = function(scene) {
     self.light.position.set(POS_X_L, POS_Y_L, POS_Z_L);
     self.light.lookAt(POS_X, POS_Y, POS_Z);
     scene.add(self.light);
+
+    scene.add( new THREE.AmbientLight( 0x151515 ) );
 };
 EarthModuleObjEarth.prototype.addBackground = function(scene) {
     var radius = 3500;
@@ -110,22 +112,7 @@ EarthModuleObjEarth.prototype.addBackground = function(scene) {
 };
 
 
-EarthModuleObjEarth.prototype.loadTexture = function(textures, callback, ret) {
-    var self = this; //things are gonna get nasty
 
-    ret = ret || {};
-    console.info('Loading textures  [' + ret.length + '/' + textures.length + ']');
-    if (textures.length === 0) {
-        callback(ret);
-    } else {
-        var id = textures[textures.length - 1].id;
-        var file = textures[textures.length - 1].file;
-        THREE.ImageUtils.loadTexture(file, undefined, function(texture) {
-            ret[id] = texture;
-            self.loadTexture(textures.splice(0, textures.length - 1), callback, ret);
-        });
-    }
-};
 
 EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) {
     var self = this;

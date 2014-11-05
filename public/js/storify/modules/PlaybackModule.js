@@ -66,7 +66,7 @@ PlayBackModule.prototype.postInit = function() {
     });
     return this;
 }
-PlayBackModule.prototype.onFramePicked = function(frame) {
+PlayBackModule.prototype.consume = function(frame) {
     var self = this; //things are gonna get nasty
     var ev = frame.getPositionEvent();
 

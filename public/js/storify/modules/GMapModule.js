@@ -165,7 +165,7 @@ GMapModule.prototype.adjustSize = function() {
 };
 
 
-GMapModule.prototype.onFramePicked = function(frame) {
+GMapModule.prototype.consume = function(frame) {
     var self = this; //things are gonna get nasty
     var ev = frame.getPositionEvent();
     if (ev) {

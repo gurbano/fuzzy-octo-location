@@ -26,34 +26,19 @@ inherits(EarthModule, SModule);
 var HW = require("./earthmodule/EarthModule.Hardware.js");
 var SM = require("./earthmodule/EarthModule.SceneManager.js");
 var EARTH = require("./earthmodule/EarthModule.Earth.js");
-var Engine = require("./earthmodule/EarthModule.Engine.js");
+var Ticker = require("./earthmodule/EarthModule.RAFProducer.js");
+
 /*SUBMODULES*/
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
-    self.hw  = new HW(self,{}).start();
-    self.sm  = new SM(self,{}).start();
-    self.earth = new EARTH(self,{}).start();
-    self.engine = new Engine(self,{}).start();
+    self.hw = new HW(self, {}).start();
+    self.sm = new SM(self, {}).start();
+    self.earth = new EARTH(self, {}).start();
+    self.ticker = new Ticker(self, {}, function(earthmodule) {
+        earthmodule.hw.renderer.render(earthmodule.sm.scene, earthmodule.hw.camera);
+        earthmodule.hw.controls.update();
+    }).start();
 
     return this;
-};
-
-EarthModule.prototype.requestRender = function() {
-
-};
-
-EarthModule.prototype.adjustSize = function() {
-
-};
-
-
-EarthModule.prototype.onFramePicked = function(frame) {
-    var self = this; //things are gonna get nasty
-
-};
-
-EarthModule.prototype.onRender = function(frame) {
-    var self = this; //things are gonna get nasty
-
 };

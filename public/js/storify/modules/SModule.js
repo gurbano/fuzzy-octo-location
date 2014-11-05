@@ -16,6 +16,9 @@ function SModule(opts) {
     this.callbacks = opts.callbacks || {};
     this.UIedit = $("<div  id='UIedit_" + this.name + "'></div>");
     this.UIview = $("<div  id='UIview_" + this.name + "'></div>");
+
+    this.consumers = [];
+
     return this;
 };
 
@@ -64,37 +67,40 @@ SModule.prototype.updateStatus = function() {
     }
 };
 
-SModule.prototype.onFramePicked = function(frame) {
-    if (this.callbacks && this.callbacks.onFramePicked) {
-        this.callbacks.onFramePicked(frame);
+
+
+SModule.prototype.produce = function() {
+    console.warn('default [produce] called by ' + this.name+ '. is quite strange, isnt it?');
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume({});
+    };
+};
+
+SModule.prototype.consume = function(obj) {
+    if (this.callbacks && this.callbacks.consume) { //Hookup to anonymous consumers passed in options
+        this.callbacks.consume(obj);
         return;
     }
-    console.warn('default onFramePicked called. is quite strange, isnt it?');
-    console.info(this.name + '[' + this.id + ']' + ' updated ', frame);
+    console.warn('default [consume] called. is quite strange, isnt it?');
+    console.info(this.name + '[' + this.id + ']' + ' updated ', obj);
 
     return this;
 };
-
-SModule.prototype.debounce = function(callback, delay) {
-    this.lastCall = this.lastCall || 0;
-    var now = new Date().getTime();
-    if (now - this.lastCall > delay) {
-        callback();
-        this.lastCall = now;
-    }
-};
-
-SModule.prototype.attach = function(module) {
-    this.listeners = this.listeners || [];
-    this.listeners.push(module);
+SModule.prototype.addConsumer = function(module) {
+    this.consumers.push(module);
     return this;
 };
-SModule.prototype.attachTo = function(target) {
-    target.attach(this);
+SModule.prototype.addProducer = function(source) {
+    source.addConsumer(this);
     return this;
 };
+
+
+
+
+
+
 SModule.prototype.require = function(id, target) {
-    //target.attach(this);
     this.requirement[id] = target;
     return this;
 };
@@ -102,6 +108,8 @@ SModule.prototype.required = function(id) {
     if (!this.requirement[id]) console.error(id + ' required by ' + this.name);
     return this.requirement[id];
 };
+
+
 SModule.prototype.createTimelineUI = function(id, parent) {
     this.$timeline = $($('<div id="' + id + '" class="module_timeline"></div>'));
     parent.append(this.$timeline);

@@ -62,53 +62,43 @@ var startStorify = function(err, user) {
     } else {
 
         var story = new StoryFactory({
-            title: 'USA',
-            description: '#Roadtrip #California #Nevada #Burningman',
+            title: '1 Year of earthquakes',
+            description: '#earthquake',
             timelineOpts: {
                 start: new Date('01/01/2014'),
                 end: new Date('1/1/2015'),
                 scale: 1 * 60 //1 frame every ora
             },
         }).generate();
-        //console.info($.toJSON(story));
         console.info(story);
 
-        /*CREATE MODULES*/
-        /*SOURCES*/
-        /*TIMELINE*/
-        var tmm = new TimelineModule(story, {
-            enabled: true
-        });
-        /*EDIT*/
-        /*VIEW*/
-        var earthModule = new EarthModule({
-            parent: $('#main'),
-            enabled: true
-        }).attachTo(tmm);
+
+        /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
+        var getModules = function() {
+                var tmm = new TimelineModule(story, {
+                    enabled: true
+                }); //Timeline module. (producer)
+                var earthModule = new EarthModule({
+                        parent: $('#main'),
+                        enabled: true
+                    }) //Earth module, display 3d earth 
+                    .addProducer(tmm).require('tmm', tmm); //Consumer
+                var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
+                    parent: $('#main'),
+                    enabled: false
+                }).addProducer(tmm).require('tmm', tmm);
+
+                return [ //MODULES
+                    earthModule,
+                    tmm, //timneline                
+                    //gmm
+                ];
+
+            };
+            /*START THE ENGINE*/
+        var engine = new SEngine().start(getModules(), {});
 
 
-        var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
-            parent: $('#main'),
-            enabled: false
-        }).attachTo(tmm).require('tmm', tmm);
-        /*POSTINIZIALIZER*/
-        var postInitializer = new SModule({
-            name: 'onTheRockModule',
-            id: 'ONTHEROCK',
-            postInit: function() {
-                console.info('All modules started');
-                return this;
-            }
-        });
-
-        var engine = new SEngine().start(
-            [ //MODULES
-                earthModule,
-                tmm, //timneline                
-                //gmm,
-                postInitializer // anonymous module on complete
-            ]
-        );
 
     }
 };

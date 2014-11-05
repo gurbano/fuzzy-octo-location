@@ -48,7 +48,7 @@ DisplayPathModule.prototype.addPath = function(map, points, color) {
     pol.setMap(map);
     gmm.polys.push(pol);
 };
-DisplayPathModule.prototype.onFramePicked = function(frame) {
+DisplayPathModule.prototype.consume = function(frame) {
     var self = this; //things are gonna get nasty
     var gmm = this.required('gmm');
     var ev = frame.getPositionEvent();

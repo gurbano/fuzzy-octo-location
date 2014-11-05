@@ -6,22 +6,21 @@ var smartresize = require('../Smartresize.js');
 module.exports = TimelineModule;
 
 /**
- * GMAP MODULE
- * !!! DOM NOT READY YET WHEN CALLED
- * manages integration with google maps
+ * Timeline module. -- PRODUCER --
+ * Create a timeline UI interface
+ *
  *
  * @param {Object} opts
  */
 function TimelineModule(story, opts) {
     if (!(this instanceof TimelineModule)) return new TimelineModule(opts);
-    opts = helper.extend({
+    this.opts = helper.extend({
         name: 'TimelineModule',
-        id: 'GMAP'
+        id: 'TMM'
     }, opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, opts);
     this.current = 0; //index of the current frame
-    this.listeners = [];
     this.story = story; //story.js object
     var self = this; //things are gonna get nasty
     $(document).keydown(function(e) {
@@ -45,14 +44,8 @@ function TimelineModule(story, opts) {
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
     });
-
-
-
     return this;
 }
-
-
-
 inherits(TimelineModule, SModule);
 
 
@@ -68,16 +61,16 @@ TimelineModule.prototype.postInit = function() {
     this.$timeline = $($('<div class="module_timeline"></div>'));
     this.$timeline.show();
     this.$dragger = $($('<div class="draggable"></div>'));
-    this.$timeline.append(this.$dragger);
-
-
-    this.UIedit.append(this.$timeline);
-
-
+    this.$timeline.append(this.$dragger);    
+    if (this.opts.switchUI && this.opts.switchUI===true){
+        this.UIview.append(this.$timeline);
+    }else{
+        this.UIedit.append(this.$timeline);
+    }
+    
     this._bk = 0;
-
     $(window).smartresize(function() {
-        self.$dragger.notify();
+        self.$dragger.refresh();
     });
     this.$dragger.getMaxPx = function() {
         return (self.$timeline.width() - self.$dragger.width());
@@ -89,7 +82,7 @@ TimelineModule.prototype.postInit = function() {
         var offset = (percentage / 100) * self.$dragger.getMaxPx();
         self.$dragger.css('left', offset);
     };
-    this.$dragger.notify = function() {
+    this.$dragger.refresh = function() {
         var index = self.current;
         self.$dragger.setPosition(self.story.timeline.getPercAtFrame(self.current, 10)); //In case the frame is changed,update position
     };
@@ -97,44 +90,36 @@ TimelineModule.prototype.postInit = function() {
         containment: "parent",
         drag: function(event) {
             self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
-            self.notify();
+            self.produce();
         },
         stop: function() {
             self.current = self.story.timeline.getFrameAtPerc(self.$dragger.getPosition()).index;
-            self.notify();
+            self.produce();
         }
     });
-
     this.dateDisplay = $("<span></span>");
     this.$dragger.append(this.dateDisplay);
-
     return this;
 };
 TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
     var self = this; //things are gonna get nasty
     self.current = Math.max(0, Math.min(index, self.story.timeline.steps - 1));;
-    self.notify();
+    self.produce();
 };
 TimelineModule.prototype.pickFrame = function() {
     var self = this; //things are gonna get nasty
     return self.story.timeline.frames[self.current];
 };
 
-TimelineModule.prototype.notify = function() {
+TimelineModule.prototype.produce = function() {
     var frame = this.pickFrame();
     if (frame) {
-        for (var i = 0; i < this.listeners.length; i++) {
-            var listener = this.listeners[i];
-            if (listener.onFramePicked) {
-                listener.onFramePicked(frame);
-            }
+        for (var i = 0; i < this.consumers.length; i++) {
+            var listener = this.consumers[i];
+            listener.consume(frame, 'FRAME');
         }
-        this.$dragger.notify();
+        this.$dragger.refresh();
         this.dateDisplay.html(helper.dateToString(new Date(frame.time)) + '(' + frame.index + ')');
-
-
-        //console.info(frame);
-
     }
     return this;
 };

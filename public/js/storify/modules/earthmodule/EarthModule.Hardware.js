@@ -1,4 +1,5 @@
 var helper = require('../../Helper.js')();
+var smartresize = require('../../Smartresize.js');
 
 module.exports = EarthModuleHardware;
 
@@ -32,9 +33,9 @@ function EarthModuleHardware(parent, opts) {
 
 /**
  * init
- * 		this.renderer
- * 		this.camera
- * 		this.controls
+ *  this.renderer
+ *  this.camera
+ *  this.controls
  * @return {[type]} [description]
  */
 EarthModuleHardware.prototype.start = function() {
@@ -62,7 +63,7 @@ EarthModuleHardware.prototype.start = function() {
     /*
     CONTROLS
      */
-    self.controls = new THREE.TrackballControls(self.camera,document.getElementById('UI-VIEW'));
+    self.controls = new THREE.TrackballControls(self.camera, document.getElementById('UI-VIEW'));
     self.controls.rotateSpeed = 1.0;
     self.controls.zoomSpeed = 1.2;
     self.controls.panSpeed = 0.8;
@@ -77,9 +78,35 @@ EarthModuleHardware.prototype.start = function() {
     self.controls.maxDistance = 4000;
 
     self.controls.keys = [65, 83, 68];
-    self.controls.addEventListener('change', function() {
-        self.parent.requestRender();
-    });
+    $(window).smartresize(function onWindowResize() {
+        canvas.width(window.innerWidth);
+        canvas.height(window.innerHeight);
+        var w = canvas.width();
+        var h = canvas.height();
 
+        self.camera.aspect = w / h;
+        self.camera.updateProjectionMatrix();
+
+        self.renderer.setSize(w, h);
+
+    });
     return self;
+};
+
+
+EarthModuleHardware.prototype.loadTexture = function(textures, callback, ret) {
+    var self = this; //things are gonna get nasty
+
+    ret = ret || {};
+    console.info('[Loading textures: '+textures.length+' remaining]');
+    if (textures.length === 0) {
+        callback(ret);
+    } else {
+        var id = textures[textures.length - 1].id;
+        var file = textures[textures.length - 1].file;
+        THREE.ImageUtils.loadTexture(file, undefined, function(texture) {
+            ret[id] = texture;
+            self.loadTexture(textures.splice(0, textures.length - 1), callback, ret);
+        });
+    }
 };
