@@ -14,7 +14,7 @@ module.exports = TimelineModule;
  */
 function TimelineModule(story, opts) {
     if (!(this instanceof TimelineModule)) return new TimelineModule(opts);
-    this.opts = helper.extend({
+    opts = helper.extend({
         name: 'TimelineModule',
         id: 'TMM'
     }, opts);
@@ -44,6 +44,7 @@ function TimelineModule(story, opts) {
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
     });
+    this.opts = opts;
     return this;
 }
 inherits(TimelineModule, SModule);
@@ -99,7 +100,12 @@ TimelineModule.prototype.postInit = function() {
     });
     this.dateDisplay = $("<span></span>");
     this.$dragger.append(this.dateDisplay);
+
+
+   this.goToFrame(0);
     return this;
+
+
 };
 TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
     var self = this; //things are gonna get nasty

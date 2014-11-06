@@ -9,14 +9,14 @@ module.exports = PlayBackModule;
 
 function PlayBackModule(opts) {
     if (!(this instanceof PlayBackModule)) return new PlayBackModule(opts);
-     opts = helper.extend({
-            name: 'PlayBackModule',
-            id: 'PlayBackModule'
+    opts = helper.extend({
+        name: 'PlayBackModule',
+        id: 'PlayBackModule'
     }, opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, opts);
 
-
+    this.opts = opts;
     return this;
 }
 
@@ -36,12 +36,15 @@ PlayBackModule.prototype.postInit = function() {
             modal: false,
             width: 400,
             height: 150,
-            position: {top: '90%', left:'0px'}
+            position: {
+                top: '90%',
+                left: '0px'
+            }
         },
         this.UIview); //parent div
     this.win.width($(window).width());
 
-    $(window).smartresize(function(){
+    $(window).smartresize(function() {
         self.win.width($(window).width());
     });
     this.win.$content.append(
@@ -52,12 +55,12 @@ PlayBackModule.prototype.postInit = function() {
     );
 
 
-    
+
 
     $(document).keydown(function(e) {
         switch (e.which) {
             case 32: //space bar
-               
+
                 return;
             default:
                 return; // exit this handler for other keys

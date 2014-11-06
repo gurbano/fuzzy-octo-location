@@ -54,3 +54,4 @@ UISwitcherModule.prototype.postInit = function() {
     );
     return this;
 };
+

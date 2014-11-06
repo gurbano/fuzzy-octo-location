@@ -47,7 +47,7 @@ var SModule = require('./modules/SModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 
-var GMapModule = require('./modules/GMapModule.js');
+var KMLImporter = require('./modules/KMLImporter.js');
 
 
 var startStorify = function(err, user) {
@@ -66,7 +66,7 @@ var startStorify = function(err, user) {
             description: '#earthquake',
             timelineOpts: {
                 start: new Date('01/01/2014'),
-                end: new Date('1/1/2015'),
+                end: new Date('2/1/2014'),
                 scale: 1 * 60 //1 frame every ora
             },
         }).generate();
@@ -75,29 +75,61 @@ var startStorify = function(err, user) {
 
         /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
         var getModules = function() {
-                var tmm = new TimelineModule(story, {
-                    enabled: true
-                }); //Timeline module. (producer)
-                var earthModule = new EarthModule({
-                        parent: $('#main'),
-                        enabled: true
-                    }) //Earth module, display 3d earth 
-                    .addProducer(tmm).require('tmm', tmm); //Consumer
-                var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
+            var tmm = new TimelineModule(story, {
+                enabled: true
+            }); //Timeline module. (producer)
+
+            var earthModule = new EarthModule({
                     parent: $('#main'),
-                    enabled: false
-                }).addProducer(tmm).require('tmm', tmm);
+                    enabled: true,
+                    timeLineProducer: tmm,
+                    dataProducer: undefined
+                }) //create THREE.JS environment, scene manager, scene etc.etc
+                //.addProducer(tmm)
+                .require('tmm', tmm); //Consumer
 
-                return [ //MODULES
-                    earthModule,
-                    tmm, //timneline                
-                    //gmm
-                ];
 
-            };
-            /*START THE ENGINE*/
+            var tmmListener = new SModule({
+                enabled: true,
+                name: 'tmmListener',
+                callbacks: {
+                    postInit: function() {
+                        $('#UI-EDIT').prepend('<div class="button raised grey" style="width:200px;height:30px;position:absolute;margin-left:-100px;top:50px;left:50%;text-align:center;" id="__clock"></div>');
+                    },
+                    consume: function(frame) {
+                        $('#__clock').html(helper.msToString(frame.time));
+                    }
+                }
+            }).addProducer(tmm);
+
+            var renderListener = new SModule({
+                enabled: true,
+                name: 'renderListener',
+                callbacks: {
+                    consume: function(frameCount) {
+                        console.info(frameCount);
+                    }
+                }
+            }).addProducer(earthModule);
+
+            var importer = new KMLImporter(story, {
+                enabled : true
+            });
+
+            return [ //MODULES
+                earthModule,
+                tmm, //timneline 
+                tmmListener,
+                renderListener,
+                importer
+                //gmm
+            ];
+
+        };
+        /*START THE ENGINE*/
         var engine = new SEngine().start(getModules(), {});
 
+        helper.setUIModes(true,true);//view and edit window
 
 
     }

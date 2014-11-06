@@ -1,4 +1,4 @@
-module.exports = GMapModuleImporter;
+module.exports = KMLService;
 var helper = require('../../Helper.js')();
 /**
  * GMAP MODULE
@@ -9,7 +9,7 @@ var helper = require('../../Helper.js')();
  */
 var LOCAL = {};
 
-function GMapModuleImporter(parent, opts) {
+function KMLService(parent, opts) {
     var self = this; //things are gonna get nasty
     this.parent = parent;
 
@@ -106,7 +106,7 @@ function GMapModuleImporter(parent, opts) {
     return self;
 }
 var GpsEvent = require('../../GpsEvent.js');
-GMapModuleImporter.prototype.importGoogleLocation = function(opts, values, timeline) {
+KMLService.prototype.importGoogleLocation = function(opts, values, timeline) {
     var self = this; //things are gonna get nasty
     var events = [];
     var lastIndex = 0;

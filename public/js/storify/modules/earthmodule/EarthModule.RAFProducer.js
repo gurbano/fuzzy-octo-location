@@ -15,6 +15,7 @@ function EarthModuleRAFProducer(parent, opts, _loop) {
     this.loop = _loop || function(earthModule) {
         console.warn('No game loop???');
     };
+    this.frameCounter = 0;
     this.parent = parent;
     return this;
 }
@@ -40,8 +41,13 @@ EarthModuleRAFProducer.prototype.start = function() {
 EarthModuleRAFProducer.prototype.render = function(parent) {
     var self = this; //things are gonna get nasty
     this.produce();
-    this.loop(parent);
+    this.loop(this.frameCounter ++, parent);// call the loop function injected by the parent
     requestAnimationFrame(function() {
         self.render(parent);
     });
+};
+EarthModuleRAFProducer.prototype.produce = function(framecount) {
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume(framecount);
+    };
 };

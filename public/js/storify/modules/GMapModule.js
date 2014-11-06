@@ -30,6 +30,7 @@ function GMapModule(story, opts) {
     };
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
     this.story = story; //story.js object
+    this.opts = opts;
     return this;
 }
 
@@ -43,39 +44,8 @@ GMapModule.prototype.postInit = function() {
     this.adjustSize();
     this.map = new google.maps.Map(document.getElementById('map-canvas'), this.mapOptions);
 
-    //this.bar = this.createTimelineUI('GMapModuleTBar', this.UIedit);
-    //this.bar.css('bottom', '50px');
 
-    this.win = this.createModalWindow(
-        'Google Location Import Tool', // Title
-        { //options
-            id: 'GMapModuleTBar',
-            content: '<p style="font-size:0.8em">Drop KML here</p>', //html to be displayed
-            resizable: false,
-            modal: true,
-            width: 200,
-            height: 150,
-            position: {
-                top: '20px',
-                left: '10px'
-            }
-        },
-        this.UIedit); //parent div
 
-    var myDropzone = new Dropzone("div#GMapModuleTBar", {
-        url: "/storify/uploadKML"
-    });
-    myDropzone.on("success", function(file, res) {
-        //console.info(res);
-        self.importKML(res);
-    });
-    myDropzone.on("complete", function(file) {
-
-    });
-    myDropzone.on("uploadprogress", function(file, progress) {
-
-    });
-    this.drop = myDropzone;
     var center;
 
     function calculateCenter() {
@@ -83,77 +53,19 @@ GMapModule.prototype.postInit = function() {
     }
     google.maps.event.addDomListener(this.map, 'idle', function() {
         calculateCenter();
-        //console.info('idle', center);
     });
     $(window).smartresize(function() {
         self.map.setCenter(center);
-        //console.info('resize', center);
     });
     this.marker = new google.maps.Marker({
         position: this.mapOptions.center,
         map: this.map
     });
-
-    this.poly = new google.maps.Polyline({
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-        path: []
-    });
-    this.poly.setMap(this.map);
-
     return this;
 };
 
 
-var GMapModuleImporter = require('./GMapModule/GMapModuleImporter.js');
-GMapModule.prototype.importKML = function(res, opts) {
-    var start = new Date(res.start)
-    var end = new Date(res.end)
-    if (this.story.timeline.start.getTime() > start.getTime()) {
-        //console.info('need to extend start', this.story.timeline.start, start);
-        this.story.timeline.extend(start, this.story.timeline.end);
-    }
-    if (this.story.timeline.end.getTime() < end.getTime()) {
-        //console.info('need to extend end', this.story.timeline.end, end);
-        this.story.timeline.extend(this.story.timeline.start, end);
-    }
-    console.info('Importing events ', res);
-    var importer = new GMapModuleImporter(this);
-    var events = importer.importGoogleLocation({
-        postProcessing: [{
-            func: importer.pp.fixNeighbours,
-            opts: {
-                name: 'fixNeighbours'
-            }
-        }, {
-            func: importer.pp.interpolator,
-            opts: {
-                name: 'interpolator',
-                sensXY: 10, //m
-                sensT: 0.5 * 60 * 60 * 1000 // 30 min
-            }
-        }, {
-            func: importer.pp.reducer,
-            opts: {
-                name: 'reducer'
-            }
-        }]
-    }, res, this.story.timeline); //timeline is needed to get infos about frame, scale etc.etc.
 
-    var real = 0;
-    var num = 0;
-    var interpolated = 0;
-    for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        this.story.timeline.addEvent(event);
-        num++;
-        if (event.isReal) real++;
-        if (event.interpolated) interpolated++;
-    };
-    console.info('**********END IMPORT KML************');
-    console.info(this.story.timeline);
-};
 
 GMapModule.prototype.adjustSize = function() {
     var $elector = this.$elector;

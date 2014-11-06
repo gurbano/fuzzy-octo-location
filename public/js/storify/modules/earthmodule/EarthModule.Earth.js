@@ -3,11 +3,11 @@ var helper = require('../../Helper.js')();
 var EARTH_SIZE = 600;
 var POS_X = 0;
 var POS_Y = 0;
-var POS_Z = 2800;
+var POS_Z = 0;
 
-var POS_X_L = 120800;
+var POS_X_L = 12080;
 var POS_Y_L = 0;
-var POS_Z_L = 120800;
+var POS_Z_L = 12080;
 
 module.exports = EarthModuleObjEarth;
 
@@ -54,6 +54,7 @@ EarthModuleObjEarth.prototype.start = function(callback) {
         }, ],
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
+                self.earthMesh = earth; //mesh
                 subscene.add(earth);
                 self.addClouds(earth);
             });
@@ -95,9 +96,21 @@ EarthModuleObjEarth.prototype.addLights = function(scene) {
     self.light.position.set(POS_X_L, POS_Y_L, POS_Z_L);
     self.light.lookAt(POS_X, POS_Y, POS_Z);
     scene.add(self.light);
-
-    scene.add( new THREE.AmbientLight( 0x151515 ) );
+    scene.add(new THREE.AmbientLight(0x151515));
+    this.addSun(scene);
 };
+
+EarthModuleObjEarth.prototype.addSun = function(scene) {
+    var self = this; //things are gonna get nasty
+    var geometry = new THREE.SphereGeometry(EARTH_SIZE*10, 32, 16);
+    var material = new THREE.MeshLambertMaterial({
+        color: 0xffffff
+    });
+    mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(POS_X_L, POS_Y_L, POS_Z_L);
+};
+
+
 EarthModuleObjEarth.prototype.addBackground = function(scene) {
     var radius = 3500;
     var segments = 32;
@@ -133,3 +146,17 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
 
     callback(mesh);
 };
+
+
+EarthModuleObjEarth.prototype.setEarthRotation = function(degree) {
+    if (this.earthMesh)
+        this.earthMesh.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
+};
+
+/*
+
+mesh.rotation.x += 1;                      // Rotates   1 radian  per frame
+mesh.rotation.x += Math.PI / 180;          // Rotates   1 degree  per frame
+mesh.rotation.x += 45 * Math.PI / 180      // Rotates  45 degrees per frame
+
+ */

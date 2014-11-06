@@ -16,6 +16,7 @@ function ModulesManager(opts) {
     /*CALL SUPERCLASS*/
     SModule.call(this, opts);
     this.parent = opts.parent; // where the UI will be displayed 
+    this.opts = opts;
     return this;
 }
 

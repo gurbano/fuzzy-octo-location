@@ -17,7 +17,7 @@ function DisplayPathModule(opts) {
     SModule.call(this, opts);
 
     this.parent = opts.parent; // where the map will be displayed
-
+    this.opts = opts;
     return this;
 }
 

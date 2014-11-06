@@ -33,10 +33,10 @@ Helper.prototype.deepCopy = function(oldObject) {
 Helper.prototype.shallowCopy = function(oldObject) {
     return $.extend({}, oldObject);
 };
-Helper.prototype.random = function(min,max) {
+Helper.prototype.random = function(min, max) {
     return Math.random() * (max - min) + min;
 };
-Helper.prototype.randomInt = function(min,max) {
+Helper.prototype.randomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 Helper.prototype.extend = function(a, b) {
@@ -105,3 +105,14 @@ Helper.prototype.easeInOutQuad = function(t, b, c, d) {
     var ts = t - d / 2;
     return -2 * c * ts * ts / (d * d) + 2 * c * ts / d + c / 2 + b;
 }
+
+
+Helper.prototype.setUIModes = function(view, edit) {
+    if (edit && !$('#UI-EDIT').hasClass('active')) {
+        $('#UI-EDIT').addClass('active');
+    };
+    if (view && !$('#UI-VIEW').hasClass('active')) {
+        $('#UI-VIEW').addClass('active');
+    };
+
+};

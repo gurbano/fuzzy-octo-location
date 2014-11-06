@@ -3,8 +3,9 @@ var inherits = require('inherits');
 var helper = require('../Helper.js')();
 
 function SModule(opts) {
+    opts = opts || {};
     if (!(this instanceof SModule)) return new SModule(opts);
-    opts = helper.extend({}, opts);
+    this.opts = helper.extend({}, opts);
     /*Common ops*/
     this.started = false;
     this.enabled = opts.enabled || false;
@@ -47,6 +48,9 @@ SModule.prototype.start = function(callback) {
 };
 
 SModule.prototype.postInit = function() {
+    if (this.callbacks && this.callbacks.postInit) {
+        return this.callbacks.postInit();
+    }
     console.warn('default post init called. is quite strange, isnt it?');
     console.info(this.name + '[' + this.id + ']' + ' started');
     return this;
@@ -70,7 +74,7 @@ SModule.prototype.updateStatus = function() {
 
 
 SModule.prototype.produce = function() {
-    console.warn('default [produce] called by ' + this.name+ '. is quite strange, isnt it?');
+    console.warn('default [produce] called by ' + this.name + '. is quite strange, isnt it?');
     for (var i = 0; i < this.consumers.length; i++) {
         this.consumers[i].consume({});
     };
@@ -78,12 +82,9 @@ SModule.prototype.produce = function() {
 
 SModule.prototype.consume = function(obj) {
     if (this.callbacks && this.callbacks.consume) { //Hookup to anonymous consumers passed in options
-        this.callbacks.consume(obj);
-        return;
+        return this.callbacks.consume(obj);
     }
-    console.warn('default [consume] called. is quite strange, isnt it?');
-    console.info(this.name + '[' + this.id + ']' + ' updated ', obj);
-
+    console.warn(this.name + ' default [consume] called. is quite strange, isnt it?', obj);
     return this;
 };
 SModule.prototype.addConsumer = function(module) {
@@ -181,4 +182,21 @@ SModule.prototype.createModalWindow = function(title, opts, parent) {
     win.$content = content;
 
     return win;
+};
+
+/**
+ * Create an anon consumer module, to excecute a 
+ * @param  {Function} callback [description]
+ * @param  {[type]}   producer [description]
+ * @return {[type]}            [description]
+ */
+SModule.prototype.bindToProducer = function(callback, producer) {
+    var self = this; //things are gonna get nasty
+    return new SModule({
+        callbacks: {
+            id: self.id + '_' + producer.id,
+            name: 'bridge',
+            consume: callback
+        }
+    }).addProducer(producer);
 };
