@@ -15,7 +15,7 @@ var EARTH_SIZE = 600;
 
 var FOV = 45;
 var NEAR = 1;
-var FAR = 400000;
+var FAR = 400000 *1000000;
 var CLEAR_HEX_COLOR = 0x000000;
 
 var CAMERA_SPEED = 0.009;

@@ -1,5 +1,5 @@
 var Timeline = require('./Timeline.js');
-var Helper = require('./Helper.js');
+var helper = require('./Helper.js')();
 module.exports = Story;
 
 
@@ -32,13 +32,14 @@ module.exports = Story;
  * @param {[type]} opts [description]
  */
 function Story(opts){
-	if (!(this instanceof Story)) return new Story(opts);
-	this.helper = new Helper();
-	this.timeline = opts.timeline || new Timeline(opts.timelineOpts || {});
-	this.title = opts.title || 'untitled story';
-	this.description = opts.description || 'new story to be filled';
-	this.author = opts.author || -1;
-	this.participants = opts.participants || [];
-	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
+	this.opts = helper.extend({}, opts);
+	if (!(this instanceof Story)) return new Story(this.opts);
+	this.helper = helper;
+	this.timeline = this.opts.timeline || new Timeline(this.opts.timelineOpts || {});
+	this.title = this.opts.title || 'untitled story';
+	this.description = this.opts.description || 'new story to be filled';
+	this.author = this.opts.author || -1;
+	this.participants = this.opts.participants || [];
+	this.createdOn = this.opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }

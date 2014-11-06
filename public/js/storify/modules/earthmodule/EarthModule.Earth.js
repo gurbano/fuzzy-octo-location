@@ -55,6 +55,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
                 self.earthMesh = earth; //mesh
+                self.earthMesh.castShadow = false;
+                self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
                 self.addClouds(earth);
             });
@@ -84,27 +86,43 @@ EarthModuleObjEarth.prototype.addClouds = function(scene) {
             map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
             color: 0xffffff,
             transparent: true,
-            opacity: 0.8
+            opacity: 1,
         })
     );
     scene.add(mesh);
+    self.clouds = mesh;
+    mesh.castShadow = true;
+    mesh.receiveShadow = false;
 };
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
-    var self = this; //things are gonna get nasty
-    self.light = new THREE.DirectionalLight(0xffaaaa, 1);
-    self.light.position.set(POS_X_L, POS_Y_L, POS_Z_L);
-    self.light.lookAt(POS_X, POS_Y, POS_Z);
-    scene.add(self.light);
     scene.add(new THREE.AmbientLight(0x151515));
-    this.addSun(scene);
+
+    var sun = new THREE.DirectionalLight(0xffaaaa, 1);
+    sun.position.set(POS_X_L, POS_Y_L, POS_Z_L);
+    sun.lookAt(POS_X, POS_Y, POS_Z);
+    sun.castShadow = true;
+    sun.shadowCameraVisible = false; //set true to see shadow frustum
+    sun.intensity = 0.8;
+    sun.shadowCameraNear = 1000;
+    sun.shadowCameraFar = 250000000;
+    sun.shadowBias = 0.0001;
+    sun.shadowDarkness = 0.35;
+    sun.shadowMapWidth = 1024; //512px by default
+    sun.shadowMapHeight = 1024; //512px by default
+    scene.add(sun);
+
+    this.sun = sun;
+    //this.addSun(scene);
 };
 
 EarthModuleObjEarth.prototype.addSun = function(scene) {
     var self = this; //things are gonna get nasty
-    var geometry = new THREE.SphereGeometry(EARTH_SIZE*10, 32, 16);
-    var material = new THREE.MeshLambertMaterial({
-        color: 0xffffff
+    var geometry = new THREE.SphereGeometry(EARTH_SIZE * 10, 32, 16);
+    var material = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        transparent: false,
+        opacity: 1,
     });
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(POS_X_L, POS_Y_L, POS_Z_L);
@@ -151,6 +169,19 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
 EarthModuleObjEarth.prototype.setEarthRotation = function(degree) {
     if (this.earthMesh)
         this.earthMesh.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
+};
+
+
+/*
+    var POS_X_L = 12080;
+var POS_Y_L = 0;
+var POS_Z_L = 12080;
+ */
+EarthModuleObjEarth.prototype.setSunRotation = function(degree, vec) {
+    if (this.sun){
+        this.sun.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
+        this.sun.lookAt(POS_X, POS_Y, POS_Z);
+    }
 };
 
 /*

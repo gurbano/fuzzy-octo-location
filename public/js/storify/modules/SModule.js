@@ -95,6 +95,22 @@ SModule.prototype.addProducer = function(source) {
     source.addConsumer(this);
     return this;
 };
+/**
+ * Create an anon consumer module, to excecute a 
+ * @param  {Function} callback [description]
+ * @param  {[type]}   producer [description]
+ * @return {[type]}            [description]
+ */
+SModule.prototype.bindToProducer = function(callback, producer) {
+    var self = this; //things are gonna get nasty
+    return new SModule({
+        callbacks: {
+            id: self.id + '_' + producer.id,
+            name: 'bridge',
+            consume: callback
+        }
+    }).addProducer(producer);
+};
 
 
 
@@ -184,19 +200,3 @@ SModule.prototype.createModalWindow = function(title, opts, parent) {
     return win;
 };
 
-/**
- * Create an anon consumer module, to excecute a 
- * @param  {Function} callback [description]
- * @param  {[type]}   producer [description]
- * @return {[type]}            [description]
- */
-SModule.prototype.bindToProducer = function(callback, producer) {
-    var self = this; //things are gonna get nasty
-    return new SModule({
-        callbacks: {
-            id: self.id + '_' + producer.id,
-            name: 'bridge',
-            consume: callback
-        }
-    }).addProducer(producer);
-};

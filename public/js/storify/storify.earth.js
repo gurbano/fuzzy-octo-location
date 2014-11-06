@@ -46,7 +46,6 @@ var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
-
 var KMLImporter = require('./modules/KMLImporter.js');
 
 
@@ -75,20 +74,42 @@ var startStorify = function(err, user) {
 
         /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
         var getModules = function() {
+
+            //timeline module: create the bar with the slider 
             var tmm = new TimelineModule(story, {
                 enabled: true
-            }); //Timeline module. (producer)
+            }); 
+            //create a kml importer. modify the story object
+            var importer = new KMLImporter(story, {
+                enabled: true
+            });
 
+            //display a rotating earth.
+            //postInit customization:
+            //      -- bind to timeline event: rotate earth according to the date
+            //      -- bind to (its own) render cycle: rotate clouds //test purpose
             var earthModule = new EarthModule({
-                    parent: $('#main'),
-                    enabled: true,
-                    timeLineProducer: tmm,
-                    dataProducer: undefined
-                }) //create THREE.JS environment, scene manager, scene etc.etc
-                //.addProducer(tmm)
-                .require('tmm', tmm); //Consumer
+                parent: $('#main'),
+                enabled: true,
+                callbacks: {
+                    postInit: function() {
+                        earthModule.bindToProducer(function(frame) { //BINDED TO TIMELINE CONTROLS
+                            var h = ((frame.time / (1000 * 60 * 60)).toFixed(0));
+                            var deg = (h % 24) * 15;
+                            //earthModule.earth.setEarthRotation(deg);
+                            earthModule.earth.setSunRotation(deg);
+                        }, tmm);
+                        earthModule.bindToProducer(function(framecount) {
+                            if (earthModule.earth.clouds) {
+                                earthModule.earth.clouds.rotation.y +=   (34/30000);
+                                earthModule.earth.clouds.rotation.x +=   (8/30000);
+                            }
+                        }, earthModule);
+                    }
+                }
+            }); //create THREE.JS environment, scene manager, scene etc.etc
 
-
+            /*CLOCK ON TOP*/
             var tmmListener = new SModule({
                 enabled: true,
                 name: 'tmmListener',
@@ -107,29 +128,26 @@ var startStorify = function(err, user) {
                 name: 'renderListener',
                 callbacks: {
                     consume: function(frameCount) {
-                        console.info(frameCount);
+                        //console.info(frameCount);
                     }
                 }
             }).addProducer(earthModule);
 
-            var importer = new KMLImporter(story, {
-                enabled : true
-            });
 
+            
             return [ //MODULES
-                earthModule,
-                tmm, //timneline 
+                earthModule,                 
                 tmmListener,
                 renderListener,
-                importer
-                //gmm
+                importer,
+                tmm                
             ];
 
         };
         /*START THE ENGINE*/
         var engine = new SEngine().start(getModules(), {});
 
-        helper.setUIModes(true,true);//view and edit window
+        helper.setUIModes(true, true); //view and edit window
 
 
     }

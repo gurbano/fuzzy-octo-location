@@ -252,7 +252,7 @@ Helper.prototype.setUIModes = function(view, edit) {
 })(jQuery,'smartresize');
 },{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
-var Helper = require('./Helper.js');
+var helper = require('./Helper.js')();
 module.exports = Story;
 
 
@@ -285,14 +285,15 @@ module.exports = Story;
  * @param {[type]} opts [description]
  */
 function Story(opts){
-	if (!(this instanceof Story)) return new Story(opts);
-	this.helper = new Helper();
-	this.timeline = opts.timeline || new Timeline(opts.timelineOpts || {});
-	this.title = opts.title || 'untitled story';
-	this.description = opts.description || 'new story to be filled';
-	this.author = opts.author || -1;
-	this.participants = opts.participants || [];
-	this.createdOn = opts.createdOn || this.helper.dateToString(new Date());
+	this.opts = helper.extend({}, opts);
+	if (!(this instanceof Story)) return new Story(this.opts);
+	this.helper = helper;
+	this.timeline = this.opts.timeline || new Timeline(this.opts.timelineOpts || {});
+	this.title = this.opts.title || 'untitled story';
+	this.description = this.opts.description || 'new story to be filled';
+	this.author = this.opts.author || -1;
+	this.participants = this.opts.participants || [];
+	this.createdOn = this.opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
 },{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
@@ -453,14 +454,6 @@ function EarthModule(opts) {
     SModule.call(this, opts);
     this.canvas = opts.parent; // where the canvas will be displayed
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
-    this.bindToProducer(function(frame) {   //BINDED TO TIMELINE CONTROLS
-        var h = ((frame.time/(1000*60*60)).toFixed(0));
-        var deg = (h%24)*15;
-        self.earth.setEarthRotation(deg);
-    }, opts.timeLineProducer || new SModule());
-    //this.bindToProducer(function() {
-    //
-    //   }, opts.dataProducer || new SModule());
     this.opts = opts;
     return this;
 }
@@ -480,9 +473,6 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
-
-    console.info(this.opts);
-
     /*Create a ticker:
         1 - run the loop passed as arguments ()
         
@@ -493,16 +483,17 @@ EarthModule.prototype.postInit = function() {
         function(framecount, earthmodule) { //main loop. 
             earthmodule.hw.renderer.render(earthmodule.sm.scene, earthmodule.hw.camera);
             earthmodule.hw.controls.update();
-            this.produce(framecount);
+            self.produce(framecount);
         }).start();
-
+    if (this.opts.callbacks && this.opts.callbacks.postInit) {
+        this.opts.callbacks.postInit();
+    }
     return this;
 };
 
 EarthModule.prototype.produce = function(framecount) {
-    debugger;
     for (var i = 0; i < this.consumers.length; i++) {
-        this.consumers[i].consume(framecount);
+        this.consumers[i].consume(framecount,'FRAMECOUNT');
     };
 };
 
@@ -722,6 +713,22 @@ SModule.prototype.addProducer = function(source) {
     source.addConsumer(this);
     return this;
 };
+/**
+ * Create an anon consumer module, to excecute a 
+ * @param  {Function} callback [description]
+ * @param  {[type]}   producer [description]
+ * @return {[type]}            [description]
+ */
+SModule.prototype.bindToProducer = function(callback, producer) {
+    var self = this; //things are gonna get nasty
+    return new SModule({
+        callbacks: {
+            id: self.id + '_' + producer.id,
+            name: 'bridge',
+            consume: callback
+        }
+    }).addProducer(producer);
+};
 
 
 
@@ -811,22 +818,6 @@ SModule.prototype.createModalWindow = function(title, opts, parent) {
     return win;
 };
 
-/**
- * Create an anon consumer module, to excecute a 
- * @param  {Function} callback [description]
- * @param  {[type]}   producer [description]
- * @return {[type]}            [description]
- */
-SModule.prototype.bindToProducer = function(callback, producer) {
-    var self = this; //things are gonna get nasty
-    return new SModule({
-        callbacks: {
-            id: self.id + '_' + producer.id,
-            name: 'bridge',
-            consume: callback
-        }
-    }).addProducer(producer);
-};
 
 },{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
@@ -1044,6 +1035,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
                 self.earthMesh = earth; //mesh
+                self.earthMesh.castShadow = false;
+                self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
                 self.addClouds(earth);
             });
@@ -1073,27 +1066,43 @@ EarthModuleObjEarth.prototype.addClouds = function(scene) {
             map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
             color: 0xffffff,
             transparent: true,
-            opacity: 0.8
+            opacity: 1,
         })
     );
     scene.add(mesh);
+    self.clouds = mesh;
+    mesh.castShadow = true;
+    mesh.receiveShadow = false;
 };
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
-    var self = this; //things are gonna get nasty
-    self.light = new THREE.DirectionalLight(0xffaaaa, 1);
-    self.light.position.set(POS_X_L, POS_Y_L, POS_Z_L);
-    self.light.lookAt(POS_X, POS_Y, POS_Z);
-    scene.add(self.light);
     scene.add(new THREE.AmbientLight(0x151515));
-    this.addSun(scene);
+
+    var sun = new THREE.DirectionalLight(0xffaaaa, 1);
+    sun.position.set(POS_X_L, POS_Y_L, POS_Z_L);
+    sun.lookAt(POS_X, POS_Y, POS_Z);
+    sun.castShadow = true;
+    sun.shadowCameraVisible = false; //set true to see shadow frustum
+    sun.intensity = 0.8;
+    sun.shadowCameraNear = 1000;
+    sun.shadowCameraFar = 250000000;
+    sun.shadowBias = 0.0001;
+    sun.shadowDarkness = 0.35;
+    sun.shadowMapWidth = 1024; //512px by default
+    sun.shadowMapHeight = 1024; //512px by default
+    scene.add(sun);
+
+    this.sun = sun;
+    //this.addSun(scene);
 };
 
 EarthModuleObjEarth.prototype.addSun = function(scene) {
     var self = this; //things are gonna get nasty
-    var geometry = new THREE.SphereGeometry(EARTH_SIZE*10, 32, 16);
-    var material = new THREE.MeshLambertMaterial({
-        color: 0xffffff
+    var geometry = new THREE.SphereGeometry(EARTH_SIZE * 10, 32, 16);
+    var material = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        transparent: false,
+        opacity: 1,
     });
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(POS_X_L, POS_Y_L, POS_Z_L);
@@ -1142,6 +1151,19 @@ EarthModuleObjEarth.prototype.setEarthRotation = function(degree) {
         this.earthMesh.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
 };
 
+
+/*
+    var POS_X_L = 12080;
+var POS_Y_L = 0;
+var POS_Z_L = 12080;
+ */
+EarthModuleObjEarth.prototype.setSunRotation = function(degree, vec) {
+    if (this.sun){
+        this.sun.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
+        this.sun.lookAt(POS_X, POS_Y, POS_Z);
+    }
+};
+
 /*
 
 mesh.rotation.x += 1;                      // Rotates   1 radian  per frame
@@ -1168,7 +1190,7 @@ var EARTH_SIZE = 600;
 
 var FOV = 45;
 var NEAR = 1;
-var FAR = 400000;
+var FAR = 400000 *1000000;
 var CLEAR_HEX_COLOR = 0x000000;
 
 var CAMERA_SPEED = 0.009;
@@ -1683,7 +1705,6 @@ var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
-
 var KMLImporter = require('./modules/KMLImporter.js');
 
 
@@ -1712,20 +1733,42 @@ var startStorify = function(err, user) {
 
         /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
         var getModules = function() {
+
+            //timeline module: create the bar with the slider 
             var tmm = new TimelineModule(story, {
                 enabled: true
-            }); //Timeline module. (producer)
+            }); 
+            //create a kml importer. modify the story object
+            var importer = new KMLImporter(story, {
+                enabled: true
+            });
 
+            //display a rotating earth.
+            //postInit customization:
+            //      -- bind to timeline event: rotate earth according to the date
+            //      -- bind to (its own) render cycle: rotate clouds //test purpose
             var earthModule = new EarthModule({
-                    parent: $('#main'),
-                    enabled: true,
-                    timeLineProducer: tmm,
-                    dataProducer: undefined
-                }) //create THREE.JS environment, scene manager, scene etc.etc
-                //.addProducer(tmm)
-                .require('tmm', tmm); //Consumer
+                parent: $('#main'),
+                enabled: true,
+                callbacks: {
+                    postInit: function() {
+                        earthModule.bindToProducer(function(frame) { //BINDED TO TIMELINE CONTROLS
+                            var h = ((frame.time / (1000 * 60 * 60)).toFixed(0));
+                            var deg = (h % 24) * 15;
+                            //earthModule.earth.setEarthRotation(deg);
+                            earthModule.earth.setSunRotation(deg);
+                        }, tmm);
+                        earthModule.bindToProducer(function(framecount) {
+                            if (earthModule.earth.clouds) {
+                                earthModule.earth.clouds.rotation.y +=   (34/30000);
+                                earthModule.earth.clouds.rotation.x +=   (8/30000);
+                            }
+                        }, earthModule);
+                    }
+                }
+            }); //create THREE.JS environment, scene manager, scene etc.etc
 
-
+            /*CLOCK ON TOP*/
             var tmmListener = new SModule({
                 enabled: true,
                 name: 'tmmListener',
@@ -1744,29 +1787,26 @@ var startStorify = function(err, user) {
                 name: 'renderListener',
                 callbacks: {
                     consume: function(frameCount) {
-                        console.info(frameCount);
+                        //console.info(frameCount);
                     }
                 }
             }).addProducer(earthModule);
 
-            var importer = new KMLImporter(story, {
-                enabled : true
-            });
 
+            
             return [ //MODULES
-                earthModule,
-                tmm, //timneline 
+                earthModule,                 
                 tmmListener,
                 renderListener,
-                importer
-                //gmm
+                importer,
+                tmm                
             ];
 
         };
         /*START THE ENGINE*/
         var engine = new SEngine().start(getModules(), {});
 
-        helper.setUIModes(true,true);//view and edit window
+        helper.setUIModes(true, true); //view and edit window
 
 
     }

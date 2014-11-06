@@ -25,14 +25,6 @@ function EarthModule(opts) {
     SModule.call(this, opts);
     this.canvas = opts.parent; // where the canvas will be displayed
     this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
-    this.bindToProducer(function(frame) {   //BINDED TO TIMELINE CONTROLS
-        var h = ((frame.time/(1000*60*60)).toFixed(0));
-        var deg = (h%24)*15;
-        self.earth.setEarthRotation(deg);
-    }, opts.timeLineProducer || new SModule());
-    //this.bindToProducer(function() {
-    //
-    //   }, opts.dataProducer || new SModule());
     this.opts = opts;
     return this;
 }
@@ -52,9 +44,6 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
-
-    console.info(this.opts);
-
     /*Create a ticker:
         1 - run the loop passed as arguments ()
         
@@ -65,16 +54,17 @@ EarthModule.prototype.postInit = function() {
         function(framecount, earthmodule) { //main loop. 
             earthmodule.hw.renderer.render(earthmodule.sm.scene, earthmodule.hw.camera);
             earthmodule.hw.controls.update();
-            this.produce(framecount);
+            self.produce(framecount);
         }).start();
-
+    if (this.opts.callbacks && this.opts.callbacks.postInit) {
+        this.opts.callbacks.postInit();
+    }
     return this;
 };
 
 EarthModule.prototype.produce = function(framecount) {
-    debugger;
     for (var i = 0; i < this.consumers.length; i++) {
-        this.consumers[i].consume(framecount);
+        this.consumers[i].consume(framecount,'FRAMECOUNT');
     };
 };
 
