@@ -222,6 +222,24 @@ Helper.prototype.setUIModes = function(view, edit) {
 
 };
 
+
+
+/**/
+
+Helper.prototype.interpolate = function(val, min, max, new_min, new_max) {
+    //         (b - a)(x - min)
+    // f(x) = -- -- -- -- -- -- -- + a
+    //             max - min
+    //             
+
+    var fx = new_min + (((new_max-new_min)*(val - min))/(max - min))
+    return fx;
+};
+Helper.prototype.dayOfTheYear = function(date) {
+    var j1 = new Date(date);
+    j1.setMonth(0, 0);
+    return Math.round((date - j1) / 8.64e7);
+}
 },{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
 (function($,sr){
 
@@ -426,7 +444,49 @@ SEngine.prototype.start = function(modules) { //modules contains class name !!!!
 	
 	return this;
 };
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js":[function(require,module,exports){
+},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\CustomClickModule.js":[function(require,module,exports){
+var SModule = require('././SModule.js');
+var inherits = require('inherits');
+var smartresize = require('.././Smartresize.js');
+var helper = require('.././Helper.js')();
+var EventType = require('.././EventType.js');
+
+module.exports = CustomClickModule;
+
+
+function CustomClickModule(delay, opts) {
+    if (!(this instanceof CustomClickModule)) return new CustomClickModule(opts);
+    this.opts = helper.extend({
+        name: 'CustomClickModule',
+        id: 'CustomClickModule'
+    }, opts);
+    /*CALL SUPERCLASS*/
+    SModule.call(this, this.opts);
+    this.delay = delay;
+    return this;
+}
+
+inherits(CustomClickModule, SModule);
+
+CustomClickModule.prototype.postInit = function() {
+    var self = this; //things are gonna get nasty
+    console.info('CustomClickModule started');
+    this.timeout = setTimeout(function(){
+    	self.produce.call(self)
+    }, self.delay);
+};
+CustomClickModule.prototype.produce = function() {
+	var self = this; //things are gonna get nasty
+	self.consumers = self.consumers || [];
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume({});
+    };
+     this.timeout = setTimeout(function(){
+    	self.produce.call(self)
+    }, self.delay);
+};
+
+},{".././EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js",".././Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js",".././Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","././SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js":[function(require,module,exports){
 var SModule = require('./SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../Smartresize.js');
@@ -934,6 +994,16 @@ TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
     self.current = Math.max(0, Math.min(index, self.story.timeline.steps - 1));;
     self.produce();
 };
+TimelineModule.prototype.nextFrame = function() { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(self.current + 1, self.story.timeline.steps - 1));;
+    self.produce();
+};
+TimelineModule.prototype.prevFrame = function() { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(self.current -1 , self.story.timeline.steps - 1));;
+    self.produce();
+};
 TimelineModule.prototype.pickFrame = function() {
     var self = this; //things are gonna get nasty
     return self.story.timeline.frames[self.current];
@@ -985,9 +1055,9 @@ var POS_X = 0;
 var POS_Y = 0;
 var POS_Z = 0;
 
-var POS_X_L = 12080;
+var POS_X_L = 3000;
 var POS_Y_L = 0;
-var POS_Z_L = 12080;
+var POS_Z_L = 3000;
 
 module.exports = EarthModuleObjEarth;
 
@@ -1017,9 +1087,10 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     console.info('creating subscene', scene);
     var subscene = new THREE.Scene();
 
+
+
     //STARFIELD
-    self.addBackground(subscene);
-    self.addLights(subscene);
+
 
     //EARTH
     hw.loadTexture([{ //Big textures, ask for help from hw module
@@ -1035,6 +1106,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
         function(textures) { //asyncWay, earth is added once textures are loaded
             self.createEarth(subscene, textures, function(earth) {
                 self.earthMesh = earth; //mesh
+                self.addBackground(subscene);
+                self.addLights(subscene);
                 self.earthMesh.castShadow = false;
                 self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
@@ -1042,18 +1115,13 @@ EarthModuleObjEarth.prototype.start = function(callback) {
             });
         }
     );
-
-
-
-
-
-
     //add subscene to the main scene
     self.subscene = subscene;
     scene.add(self.subscene);
     console.info('added planet earth', scene);
     return self;
 };
+
 
 
 EarthModuleObjEarth.prototype.addClouds = function(scene) {
@@ -1077,7 +1145,6 @@ EarthModuleObjEarth.prototype.addClouds = function(scene) {
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
     scene.add(new THREE.AmbientLight(0x151515));
-
     var sun = new THREE.DirectionalLight(0xffaaaa, 1);
     sun.position.set(POS_X_L, POS_Y_L, POS_Z_L);
     sun.lookAt(POS_X, POS_Y, POS_Z);
@@ -1089,13 +1156,26 @@ EarthModuleObjEarth.prototype.addLights = function(scene) {
     sun.shadowBias = 0.0001;
     sun.shadowDarkness = 0.35;
     sun.shadowMapWidth = 1024; //512px by default
-    sun.shadowMapHeight = 1024; //512px by default
-    scene.add(sun);
-
+    sun.shadowMapHeight = 1024; //512px by default    
     this.sun = sun;
+    scene.add(this.sun);
+
     //this.addSun(scene);
 };
+EarthModuleObjEarth.prototype.createDebugLine = function() {
 
+    var material = new THREE.LineBasicMaterial({
+        color: 0xfdfff00
+    });
+    if (this.sun && this.earthMesh) {
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(this.sun.position);
+        geometry.vertices.push(this.earthMesh.position);
+        if (this.line) this.subscene.remove(this.line);
+        this.line = new THREE.Line(geometry, material);
+        this.subscene.add(this.line);
+    }
+}
 EarthModuleObjEarth.prototype.addSun = function(scene) {
     var self = this; //things are gonna get nasty
     var geometry = new THREE.SphereGeometry(EARTH_SIZE * 10, 32, 16);
@@ -1136,7 +1216,7 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
         new THREE.MeshPhongMaterial({
             map: textures['planet'], //THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
             bumpMap: textures['bump'], //THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-            bumpScale: 0.005,
+            bumpScale: 0.50,
             specularMap: textures['specular'], //THREE.ImageUtils.loadTexture('images/water_4k.png'),
             specular: new THREE.Color('grey')
         })
@@ -1157,9 +1237,47 @@ EarthModuleObjEarth.prototype.setEarthRotation = function(degree) {
 var POS_Y_L = 0;
 var POS_Z_L = 12080;
  */
-EarthModuleObjEarth.prototype.setSunRotation = function(degree, vec) {
-    if (this.sun){
-        this.sun.rotation.y = degree * Math.PI / 180 // Rotates  45 degrees per frame
+EarthModuleObjEarth.prototype.setSunPosition = function(__date) {
+    if (this.sun) {
+        var date = new Date(__date);
+        var d = helper.dayOfTheYear(date);
+        var dayOfTheYear = (d - 91 + 365) % 365;
+        var l = 1800;
+        var seasons = [{
+            limit: [0, 91],
+            angle: [0, l],
+            id: 'A'
+        }, {
+            limit: [92, 172],
+            angle: [l, 0],
+            id: 'B'
+        }, {
+            limit: [173, 266],
+            angle: [0, -l],
+            id: 'C'
+        }, {
+            limit: [266, 365],
+            angle: [-l, 0],
+            id: 'D'
+        }];
+        var tilt = 0;
+        for (var i = 0; i < seasons.length; i++) {
+            var limit = seasons[i].limit;
+            var angle = seasons[i].angle;
+            if (dayOfTheYear >= limit[0] && dayOfTheYear < limit[1]) {
+                tilt = helper.interpolate(dayOfTheYear + (date.getHours() / 24), limit[0], limit[1], angle[0], angle[1]);
+                //console.info(seasons[i].id, d, dayOfTheYear, tilt.toFixed(0));
+                break;
+            }
+        };
+
+
+
+        var rev_degree = -(((__date / (1000 * 60 * 60)) + 6) % 24) * (360 / 24)
+        var tilt_deg = tilt;
+
+
+        this.sun.position.set(Math.sin(rev_degree * Math.PI / 180) * POS_X_L, tilt_deg, POS_Z_L * Math.cos(rev_degree * Math.PI / 180));
         this.sun.lookAt(POS_X, POS_Y, POS_Z);
     }
 };
@@ -1181,10 +1299,6 @@ module.exports = EarthModuleHardware;
 var POS_X = 0;
 var POS_Y = 0;
 var POS_Z = 2800;
-
-var POS_X_L = 120800;
-var POS_Y_L = 0;
-var POS_Z_L = 120800;
 
 var EARTH_SIZE = 600;
 
@@ -1249,8 +1363,8 @@ EarthModuleHardware.prototype.start = function() {
     self.controls.staticMoving = false;
     self.controls.dynamicDampingFactor = 0.3;
 
-    self.controls.minDistance = 1200;
-    self.controls.maxDistance = 4000;
+    self.controls.minDistance = EARTH_SIZE + EARTH_SIZE/100;
+    self.controls.maxDistance = 400000;
 
     self.controls.keys = [65, 83, 68];
     $(window).smartresize(function onWindowResize() {
@@ -1665,7 +1779,7 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    var goSocial = true;
+    var goSocial = false;
     if (goSocial) {
         GLOBALS.usm.start(false)
             .login({
@@ -1703,6 +1817,7 @@ var Story = require('./Story.js');
 var StoryFactory = require('./StoryFactory.js');
 var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
+var CustomClickModule = require('./modules/CustomClickModule.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 var KMLImporter = require('./modules/KMLImporter.js');
@@ -1723,9 +1838,9 @@ var startStorify = function(err, user) {
             title: '1 Year of earthquakes',
             description: '#earthquake',
             timelineOpts: {
-                start: new Date('01/01/2014'),
-                end: new Date('2/1/2014'),
-                scale: 1 * 60 //1 frame every ora
+                start: new Date('01/01/2014 00:00'),
+                end: new Date('01/01/2015 00:00'),
+                scale: 1  //1 frame ogni minuto
             },
         }).generate();
         console.info(story);
@@ -1734,82 +1849,93 @@ var startStorify = function(err, user) {
         /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
         var getModules = function() {
 
+
             //timeline module: create the bar with the slider 
             var tmm = new TimelineModule(story, {
                 enabled: true
-            }); 
-            //create a kml importer. modify the story object
-            var importer = new KMLImporter(story, {
-                enabled: true
             });
-
-            //display a rotating earth.
-            //postInit customization:
-            //      -- bind to timeline event: rotate earth according to the date
-            //      -- bind to (its own) render cycle: rotate clouds //test purpose
-            var earthModule = new EarthModule({
-                parent: $('#main'),
-                enabled: true,
+            var fps33 = new CustomClickModule(1000 / 66  , {
+                enabled: true
+            }); //call produce approx 33 times per second
+            var player = new SModule({enabled: true,
+                name: 'autoPlayer',
                 callbacks: {
-                    postInit: function() {
-                        earthModule.bindToProducer(function(frame) { //BINDED TO TIMELINE CONTROLS
-                            var h = ((frame.time / (1000 * 60 * 60)).toFixed(0));
-                            var deg = (h % 24) * 15;
-                            //earthModule.earth.setEarthRotation(deg);
-                            earthModule.earth.setSunRotation(deg);
-                        }, tmm);
-                        earthModule.bindToProducer(function(framecount) {
-                            if (earthModule.earth.clouds) {
-                                earthModule.earth.clouds.rotation.y +=   (34/30000);
-                                earthModule.earth.clouds.rotation.x +=   (8/30000);
-                            }
-                        }, earthModule);
-                    }
-                }
-            }); //create THREE.JS environment, scene manager, scene etc.etc
-
-            /*CLOCK ON TOP*/
-            var tmmListener = new SModule({
-                enabled: true,
-                name: 'tmmListener',
-                callbacks: {
-                    postInit: function() {
-                        $('#UI-EDIT').prepend('<div class="button raised grey" style="width:200px;height:30px;position:absolute;margin-left:-100px;top:50px;left:50%;text-align:center;" id="__clock"></div>');
+                    consume: function() {
+                        tmm.nextFrame();
                     },
-                    consume: function(frame) {
-                        $('#__clock').html(helper.msToString(frame.time));
-                    }
                 }
-            }).addProducer(tmm);
+            }).addProducer(fps33);
 
-            var renderListener = new SModule({
-                enabled: true,
-                name: 'renderListener',
-                callbacks: {
-                    consume: function(frameCount) {
-                        //console.info(frameCount);
-                    }
+        //create a kml importer. modify the story object
+        var importer = new KMLImporter(story, {
+            enabled: true
+        });
+
+        //display a rotating earth.
+        //postInit customization:
+        //      -- bind to timeline event: rotate earth according to the date
+        //      -- bind to (its own) render cycle: rotate clouds //test purpose
+        var earthModule = new EarthModule({
+            parent: $('#main'),
+            enabled: true,
+            callbacks: {
+                postInit: function() {
+                    earthModule.bindToProducer(function(frame) { //BINDED TO TIMELINE CONTROLS
+                        earthModule.earth.setSunPosition(new Date(frame.time));
+                        //earthModule.earth.createDebugLine();
+                    }, tmm);
+                    earthModule.bindToProducer(function(framecount) {
+                        if (earthModule.earth.clouds) {
+                            earthModule.earth.clouds.rotation.y += (34 / 30000);
+                            earthModule.earth.clouds.rotation.x += (8 / 30000);
+                        }
+                    }, earthModule);
                 }
-            }).addProducer(earthModule);
+            }
+        }); //create THREE.JS environment, scene manager, scene etc.etc
+
+        /*CLOCK ON TOP*/
+        var dateDisplayer = new SModule({
+            enabled: true,
+            name: 'dateDisplayer',
+            callbacks: {
+                postInit: function() {
+                    $('#UI-EDIT').prepend('<div class="button raised grey" style="width:200px;height:30px;position:absolute;margin-left:-100px;top:50px;left:50%;text-align:center;" id="__clock"></div>');
+                },
+                consume: function(frame) {
+                    $('#__clock').html(helper.msToString(frame.time));
+                }
+            }
+        }).addProducer(tmm);
+
+        var renderListener = new SModule({
+            enabled: true,
+            name: 'renderListener',
+            callbacks: {
+                consume: function(frameCount) {
+                    //called every time one of his producers call the render function
+                }
+            }
+        }).addProducer(earthModule);
 
 
-            
-            return [ //MODULES
-                earthModule,                 
-                tmmListener,
-                renderListener,
-                importer,
-                tmm                
-            ];
 
-        };
-        /*START THE ENGINE*/
-        var engine = new SEngine().start(getModules(), {});
+        return [ //MODULES
+            earthModule,
+            dateDisplayer,
+            renderListener,
+            importer,
+            tmm,
+            fps33,
+            player
+        ];
 
-        helper.setUIModes(true, true); //view and edit window
+    };
+    /*START THE ENGINE*/
+    var engine = new SEngine().start(getModules(), {});
 
-
-    }
+    helper.setUIModes(true, true); //view and edit window
+}
 };
 
-},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/Earthmodule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/KMLImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\KMLImporter.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.earth.js"]);
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/CustomClickModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\CustomClickModule.js","./modules/Earthmodule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/KMLImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\KMLImporter.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.earth.js"]);

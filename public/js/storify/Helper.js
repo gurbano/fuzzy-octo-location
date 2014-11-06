@@ -116,3 +116,22 @@ Helper.prototype.setUIModes = function(view, edit) {
     };
 
 };
+
+
+
+/**/
+
+Helper.prototype.interpolate = function(val, min, max, new_min, new_max) {
+    //         (b - a)(x - min)
+    // f(x) = -- -- -- -- -- -- -- + a
+    //             max - min
+    //             
+
+    var fx = new_min + (((new_max-new_min)*(val - min))/(max - min))
+    return fx;
+};
+Helper.prototype.dayOfTheYear = function(date) {
+    var j1 = new Date(date);
+    j1.setMonth(0, 0);
+    return Math.round((date - j1) / 8.64e7);
+}

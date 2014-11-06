@@ -7,10 +7,6 @@ var POS_X = 0;
 var POS_Y = 0;
 var POS_Z = 2800;
 
-var POS_X_L = 120800;
-var POS_Y_L = 0;
-var POS_Z_L = 120800;
-
 var EARTH_SIZE = 600;
 
 var FOV = 45;
@@ -74,8 +70,8 @@ EarthModuleHardware.prototype.start = function() {
     self.controls.staticMoving = false;
     self.controls.dynamicDampingFactor = 0.3;
 
-    self.controls.minDistance = 1200;
-    self.controls.maxDistance = 4000;
+    self.controls.minDistance = EARTH_SIZE + EARTH_SIZE/100;
+    self.controls.maxDistance = 400000;
 
     self.controls.keys = [65, 83, 68];
     $(window).smartresize(function onWindowResize() {

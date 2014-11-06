@@ -112,6 +112,16 @@ TimelineModule.prototype.goToFrame = function(index) { //TODO: implementare bene
     self.current = Math.max(0, Math.min(index, self.story.timeline.steps - 1));;
     self.produce();
 };
+TimelineModule.prototype.nextFrame = function() { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(self.current + 1, self.story.timeline.steps - 1));;
+    self.produce();
+};
+TimelineModule.prototype.prevFrame = function() { //TODO: implementare bene
+    var self = this; //things are gonna get nasty
+    self.current = Math.max(0, Math.min(self.current -1 , self.story.timeline.steps - 1));;
+    self.produce();
+};
 TimelineModule.prototype.pickFrame = function() {
     var self = this; //things are gonna get nasty
     return self.story.timeline.frames[self.current];
