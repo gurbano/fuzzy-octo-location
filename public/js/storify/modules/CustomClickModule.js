@@ -8,7 +8,7 @@ module.exports = CustomClickModule;
 
 
 function CustomClickModule(delay, opts) {
-    if (!(this instanceof CustomClickModule)) return new CustomClickModule(opts);
+    if (!(this instanceof CustomClickModule)) return new CustomClickModule(delay,opts);
     this.opts = helper.extend({
         name: 'CustomClickModule',
         id: 'CustomClickModule'

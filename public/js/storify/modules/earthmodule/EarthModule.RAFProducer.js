@@ -6,7 +6,7 @@ module.exports = EarthModuleRAFProducer;
 
 
 function EarthModuleRAFProducer(parent, opts, _loop) {
-    if (!(this instanceof EarthModuleRAFProducer)) return new EarthModuleRAFProducer(opts);
+    if (!(this instanceof EarthModuleRAFProducer)) return new EarthModuleRAFProducer(parent, opts, _loop);
     opts = helper.extend({
         name: 'EarthModuleRAFProducer',
         id: 'EarthModuleRAFProducer'

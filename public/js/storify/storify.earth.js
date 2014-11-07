@@ -76,14 +76,11 @@ var startStorify = function(err, user) {
         /*SHOULD BE MOVED IN A CONFIGURATION MODULE*/
         var getModules = function() {
 
-
             //timeline module: create the bar with the slider 
             var tmm = new TimelineModule(story, {
                 enabled: true
             });
-            var fps33 = new CustomClickModule(1000 / 66  , {
-                enabled: true
-            }); //call produce approx 33 times per second
+            var fps33 = new CustomClickModule(1000 / 66  , {enabled: true}); //call produce approx 33 times per second
             var player = new SModule({enabled: true,
                 name: 'autoPlayer',
                 callbacks: {

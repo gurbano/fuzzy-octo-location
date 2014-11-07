@@ -3,7 +3,7 @@ var helper = require('../../Helper.js')();
 module.exports = EarthModuleSceneManager;
 
 function EarthModuleSceneManager(parent, opts) {
-    if (!(this instanceof EarthModuleSceneManager)) return new EarthModuleSceneManager(opts);
+    if (!(this instanceof EarthModuleSceneManager)) return new EarthModuleSceneManager(parent, opts);
     opts = helper.extend({
         name: 'EarthModuleSceneManager',
         id: 'EarthModuleSceneManager'

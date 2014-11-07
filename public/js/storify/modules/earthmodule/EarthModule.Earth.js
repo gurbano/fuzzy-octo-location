@@ -1,5 +1,6 @@
 var helper = require('../../Helper.js')();
 
+
 var EARTH_SIZE = 600;
 var POS_X = 0;
 var POS_Y = 0;
@@ -12,7 +13,7 @@ var POS_Z_L = 3000;
 module.exports = EarthModuleObjEarth;
 
 function EarthModuleObjEarth(parent, opts) {
-    if (!(this instanceof EarthModuleObjEarth)) return new EarthModuleObjEarth(opts);
+    if (!(this instanceof EarthModuleObjEarth)) return new EarthModuleObjEarth(parent, opts);
     opts = helper.extend({
         name: 'EarthModuleObjEarth',
         id: 'EarthModuleObjEarth'
@@ -33,12 +34,14 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     var self = this; //things are gonna get nasty
     var parent = self.parent;
     var hw = parent.hw;
-    var scene = parent.sm.scene;
+    var sm = parent.sm;
+    var scene = sm.scene;
     console.info('creating subscene', scene);
     var subscene = new THREE.Scene();
 
+    
 
-
+    
     //STARFIELD
 
 
@@ -62,6 +65,9 @@ EarthModuleObjEarth.prototype.start = function(callback) {
                 self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
                 self.addClouds(earth);
+
+
+
             });
         }
     );
@@ -159,8 +165,6 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
     var self = this;
     var geo = new THREE.SphereGeometry(EARTH_SIZE, 50, 50);
     geo.position = new THREE.Vector3(0, 0, 0);
-
-
     var mesh = new THREE.Mesh(
         geo,
         new THREE.MeshPhongMaterial({

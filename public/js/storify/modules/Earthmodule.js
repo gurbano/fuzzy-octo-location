@@ -35,6 +35,7 @@ var HW = require("./earthmodule/EarthModule.Hardware.js");
 var SM = require("./earthmodule/EarthModule.SceneManager.js");
 var EARTH = require("./earthmodule/EarthModule.Earth.js");
 var EarthModuleRAFProducer = require("./earthmodule/EarthModule.RAFProducer.js");
+var EarthModuleCameraPostProcessor = require('./earthmodule/EarthModule.CameraPostProcessor.js');
 
 /*SUBMODULES*/
 EarthModule.prototype.postInit = function() {
@@ -44,18 +45,19 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
+    var pp = new EarthModuleCameraPostProcessor(self, self.sm.scene, self.hw.camera, self.hw.renderer, {});
     /*Create a ticker:
         1 - run the loop passed as arguments ()
-        
-
      */
     self.ticker = new EarthModuleRAFProducer(
         self, {}, //parent, options 
         function(framecount, earthmodule) { //main loop. 
-            earthmodule.hw.renderer.render(earthmodule.sm.scene, earthmodule.hw.camera);
             earthmodule.hw.controls.update();
+            earthmodule.hw.renderer.render(earthmodule.sm.scene, earthmodule.hw.camera);
             self.produce(framecount);
         }).start();
+
+    /**/
     if (this.opts.callbacks && this.opts.callbacks.postInit) {
         this.opts.callbacks.postInit();
     }
@@ -67,7 +69,6 @@ EarthModule.prototype.produce = function(framecount) {
         this.consumers[i].consume(framecount,'FRAMECOUNT');
     };
 };
-
 EarthModule.prototype.consume = function(frame) { //
 
 };
