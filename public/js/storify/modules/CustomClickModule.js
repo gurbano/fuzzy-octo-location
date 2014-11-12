@@ -8,7 +8,7 @@ module.exports = CustomClickModule;
 
 
 function CustomClickModule(delay, opts) {
-    if (!(this instanceof CustomClickModule)) return new CustomClickModule(opts);
+    if (!(this instanceof CustomClickModule)) return new CustomClickModule(delay,opts);
     this.opts = helper.extend({
         name: 'CustomClickModule',
         id: 'CustomClickModule'
@@ -16,6 +16,7 @@ function CustomClickModule(delay, opts) {
     /*CALL SUPERCLASS*/
     SModule.call(this, this.opts);
     this.delay = delay;
+    this.framecount = 0;
     return this;
 }
 
@@ -30,9 +31,10 @@ CustomClickModule.prototype.postInit = function() {
 };
 CustomClickModule.prototype.produce = function() {
 	var self = this; //things are gonna get nasty
+    this.framecount++;
 	self.consumers = self.consumers || [];
     for (var i = 0; i < this.consumers.length; i++) {
-        this.consumers[i].consume({});
+        this.consumers[i].consume({framecount:this.framecount});
     };
      this.timeout = setTimeout(function(){
     	self.produce.call(self)

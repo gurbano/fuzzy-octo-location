@@ -30,7 +30,8 @@ $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
 $.put('fsmanager', require('./modules/fsmanager')($)); //
 $.put('storify', require('./modules/server_storify')($)); //
-
+$.put('garageio', require('./modules/server_garageio')(server,$)); //
+$.get('garageio').start();
 
 /*Load routes*/
 require('./routes/client')($);

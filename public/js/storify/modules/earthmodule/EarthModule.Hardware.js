@@ -11,13 +11,13 @@ var EARTH_SIZE = 600;
 
 var FOV = 45;
 var NEAR = 1;
-var FAR = 400000 *1000000;
+var FAR = 400000 * 1000000;
 var CLEAR_HEX_COLOR = 0x000000;
 
 var CAMERA_SPEED = 0.009;
 
 function EarthModuleHardware(parent, opts) {
-    if (!(this instanceof EarthModuleHardware)) return new EarthModuleHardware(opts);
+    if (!(this instanceof EarthModuleHardware)) return new EarthModuleHardware(parent, opts);
     opts = helper.extend({
         name: 'EarthModuleHardware',
         id: 'EarthModuleHardware'
@@ -56,6 +56,9 @@ EarthModuleHardware.prototype.start = function() {
     self.camera.position.set(POS_X, POS_Y, POS_Z);
     self.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+
+  
+
     /*
     CONTROLS
      */
@@ -70,7 +73,7 @@ EarthModuleHardware.prototype.start = function() {
     self.controls.staticMoving = false;
     self.controls.dynamicDampingFactor = 0.3;
 
-    self.controls.minDistance = EARTH_SIZE + EARTH_SIZE/100;
+    self.controls.minDistance = EARTH_SIZE + EARTH_SIZE / 100;
     self.controls.maxDistance = 400000;
 
     self.controls.keys = [65, 83, 68];
@@ -94,7 +97,7 @@ EarthModuleHardware.prototype.loadTexture = function(textures, callback, ret) {
     var self = this; //things are gonna get nasty
 
     ret = ret || {};
-    console.info('[Loading textures: '+textures.length+' remaining]');
+    console.info('[Loading textures: ' + textures.length + ' remaining]');
     if (textures.length === 0) {
         callback(ret);
     } else {

@@ -8,7 +8,7 @@ module.exports = KMLImporter;
 
 
 function KMLImporter(story,opts) {
-    if (!(this instanceof KMLImporter)) return new KMLImporter(opts);
+    if (!(this instanceof KMLImporter)) return new KMLImporter(story, opts);
     this.opts = helper.extend({
         name: 'KMLImporter',
         id: 'KMLImporter'

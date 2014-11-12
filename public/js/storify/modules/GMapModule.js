@@ -14,7 +14,7 @@ module.exports = GMapModule;
  * @param {Object} opts
  */
 function GMapModule(story, opts) {
-    if (!(this instanceof GMapModule)) return new GMapModule(opts);
+    if (!(this instanceof GMapModule)) return new GMapModule(story, opts);
     opts = helper.extend({
         name: 'GMapModule',
         id: 'GMapModule'

@@ -9,6 +9,13 @@ module.exports = function($) {
         }
     });
     server.route({
+        method: 'GET',
+        path: '/cowabunga',
+        handler: function(request, reply) {
+            reply.view('cowabunga');
+        }
+    });
+    server.route({
         method: 'POST',
         path: '/storify/uploadKML',
         config: {
