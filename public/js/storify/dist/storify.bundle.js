@@ -504,17 +504,16 @@ var t = d.getTime();
 var y = Math.round(t / years);
 
 function EarthModule(opts) {
-    var self = this; //things are gonna get nasty
     if (!(this instanceof EarthModule)) return new EarthModule(opts);
-    opts = helper.extend({
+    this.opts = helper.extend({
         name: 'EarthModule',
         id: 'EarthModule'
     }, opts);
     /*CALL SUPERCLASS*/
-    SModule.call(this, opts);
-    this.canvas = opts.parent; // where the canvas will be displayed
-    this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
-    this.opts = opts;
+    SModule.call(this, this.opts);
+    this.canvas = this.opts.parent; // where the canvas will be displayed
+    this.mapOptions = helper.extend(this.mapOptions, this.opts.mapOptions || {});
+    this.submodules = [];
     return this;
 }
 
@@ -525,7 +524,7 @@ var SM = require("./earthmodule/EarthModule.SceneManager.js");
 var EARTH = require("./earthmodule/EarthModule.Earth.js");
 var EarthModuleRAFProducer = require("./earthmodule/EarthModule.RAFProducer.js");
 
-/*SUBMODULES*/
+
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
@@ -533,6 +532,15 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
+    if (this.opts.submodules && this.opts.submodules.length>0){
+        var submodules = this.opts.submodules;
+        for (var i = 0; i < submodules.length;   i++) {
+            var submodule = submodules[i];   
+            
+        };
+    }
+
+
     /*Create a ticker:
         1 - run the loop passed as arguments ()
         
@@ -1085,7 +1093,7 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     var hw = parent.hw;
     var scene = parent.sm.scene;
     console.info('creating subscene', scene);
-    var subscene = new THREE.Scene();
+    var subscene = new THREE.Object3D();
 
 
 
@@ -1111,7 +1119,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
                 self.earthMesh.castShadow = false;
                 self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
-                self.addClouds(earth);
+                self.addClouds(earth,4,8,25);
+
             });
         }
     );
@@ -1124,23 +1133,33 @@ EarthModuleObjEarth.prototype.start = function(callback) {
 
 
 
-EarthModuleObjEarth.prototype.addClouds = function(scene) {
+EarthModuleObjEarth.prototype.addClouds = function(scene,size, rotx,roty) {
     var radius = EARTH_SIZE;
     var segments = 32;
     var self = this; //things are gonna get nasty
-    var mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius + 5, segments, segments),
-        new THREE.MeshPhongMaterial({
-            map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
-            color: 0xffffff,
-            transparent: true,
-            opacity: 1,
-        })
-    );
-    scene.add(mesh);
-    self.clouds = mesh;
-    mesh.castShadow = true;
-    mesh.receiveShadow = false;
+    var addOne = function() {
+        var mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(radius + size, segments, segments),
+            new THREE.MeshPhongMaterial({
+                map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8,
+            })
+        );
+        mesh._eid = new Date().getTime();
+        scene.add(mesh);        
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        self.parent.bindToProducer(function(framecount) { //create an anonymous module attached to the frame producer
+            if (mesh) {
+                mesh.rotation.y += (roty / 30000);
+                mesh.rotation.x += (rotx / 30000);
+                mesh.rotation.z += ((rotx+roty)/2 / 30000);
+            }
+        }, self.parent);
+    }
+    addOne(size,rotx,roty);
 };
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
@@ -1216,7 +1235,7 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
         new THREE.MeshPhongMaterial({
             map: textures['planet'], //THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
             bumpMap: textures['bump'], //THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-            bumpScale: 0.50,
+            bumpScale: 5.50,
             specularMap: textures['specular'], //THREE.ImageUtils.loadTexture('images/water_4k.png'),
             specular: new THREE.Color('grey')
         })
@@ -1884,12 +1903,6 @@ var startStorify = function(err, user) {
                         earthModule.earth.setSunPosition(new Date(frame.time));
                         //earthModule.earth.createDebugLine();
                     }, tmm);
-                    earthModule.bindToProducer(function(framecount) {
-                        if (earthModule.earth.clouds) {
-                            earthModule.earth.clouds.rotation.y += (34 / 30000);
-                            earthModule.earth.clouds.rotation.x += (8 / 30000);
-                        }
-                    }, earthModule);
                 }
             }
         }); //create THREE.JS environment, scene manager, scene etc.etc

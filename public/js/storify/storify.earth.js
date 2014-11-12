@@ -111,12 +111,6 @@ var startStorify = function(err, user) {
                         earthModule.earth.setSunPosition(new Date(frame.time));
                         //earthModule.earth.createDebugLine();
                     }, tmm);
-                    earthModule.bindToProducer(function(framecount) {
-                        if (earthModule.earth.clouds) {
-                            earthModule.earth.clouds.rotation.y += (34 / 30000);
-                            earthModule.earth.clouds.rotation.x += (8 / 30000);
-                        }
-                    }, earthModule);
                 }
             }
         }); //create THREE.JS environment, scene manager, scene etc.etc

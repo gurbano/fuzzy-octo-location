@@ -15,17 +15,16 @@ var t = d.getTime();
 var y = Math.round(t / years);
 
 function EarthModule(opts) {
-    var self = this; //things are gonna get nasty
     if (!(this instanceof EarthModule)) return new EarthModule(opts);
-    opts = helper.extend({
+    this.opts = helper.extend({
         name: 'EarthModule',
         id: 'EarthModule'
     }, opts);
     /*CALL SUPERCLASS*/
-    SModule.call(this, opts);
-    this.canvas = opts.parent; // where the canvas will be displayed
-    this.mapOptions = helper.extend(this.mapOptions, opts.mapOptions || {});
-    this.opts = opts;
+    SModule.call(this, this.opts);
+    this.canvas = this.opts.parent; // where the canvas will be displayed
+    this.mapOptions = helper.extend(this.mapOptions, this.opts.mapOptions || {});
+    this.submodules = [];
     return this;
 }
 
@@ -36,7 +35,7 @@ var SM = require("./earthmodule/EarthModule.SceneManager.js");
 var EARTH = require("./earthmodule/EarthModule.Earth.js");
 var EarthModuleRAFProducer = require("./earthmodule/EarthModule.RAFProducer.js");
 
-/*SUBMODULES*/
+
 EarthModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('EarthModule started');
@@ -44,6 +43,15 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
+    if (this.opts.submodules && this.opts.submodules.length>0){
+        var submodules = this.opts.submodules;
+        for (var i = 0; i < submodules.length;   i++) {
+            var submodule = submodules[i];   
+            
+        };
+    }
+
+
     /*Create a ticker:
         1 - run the loop passed as arguments ()
         

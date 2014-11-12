@@ -35,7 +35,7 @@ EarthModuleObjEarth.prototype.start = function(callback) {
     var hw = parent.hw;
     var scene = parent.sm.scene;
     console.info('creating subscene', scene);
-    var subscene = new THREE.Scene();
+    var subscene = new THREE.Object3D();
 
 
 
@@ -61,7 +61,8 @@ EarthModuleObjEarth.prototype.start = function(callback) {
                 self.earthMesh.castShadow = false;
                 self.earthMesh.receiveShadow = true;
                 subscene.add(earth);
-                self.addClouds(earth);
+                self.addClouds(earth,4,8,25);
+
             });
         }
     );
@@ -74,23 +75,33 @@ EarthModuleObjEarth.prototype.start = function(callback) {
 
 
 
-EarthModuleObjEarth.prototype.addClouds = function(scene) {
+EarthModuleObjEarth.prototype.addClouds = function(scene,size, rotx,roty) {
     var radius = EARTH_SIZE;
     var segments = 32;
     var self = this; //things are gonna get nasty
-    var mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius + 5, segments, segments),
-        new THREE.MeshPhongMaterial({
-            map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
-            color: 0xffffff,
-            transparent: true,
-            opacity: 1,
-        })
-    );
-    scene.add(mesh);
-    self.clouds = mesh;
-    mesh.castShadow = true;
-    mesh.receiveShadow = false;
+    var addOne = function() {
+        var mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(radius + size, segments, segments),
+            new THREE.MeshPhongMaterial({
+                map: THREE.ImageUtils.loadTexture('/assets/images/nteam/fair_clouds_4k.png'),
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8,
+            })
+        );
+        mesh._eid = new Date().getTime();
+        scene.add(mesh);        
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        self.parent.bindToProducer(function(framecount) { //create an anonymous module attached to the frame producer
+            if (mesh) {
+                mesh.rotation.y += (roty / 30000);
+                mesh.rotation.x += (rotx / 30000);
+                mesh.rotation.z += ((rotx+roty)/2 / 30000);
+            }
+        }, self.parent);
+    }
+    addOne(size,rotx,roty);
 };
 
 EarthModuleObjEarth.prototype.addLights = function(scene) {
@@ -166,7 +177,7 @@ EarthModuleObjEarth.prototype.createEarth = function(scene, textures, callback) 
         new THREE.MeshPhongMaterial({
             map: textures['planet'], //THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
             bumpMap: textures['bump'], //THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-            bumpScale: 0.50,
+            bumpScale: 5.50,
             specularMap: textures['specular'], //THREE.ImageUtils.loadTexture('images/water_4k.png'),
             specular: new THREE.Color('grey')
         })
