@@ -102,13 +102,20 @@ CowabungaMainModule.prototype.postInit = function() {
 
         self.bindToProducer(
             function(framecount) {
-                //console.info('cowabunga main loop');
-                self.camera.position.copy(self.ground.position).add(new THREE.Vector3(100, 80, 100));
-                self.camera.lookAt(self.ground.position);
-                self.renderer.render(self.scene, self.camera);
-
-                /*UPDATE CAR*/
+                /*UPDATE CAR POSITION*/
                 //car position is updated in CowabungaCar.js -- line 70
+
+                //UPDATE CAMERA POSITION
+                if (self.vehicle && self.camera && self.vehicle.mesh.position) {
+                    self.camera.position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(100, 80, 100));
+                    self.camera.lookAt(self.vehicle.mesh.position);
+
+                    //UPDATE LIGHT POSITION
+                    self.lights.target.position.copy(self.vehicle.mesh.position);
+                    self.lights.position.addVectors(self.lights.target.position, new THREE.Vector3(20, 20, -15));
+
+                }
+                self.renderer.render(self.scene, self.camera);
 
 
             }, self);

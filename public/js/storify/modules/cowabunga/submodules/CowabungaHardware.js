@@ -64,4 +64,7 @@ CowabungaHardware.prototype.postInit = function() {
             self.stats.update();
         }, self.producer );
 
+    
+
+
 };

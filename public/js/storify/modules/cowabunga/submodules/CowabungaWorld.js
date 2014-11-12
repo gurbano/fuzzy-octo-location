@@ -32,7 +32,7 @@ CowabungaWorld.prototype.postInit = function() {
     async.parallel({
         //addLights
         addLights: function(callback) {
-            self.lights = self.addLights();
+            self.parent.lights = self.lights = self.addLights();
             callback(null, self.lights);
         },
         addGround: function(callback) {

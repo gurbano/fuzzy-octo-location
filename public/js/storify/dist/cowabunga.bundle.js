@@ -795,13 +795,20 @@ CowabungaMainModule.prototype.postInit = function() {
 
         self.bindToProducer(
             function(framecount) {
-                //console.info('cowabunga main loop');
-                self.camera.position.copy(self.ground.position).add(new THREE.Vector3(100, 80, 100));
-                self.camera.lookAt(self.ground.position);
-                self.renderer.render(self.scene, self.camera);
-
-                /*UPDATE CAR*/
+                /*UPDATE CAR POSITION*/
                 //car position is updated in CowabungaCar.js -- line 70
+
+                //UPDATE CAMERA POSITION
+                if (self.vehicle && self.camera && self.vehicle.mesh.position) {
+                    self.camera.position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(100, 80, 100));
+                    self.camera.lookAt(self.vehicle.mesh.position);
+
+                    //UPDATE LIGHT POSITION
+                    self.lights.target.position.copy(self.vehicle.mesh.position);
+                    self.lights.position.addVectors(self.lights.target.position, new THREE.Vector3(20, 20, -15));
+
+                }
+                self.renderer.render(self.scene, self.camera);
 
 
             }, self);
@@ -1090,6 +1097,9 @@ CowabungaHardware.prototype.postInit = function() {
             self.stats.update();
         }, self.producer );
 
+    
+
+
 };
 },{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaPhysics.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
@@ -1184,7 +1194,7 @@ CowabungaWorld.prototype.postInit = function() {
     async.parallel({
         //addLights
         addLights: function(callback) {
-            self.lights = self.addLights();
+            self.parent.lights = self.lights = self.addLights();
             callback(null, self.lights);
         },
         addGround: function(callback) {

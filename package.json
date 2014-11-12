@@ -25,6 +25,7 @@
     "events": "^1.0.2",
     "express": "^4.9.4",
     "fps": "0.0.3",
+    "garageserver.io": "^0.6.0",
     "good": "^2.3.0",
     "hapi": "^6.11.1",
     "heavy": "^2.0.0",
@@ -32,6 +33,7 @@
     "mongoose": "^3.8.17",
     "paralleljs": "^0.2.1",
     "path": "^0.4.9",
+    "socket.io": "^1.2.0",
     "ticker": "^0.1.0",
     "underscore": "^1.7.0",
     "xml2js": "^0.4.4"
