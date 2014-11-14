@@ -1,1 +1,1 @@
-watchify .\public\js\storify\storify.earth.js -o .\public\js\storify\dist\storify.bundle.js
+watchify .\public\js\storify\storify.ortho.js -o .\public\js\storify\dist\cowabunga.bundle.js

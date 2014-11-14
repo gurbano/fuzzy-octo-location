@@ -68,27 +68,37 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                     i < 2 ? false : true
                 );
             }
+            var maxSteering = 0.5;
+            var engineForce = 1200;
+            var brake = 200;
+            var correction = 0.05;
+            var drag = 50;
             self.bindToProducer(
-                function(update) {
-                    var input = update.input;
+                function() {
+                    var input = self.input.input;
                     var vehicle = self.vehicle;
                     if (input.direction !== null) {
-                        input.steering += input.direction / 50;
-                        if (input.steering < -.6) input.steering = -.6;
-                        if (input.steering > .6) input.steering = .6;
+                        input.steering += input.direction / 30;
+                        if (input.steering < -maxSteering) input.steering = -maxSteering;
+                        if (input.steering > maxSteering) input.steering = maxSteering;
+                    }else{
+                        if (Math.abs(input.steering)<=correction){input.steering=0;}
+                        else if (input.steering>0) {input.steering-=correction;}else{input.steering+=correction;}
                     }
                     vehicle.setSteering(input.steering, 0);
                     vehicle.setSteering(input.steering, 1);
 
                     if (input.power === true) {
-                        vehicle.applyEngineForce(300);
+                        vehicle.applyEngineForce(engineForce);
                     } else if (input.power === false) {
-                        vehicle.setBrake(20, 2);
-                        vehicle.setBrake(20, 3);
+                        vehicle.setBrake(brake, 2);
+                        vehicle.setBrake(brake, 3);
                     } else {
                         vehicle.applyEngineForce(0);
+                        vehicle.setBrake(drag, 0);
+                        vehicle.setBrake(drag, 1);
                     }
-                }, self.input);
+                }, self.parent);
 
             self.vehicle = vehicle;
             callback(vehicle);
