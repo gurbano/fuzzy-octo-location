@@ -24,8 +24,9 @@ inherits(CowabungaMulti, SModule);
 
 CowabungaMulti.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
-    console.info('CowabungaMulti Starting');
-    GarageServerIO.initializeGarageServer('http://localhost:8080', {
+    var host = window.location.protocol+'//'+window.location.hostname+':8080';
+    console.info('CowabungaMulti Starting',host);
+    GarageServerIO.initializeGarageServer(host, {
         onReady: function(data) {
             console.info('onReady');
         },
