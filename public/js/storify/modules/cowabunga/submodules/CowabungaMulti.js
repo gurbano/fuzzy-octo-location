@@ -25,37 +25,87 @@ inherits(CowabungaMulti, SModule);
 CowabungaMulti.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     self.ready = false;
-    var host = window.location.protocol+'//'+window.location.host;
-    console.info('CowabungaMulti Starting',host);
+    var host = window.location.protocol + '//' + window.location.host;
+    console.info('CowabungaMulti Starting', host);
     GarageServerIO.initializeGarageServer(host, {
         onReady: function(data) {
-            console.info('onReady');
-            self.ready = true;
+            console.info('onReady', data);
+            return;
         },
         onPlayerConnect: function(data) {
-            console.info('onPlayerConnect');
+            console.info('onPlayerConnect', data);
+            self.ready = true;
+            return;
+        },
+        onPlayerDisconnect: function(data) {
+            console.info('onPlayerDisconnect', data);
+            self.ready = false;
+            return;
+        },
+        onPlayerUpdate: function(state) {
+            return;
+        },
+        onEntityUpdate: function(data) {
+            //console.info('onEntityUpdate', data);
+            return;
         },
         onUpdatePlayerPrediction: function(state, inputs, deltaTime) {
-            console.info('onUpdatePlayerPrediction');
-            return{};
+            //console.info('onUpdatePlayerPrediction', state, inputs, deltaTime);
+            if (self.parent.vehicle) {
+                state.x = self.parent.vehicle.mesh.position.x;
+                state.y = self.parent.vehicle.mesh.position.y;
+                state.z = self.parent.vehicle.mesh.position.z;
+            }
+            return state;
         },
         onInterpolation: function(previousState, targetState, amount) {
-            console.info('onInterpolation');
+            //console.info('onInterpolation');
+            return targetState;
         },
         onWorldState: function(state) {
             console.info('onWorldState');
+            return;
         }
     });
 
+    //EACH FRAME
     self.bindToProducer(
         function(framecount) {
-            //console.info('multi update');
-
+            if (self.ready && self.parent.vehicle) {
+                GarageServerIO.sendServerEvent({
+                    type: 'updateposition',
+                    id: GarageServerIO.getId(),
+                    state: {
+                        position: self.parent.vehicle.mesh.position,
+                        rotation: self.parent.vehicle.mesh.rotation
+                    }
+                });
+                var playerStates = GarageServerIO.getPlayerStates();
+                for (var i = 0; i < playerStates.length; i++) {
+                    var s = playerStates[i];
+                    if (s.id !== GarageServerIO.getId()){
+                        self.produce(s);
+                    }
+                };
+                var entityStates = GarageServerIO.getEntityStates();
+            }
         }, self.producer);
+
+    //EACH TIME CAR INPUT IS PRODUCED
     self.bindToProducer(
         function(data) {
             //console.info('input update',data);
-            if (self.ready)
-            GarageServerIO.addInput(data.input)
+            if (self.ready) {
+                GarageServerIO.addInput(data.input);
+            }
         }, self.parent.carinput);
+};
+
+
+CowabungaMulti.prototype.produce = function(s) {
+    var self = this; 
+    self.consumers = self.consumers || [];
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume({state:s});
+    };
 };

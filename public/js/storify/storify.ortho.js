@@ -6,7 +6,7 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    var goSocial = true;
+    var goSocial = false;
     if (goSocial) {
         GLOBALS.usm.start(false)
             .login({

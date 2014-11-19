@@ -21,10 +21,10 @@ $.put('test', 'OK');
 $.put('server', server);
 
 /*MODULES*/
-$.put('db', require('./modules/db')); //Load db connection, initialize model & controllers
+//$.put('db', require('./modules/db')); //Load db connection, initialize model & controllers
 //EVENTS
-$.put('models/event', require('./models/event'));
-$.put('controllers/fuzzy', require('./controller/fuzzy')($.get('models/event')));
+//$.put('models/event', require('./models/event'));
+//$.put('controllers/fuzzy', require('./controller/fuzzy')($.get('models/event')));
 //OTHER MODULES
 $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
@@ -46,9 +46,9 @@ server.pack.register({
     }
 }, function(err) {
     server.start(function() {
-        $.put('garageio', require('./modules/server_garageio')(server, $)); //
-        $.get('garageio').start();
         console.log("Hapi server started @ " + server.info.uri);
+        $.put('garageio', require('./modules/server_garageio')(server, $)); //
+        $.get('garageio').start();        
     });
 });
 
@@ -60,7 +60,6 @@ require('./routes/client')($);
 require('./routes/static')($);
 require('./routes/rest')($);
 require('./routes/admin')($);
-require('./routes/fuzzy')($); //project fuzzy-octo-locator
 require('./routes/nteam')($); //Project newteam
 require('./routes/routes_storify')($); //Project storify
 

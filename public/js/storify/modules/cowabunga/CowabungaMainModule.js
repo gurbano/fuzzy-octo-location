@@ -11,6 +11,7 @@ var CowabungaWorld = require('./submodules/CowabungaWorld.js');
 var CowabungaCarInput = require('./submodules/CowabungaCarInput.js');
 var CowabungaMouseHandler = require('./submodules/CowabungaMouseHandler.js');
 var CowabungaMulti = require('./submodules/CowabungaMulti.js');
+var CowabungaSceneUpdater = require('./submodules/CowabungaSceneUpdater.js');
 
 
 module.exports = CowabungaMainModule;
@@ -111,9 +112,19 @@ CowabungaMainModule.prototype.postInit = function() {
             self.submodules.push(self.garageIO);
             callback(null, true);
         },
+        initSceneUpdater: function(callback) {
+            GLOBALS.pb.set(60);
+            self.sceneUpdater = new CowabungaSceneUpdater(self, {
+                enabled: true,
+                producer: self, //linked to the frame producer
+                target: self.scene
+            }).addProducer(self.garageIO);
+            self.submodules.push(self.sceneUpdater);
+            callback(null, true);
+        },
         /*START ALL THE MODULES*/
         initSubModules: function(callback) {
-            GLOBALS.pb.set(60);
+            GLOBALS.pb.set(70);
             for (var i = 0; i < self.submodules.length; i++) {
                 self.submodules[i].start();
             };
@@ -121,7 +132,7 @@ CowabungaMainModule.prototype.postInit = function() {
             callback(null, true);
         },
         initDebugSubModules: function(callback) {
-            GLOBALS.pb.set(70);
+            GLOBALS.pb.set(80);
             callback(null, self.opts.debug);
         },
     }, function(err, results) {

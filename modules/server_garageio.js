@@ -9,17 +9,37 @@ function GarageServer(server, $) {
     this.physicsInterval = 15;
     this.physicsDelta = this.physicsInterval / 1000;
     this.physicsIntervalId = 0;
-    
     var io = require('socket.io');
     var sockets = io.listen(server.listener);
     this.server = garageServer.createGarageServer(sockets, {
+        stateInterval: 45,
         logging: false,
-        interpolation: true,
         clientSidePrediction: true,
-        smoothingFactor: 0.2
+        interpolation: true,
+        interpolationDelay: 100,
+        smoothingFactor: 0.2,
+        pingInterval: 2000,
+        maxUpdateBuffer: 120,
+        maxHistorySecondBuffer: 1000,
+        worldState: {},
+        onPlayerConnect: function(socket){
+            console.info('onPlayerConnect');
+        },
+        onPlayerInput: function(socket,input){
+            //console.info('onPlayerInput',socket,input);
+        },
+        onPlayerDisconnect: function(socket){
+            console.info('onPlayerDisconnect');
+        },
+        onEventPing: function(socket,data){
+           // console.info('onEventPing');
+        },
+        onEvent: function(data){
+            //console.info('onEvent',data);
+            if (data.type==='updateposition')
+                self.server.updatePlayerState(data.id, data.state);
+        },
     });
-
-
     return self;
 };
 
@@ -34,26 +54,14 @@ GarageServer.prototype.start = function() {
     return this;
 };
 
-GarageServer.prototype.update = function() {
+GarageServer.prototype.update = function() {;
     var players = this.server.getPlayers(),
         entities = this.server.getEntities(),
         self = this;
-    //console.info('garageIO update', players, entities);
-
     players.forEach(function(player) {
-        self.server.updatePlayerState(player.id, {});
+         
     });
-
     for (var i = entities.length - 1; i >= 0; i--) {
-        console.info(new Date().getTime(), 'entity update', entities[i]);
-        self.server.updateEntityState(entity.id, {});
-        //var entity = entities[i],
-        //    newState = gamePhysics.getNewEntityState(entity.state, self.physicsDelta);
 
-        //if (newState.x < -200 || newState.y < -200 || newState.x > 2000 || newState.y > 2000) {
-        //    self.server.removeEntity(entity.id);
-        //} else {
-        //    self.server.updateEntityState(entity.id, newState);
-        //}
     }
 };
