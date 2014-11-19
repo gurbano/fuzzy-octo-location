@@ -30,8 +30,30 @@ $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
 $.put('fsmanager', require('./modules/fsmanager')($)); //
 $.put('storify', require('./modules/server_storify')($)); //
-$.put('garageio', require('./modules/server_garageio')(server,$)); //
-$.get('garageio').start();
+
+
+
+server.pack.register({
+    plugin: require('hapi-socket'),
+    options: {
+        messageHandler: function(socket) {
+            return function(message) {
+                console.log("Message sent!");
+                socket.send(message);
+            };
+        },
+        logLevel: 2
+    }
+}, function(err) {
+    server.start(function() {
+        $.put('garageio', require('./modules/server_garageio')(server, $)); //
+        $.get('garageio').start();
+        console.log("Hapi server started @ " + server.info.uri);
+    });
+});
+
+
+
 
 /*Load routes*/
 require('./routes/client')($);
@@ -45,7 +67,7 @@ require('./routes/routes_storify')($); //Project storify
 
 /*PACKS:
     - Good - A logging plugin that supports output to console, file and udp/http endpoints*/
-server.pack.register(Good, function(err) {
+/*server.pack.register(Good, function(err) {
     if (err) {
         throw err;
     }
@@ -55,7 +77,8 @@ server.pack.register(Good, function(err) {
                 ,'asfsafsa'
                ,function(res){console.info(res);}
             ); 
-        */
+        
         console.info('test method ', $.get('api').testMethod());
+
     });
-});
+});*/

@@ -24,11 +24,13 @@ inherits(CowabungaMulti, SModule);
 
 CowabungaMulti.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
-    var host = window.location.protocol+'//'+window.location.hostname+':8080';
+    self.ready = false;
+    var host = window.location.protocol+'//'+window.location.host;
     console.info('CowabungaMulti Starting',host);
     GarageServerIO.initializeGarageServer(host, {
         onReady: function(data) {
             console.info('onReady');
+            self.ready = true;
         },
         onPlayerConnect: function(data) {
             console.info('onPlayerConnect');
@@ -53,6 +55,7 @@ CowabungaMulti.prototype.postInit = function() {
     self.bindToProducer(
         function(data) {
             //console.info('input update',data);
+            if (self.ready)
             GarageServerIO.addInput(data.input)
         }, self.parent.carinput);
 };
