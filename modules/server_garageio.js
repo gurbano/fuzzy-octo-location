@@ -1,6 +1,7 @@
 var garageServer = require('garageserver.io');
 var Server = require('socket.io');
-var io = new Server(8080);
+var sockport = Number(process.env.PORT) || 8080;
+var io = new Server(sockport);
 
 exports = module.exports = GarageServer;
 
@@ -24,13 +25,13 @@ function GarageServer(server, $) {
 };
 
 GarageServer.prototype.start = function() {
-    console.info('garageio // starting');
+    console.info('garageio // starting on port: ' + sockport);
     var self = this;
     this.physicsIntervalId = setInterval(function() {
         self.update();
     }, this.physicsInterval);
     this.server.start();
-    console.info('garageio // started', this.server);
+    console.info('garageio // started');
     return this;
 };
 
