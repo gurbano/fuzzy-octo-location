@@ -13,7 +13,7 @@ function GarageServer(server, $) {
     var io = require('socket.io');
     var sockets = io.listen(server.listener);
     this.server = garageServer.createGarageServer(sockets, {
-        logging: true,
+        logging: false,
         interpolation: true,
         clientSidePrediction: true,
         smoothingFactor: 0.2

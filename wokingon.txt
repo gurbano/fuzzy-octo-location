@@ -1,18 +1,14 @@
 working on:
 
+STORIFY
+	REFACTOR:
+		Creare un modulo per creare la UI dei moduli e trasferirci le funzioni ora in SModule
+	NUOVI MODULI:
 
-REFACTOR:
-	Splittare GMAP Module & GMAP KML IMPORTER (sottomoduli?) 
+EARTHIFY
 
-	Creare un modulo per creare la UI dei moduli e trasferirci le funzioni ora in SModule
-
-NUOVI MODULI:
-	- earthmodule
-	- storyEditor - vedere una lista degli eventi
-	- sourceModule
-		- FB
-		- 
-
-
-STORIFY BRANCH:
-	light version con timeline ++ earthmodule
+COWABUNGA
+	CarUI (speed, rpm)
+	world loader (terrain height, world coordinates)
+	add entities (mucche?)
+	rotate cam

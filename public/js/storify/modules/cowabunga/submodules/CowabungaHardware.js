@@ -66,6 +66,19 @@ CowabungaHardware.prototype.postInit = function() {
         function(framecount) {
             self.stats.update();
         }, self.producer );
+
+    $(window).smartresize(function onWindowResize() {
+        self.parent.handler.width(window.innerWidth);
+        self.parent.handler.height(window.innerHeight);
+        var w = self.parent.handler.width();
+        var h = self.parent.handler.height();
+
+        self.camera.aspect = w / h;
+        self.camera.updateProjectionMatrix();
+
+        self.renderer.setSize(w, h);
+
+    });
 };
 
 var zoomFactor = 1.2;
