@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js":[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -23,7 +23,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 module.exports = Event;
 
@@ -39,7 +39,7 @@ function Event(opts) {
     return this;
 }
 
-},{"./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
+},{"./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js":[function(require,module,exports){
 module.exports ={
 	GENERIC : {id : 000, type : 'GENERIC'},
 	POSITION : {id : 100, type : 'POSITION'},
@@ -47,7 +47,7 @@ module.exports ={
 	VIDEO  :{id : 300, type : 'VIDEO'},
 	MUSIC  :{id : 400, type : 'MUSIC'},
 };
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js":[function(require,module,exports){
 var EventType = require('./EventType.js');
 var GpsEvent = require('./GpsEvent.js');
 var Event = require('./Event.js');
@@ -79,7 +79,7 @@ Frame.prototype.getEventsByType = function(type) {
 	}
 	return ret;
 };
-},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
+},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","./GpsEvent.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\GpsEvent.js":[function(require,module,exports){
 var inherits = require('inherits');
 var Event = require('./Event.js');
 var EventType = require('./EventType.js');
@@ -102,7 +102,7 @@ function GpsEvent(opts){
 };
 
 inherits(GpsEvent,Event);
-},{"./Event.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
+},{"./Event.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Event.js","./EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js":[function(require,module,exports){
 module.exports = Helper;
 
 function Helper() {
@@ -240,7 +240,7 @@ Helper.prototype.dayOfTheYear = function(date) {
     j1.setMonth(0, 0);
     return Math.round((date - j1) / 8.64e7);
 }
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
 (function($,sr){
 
   // debouncing function from John Hann
@@ -268,7 +268,7 @@ Helper.prototype.dayOfTheYear = function(date) {
     jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
 })(jQuery,'smartresize');
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js":[function(require,module,exports){
 var Timeline = require('./Timeline.js');
 var helper = require('./Helper.js')();
 module.exports = Story;
@@ -314,7 +314,7 @@ function Story(opts){
 	this.createdOn = this.opts.createdOn || this.helper.dateToString(new Date());
 	return this;
 }
-},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Timeline.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js":[function(require,module,exports){
 var Story = require('./Story.js');
 var helper = require('./Helper.js')();
 
@@ -333,7 +333,7 @@ function StoryFactory(opts){
 StoryFactory.prototype.generate = function() {
 	return new Story(this.opts);
 };
-},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Story.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Timeline.js":[function(require,module,exports){
 var Frame = require('./Frame.js');
 var helper = require('./Helper.js')();
 
@@ -420,7 +420,7 @@ Timeline.prototype.addEvent = function(event) {
     };
 };
 
-},{"./Frame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js","./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
+},{"./Frame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Frame.js","./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js":[function(require,module,exports){
 module.exports = SEngine;
 
 function SEngine(opts){
@@ -444,7 +444,7 @@ SEngine.prototype.start = function(modules) { //modules contains class name !!!!
 	
 	return this;
 };
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js":[function(require,module,exports){
 var SModule = require('././SModule.js');
 var inherits = require('inherits');
 require('./earthmodule/requestAnimationFrame.js');
@@ -486,7 +486,7 @@ RAFClickProducer.prototype.produce = function() {
         this.consumers[i].consume({framecount:this.framecount});
     };
 };
-},{".././Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","././SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./earthmodule/requestAnimationFrame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
+},{".././Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","././SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./earthmodule/requestAnimationFrame.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
 module.exports = SModule;
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
@@ -690,7 +690,7 @@ SModule.prototype.createModalWindow = function(title, opts, parent) {
 };
 
 
-},{"../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\CowabungaMainModule.js":[function(require,module,exports){
+},{"../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\CowabungaMainModule.js":[function(require,module,exports){
 var SModule = require('./../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../Smartresize.js');
@@ -702,6 +702,8 @@ var CowabungaPhysics = require('./submodules/CowabungaPhysics.js');
 var CowabungaHardware = require('./submodules/CowabungaHardware.js');
 var CowabungaWorld = require('./submodules/CowabungaWorld.js');
 var CowabungaCarInput = require('./submodules/CowabungaCarInput.js');
+var CowabungaMouseHandler = require('./submodules/CowabungaMouseHandler.js');
+var CowabungaMulti = require('./submodules/CowabungaMulti.js');
 
 
 module.exports = CowabungaMainModule;
@@ -740,7 +742,7 @@ CowabungaMainModule.prototype.postInit = function() {
             self.phy = new CowabungaPhysics(
                 self, //parent
                 {
-                    gravity: new THREE.Vector3(0, -30, 0),
+                    gravity: new THREE.Vector3(0, -60, 0),
                     enabled: true,
                     producer: self
                 });
@@ -751,17 +753,36 @@ CowabungaMainModule.prototype.postInit = function() {
             GLOBALS.pb.set(20);
             self.hw = new CowabungaHardware(self, {
                 enabled: true,
-                producer: self
+                producer: self,
+                settings:{
+                    camera: {maxZoom : 40, minZoom:10},
+                    renderer: {}
+                }
             });
             self.submodules.push(self.hw);
             callback(null, self.hw);
         },
         initInput: function(callback) { //create the input
             GLOBALS.pb.set(30);
-            self.input = new CowabungaCarInput({
+            self.carinput = new CowabungaCarInput({
                 enabled: true
             });
-            self.submodules.push(self.input);
+            self.submodules.push(self.carinput);
+
+            self.mousehandler = new CowabungaMouseHandler(self.handler,{
+                enabled: true
+            });
+            self.submodules.push(self.mousehandler);
+
+            //BIND THE CAMERA TO MOUSE PRODUCER
+            self.bindToProducer(
+                function(meta) {
+                    var event = meta.event;
+                    if (event.type === 'mousewheel'){
+                        if (!event.up){self.hw.zoomIn();}
+                        if (event.up){self.hw.zoomOut();}
+                    }
+                }, self.mousehandler );
             callback(null, true);
         },
         initWorld: function(callback) { // add terrain, car
@@ -769,15 +790,21 @@ CowabungaMainModule.prototype.postInit = function() {
             self.world = new CowabungaWorld(self, {
                 enabled: true,
                 producer: self,
-                carInput: self.input
+                carInput: self.carinput
             });
             self.submodules.push(self.world);
             callback(null, self.world);
         },
         initMulti: function(callback) {
             GLOBALS.pb.set(50);
+            self.garageIO = new CowabungaMulti(self, {
+                enabled: true,
+                producer: self
+            });
+            self.submodules.push(self.garageIO);
             callback(null, true);
         },
+        /*START ALL THE MODULES*/
         initSubModules: function(callback) {
             GLOBALS.pb.set(60);
             for (var i = 0; i < self.submodules.length; i++) {
@@ -836,11 +863,12 @@ CowabungaMainModule.prototype.produce = function() {
     };
 };
 
+//binded to a frameproducer
 CowabungaMainModule.prototype.consume = function(frame) {
     this.produce();
 };
 
-},{"../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./submodules/CowabungaCarInput.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js","./submodules/CowabungaHardware.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaHardware.js","./submodules/CowabungaPhysics.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaPhysics.js","./submodules/CowabungaWorld.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCar.js":[function(require,module,exports){
+},{"../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./submodules/CowabungaCarInput.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js","./submodules/CowabungaHardware.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaHardware.js","./submodules/CowabungaMouseHandler.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaMouseHandler.js","./submodules/CowabungaMulti.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaMulti.js","./submodules/CowabungaPhysics.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaPhysics.js","./submodules/CowabungaWorld.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCar.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -886,13 +914,14 @@ CowabungaCar.prototype.asyncStart = function(callback) {
             );
             mesh.position.y = 2;
             mesh.castShadow = mesh.receiveShadow = true;
+            //VehicleTuning( , , , max_suspension_travel, ,  )
             var vehicle = new Physijs.Vehicle(mesh, new Physijs.VehicleTuning(
-                10.88,
-                1.83,
-                0.28,
-                500,
-                10.5,
-                6000
+                55.88, //suspension_stiffness - 10.88 
+                10.83, //suspension_compression - 1.83
+                0.18, //suspension_damping - 0.28
+                800, //max_suspension_travel -500 
+                10.5, //friction_slip - 10.5
+                6000 //max_suspension_force - 6000
             ));
             var wheel_material = new THREE.MeshFaceMaterial(wheel_materials);
             self.parent.scene.add(vehicle);
@@ -911,11 +940,11 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                     i < 2 ? false : true
                 );
             }
-            var maxSteering = 0.5;
-            var engineForce = 1200;
-            var brake = 200;
+            var maxSteering = 0.15;
+            var engineForce = 600;
+            var brake = engineForce/2;
             var correction = 0.05;
-            var drag = 50;
+            var drag = engineForce/4;
             self.bindToProducer(
                 function() {
                     var input = self.input.input;
@@ -938,10 +967,10 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                         vehicle.setBrake(brake, 3);
                     } else {
                         vehicle.applyEngineForce(0);
-                        vehicle.setBrake(drag, 0);
-                        vehicle.setBrake(drag, 1);
+                        vehicle.setBrake(drag, 2);
+                        vehicle.setBrake(drag, 3);
                     }
-                }, self.parent);
+                }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
 
             self.vehicle = vehicle;
             callback(vehicle);
@@ -954,7 +983,7 @@ CowabungaCar.prototype.consume = function(input) {
 
 };
 
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaCarInput.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js":[function(require,module,exports){
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaCarInput.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCarInput.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -1040,7 +1069,7 @@ CowabungaCarInput.prototype.produce = function() {
     };
 };
 
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaHardware.js":[function(require,module,exports){
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaHardware.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -1058,7 +1087,11 @@ function CowabungaHardware(parent, opts) {
     /*CALL SUPERCLASS*/
     this.parent = parent;
     this.producer = this.opts.producer || this.parent;
-
+    this.settings =  this.opts.settings || {};
+    this.settings.renderer =  this.settings.renderer || {};
+    this.settings.camera =  this.settings.camera || {};
+    this.settings.camera.maxZoom = 50 || this.settings.camera.maxZoom;
+    this.settings.camera.minZoom = 5 || this.settings.camera.minZoom;
 
     SModule.call(this, this.opts);
     return this;
@@ -1101,17 +1134,141 @@ CowabungaHardware.prototype.postInit = function() {
     self.renderer = self.parent.renderer = renderer;
     self.camera = self.parent.camera = camera;
     self.stats = render_stats;
-
     self.bindToProducer(
         function(framecount) {
             self.stats.update();
         }, self.producer );
+};
 
-    
+var zoomFactor = 1.2;
+CowabungaHardware.prototype.zoomIn = function() {
+    this.camera.fov *= zoomFactor;
+    this.camera.fov = Math.min(this.settings.camera.maxZoom,this.camera.fov);
+    this.camera.updateProjectionMatrix();
+    console.info(this.camera.fov);
+};
+CowabungaHardware.prototype.zoomOut = function() {
+    this.camera.fov /= zoomFactor;
+    this.camera.fov = Math.max(this.settings.camera.minZoom,this.camera.fov);
+    this.camera.updateProjectionMatrix();
+    console.info(this.camera.fov);
+};
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaMouseHandler.js":[function(require,module,exports){
+var SModule = require('./../../SModule.js');
+var inherits = require('inherits');
+var smartresize = require('../../../Smartresize.js');
+var helper = require('../../../Helper.js')();
+var EventType = require('../../../EventType.js');
+
+module.exports = CowabungaMouseHandler;
+
+
+function CowabungaMouseHandler(canvas,opts) {
+    if (!(this instanceof CowabungaMouseHandler)) return new CowabungaMouseHandler(canvas, opts);
+    this.opts = helper.extend({
+        name: 'CowabungaMouseHandler',
+        id: 'CowabungaMouseHandler'
+    }, opts);
+    this.canvas = canvas;
+    /*CALL SUPERCLASS*/
+    SModule.call(this, this.opts);
+    this.input = {
+        s_down : false,
+        d_down : false,
+        w_down : false,
+        w_roll : 0
+    };
+    return this;
+}
+
+inherits(CowabungaMouseHandler, SModule);
+
+CowabungaMouseHandler.prototype.postInit = function() {
+    var self = this; //things are gonna get nasty
+    console.info('CowabungaMouseHandler started');
+    this.canvas.click(function(event){
+        self.produce(event);
+    });
+    this.canvas.bind('mousewheel', function(event){
+        event.up = (event.originalEvent.wheelDelta /120 > 0);
+        self.produce(event);      
+    });
 
 
 };
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaPhysics.js":[function(require,module,exports){
+CowabungaMouseHandler.prototype.produce = function(event) {
+    var self = this; //things are gonna get nasty
+     if (!this.enabled || !this.started) {
+        return;
+    }
+    self.consumers = self.consumers || [];
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume({
+            event: event
+        });
+    };
+};
+
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaMulti.js":[function(require,module,exports){
+var SModule = require('./../../SModule.js');
+var inherits = require('inherits');
+var smartresize = require('../../../Smartresize.js');
+var helper = require('../../../Helper.js')();
+var EventType = require('../../../EventType.js');
+
+module.exports = CowabungaMulti;
+
+
+function CowabungaMulti(parent, opts) {
+    if (!(this instanceof CowabungaMulti)) return new CowabungaMulti(parent, opts);
+    this.opts = helper.extend({
+        name: 'CowabungaMulti',
+        id: 'CowabungaMulti'
+    }, opts);
+    /*CALL SUPERCLASS*/
+    this.parent = parent;
+    this.producer = this.opts.producer || this.parent;
+    SModule.call(this, this.opts);
+
+    return this;
+}
+inherits(CowabungaMulti, SModule);
+
+CowabungaMulti.prototype.postInit = function() {
+    var self = this; //things are gonna get nasty
+    console.info('CowabungaMulti Starting');
+    GarageServerIO.initializeGarageServer('http://localhost:8080', {
+        onReady: function(data) {
+            console.info('onReady');
+        },
+        onPlayerConnect: function(data) {
+            console.info('onPlayerConnect');
+        },
+        onUpdatePlayerPrediction: function(state, inputs, deltaTime) {
+            console.info('onUpdatePlayerPrediction');
+            return{};
+        },
+        onInterpolation: function(previousState, targetState, amount) {
+            console.info('onInterpolation');
+        },
+        onWorldState: function(state) {
+            console.info('onWorldState');
+        }
+    });
+
+    self.bindToProducer(
+        function(framecount) {
+            //console.info('multi update');
+
+        }, self.producer);
+    self.bindToProducer(
+        function(data) {
+            //console.info('input update',data);
+            GarageServerIO.addInput(data.input)
+        }, self.parent.carinput);
+};
+
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaPhysics.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -1169,7 +1326,7 @@ CowabungaPhysics.prototype.postInit = function() {
 };
 
 
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js":[function(require,module,exports){
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -1256,8 +1413,8 @@ CowabungaWorld.prototype.addGround = function() {
         new THREE.MeshLambertMaterial({
             map: THREE.ImageUtils.loadTexture('/assets/images/cowabunga/ground.jpg')
         }),
-        .8, // high friction
-        .4 // low restitution
+        0.8, // high friction
+        0.1 // low restitution
     );
     ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
     ground_material.map.repeat.set(10, 10);
@@ -1297,7 +1454,7 @@ CowabungaWorld.prototype.addVehicle = function(callback) {
 
 };
 
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaCar.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCar.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js":[function(require,module,exports){
+},{"../../../EventType.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaCar.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCar.js","inherits":"C:\\workspaces\\github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js":[function(require,module,exports){
 /**
  * requestAnimationFrame version: "0.0.17" Copyright (c) 2011-2012, Cyril Agosta ( cyril.agosta.dev@gmail.com) All Rights Reserved.
  * Available via the MIT license.
@@ -1372,7 +1529,7 @@ CowabungaWorld.prototype.addVehicle = function(callback) {
 
 })(window);
 
-},{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.ortho.js":[function(require,module,exports){
+},{}],"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.ortho.js":[function(require,module,exports){
 var Storify = {}; //namespace
 
 var helper = require('./Helper.js')();
@@ -1490,4 +1647,4 @@ var startStorify = function(err, user) {
     }
 };
 
-},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/RAFClickProducer.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/cowabunga/CowabungaMainModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\CowabungaMainModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.ortho.js"]);
+},{"./Helper.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./StoryFactory.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/RAFClickProducer.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js","./modules/SModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/cowabunga/CowabungaMainModule.js":"C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\CowabungaMainModule.js"}]},{},["C:\\workspaces\\github\\fuzzy-octo-location\\public\\js\\storify\\storify.ortho.js"]);

@@ -84,8 +84,8 @@ CowabungaWorld.prototype.addGround = function() {
         new THREE.MeshLambertMaterial({
             map: THREE.ImageUtils.loadTexture('/assets/images/cowabunga/ground.jpg')
         }),
-        .8, // high friction
-        .4 // low restitution
+        0.8, // high friction
+        0.1 // low restitution
     );
     ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
     ground_material.map.repeat.set(10, 10);

@@ -43,13 +43,14 @@ CowabungaCar.prototype.asyncStart = function(callback) {
             );
             mesh.position.y = 2;
             mesh.castShadow = mesh.receiveShadow = true;
+            //VehicleTuning( , , , max_suspension_travel, ,  )
             var vehicle = new Physijs.Vehicle(mesh, new Physijs.VehicleTuning(
-                10.88,
-                1.83,
-                0.28,
-                500,
-                10.5,
-                6000
+                55.88, //suspension_stiffness - 10.88 
+                10.83, //suspension_compression - 1.83
+                0.18, //suspension_damping - 0.28
+                800, //max_suspension_travel -500 
+                10.5, //friction_slip - 10.5
+                6000 //max_suspension_force - 6000
             ));
             var wheel_material = new THREE.MeshFaceMaterial(wheel_materials);
             self.parent.scene.add(vehicle);
@@ -68,11 +69,11 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                     i < 2 ? false : true
                 );
             }
-            var maxSteering = 0.5;
-            var engineForce = 1200;
-            var brake = 200;
+            var maxSteering = 0.15;
+            var engineForce = 600;
+            var brake = engineForce/2;
             var correction = 0.05;
-            var drag = 50;
+            var drag = engineForce/4;
             self.bindToProducer(
                 function() {
                     var input = self.input.input;
@@ -95,10 +96,10 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                         vehicle.setBrake(brake, 3);
                     } else {
                         vehicle.applyEngineForce(0);
-                        vehicle.setBrake(drag, 0);
-                        vehicle.setBrake(drag, 1);
+                        vehicle.setBrake(drag, 2);
+                        vehicle.setBrake(drag, 3);
                     }
-                }, self.parent);
+                }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
 
             self.vehicle = vehicle;
             callback(vehicle);

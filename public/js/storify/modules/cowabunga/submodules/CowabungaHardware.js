@@ -15,7 +15,11 @@ function CowabungaHardware(parent, opts) {
     /*CALL SUPERCLASS*/
     this.parent = parent;
     this.producer = this.opts.producer || this.parent;
-
+    this.settings =  this.opts.settings || {};
+    this.settings.renderer =  this.settings.renderer || {};
+    this.settings.camera =  this.settings.camera || {};
+    this.settings.camera.maxZoom = 50 || this.settings.camera.maxZoom;
+    this.settings.camera.minZoom = 5 || this.settings.camera.minZoom;
 
     SModule.call(this, this.opts);
     return this;
@@ -58,13 +62,22 @@ CowabungaHardware.prototype.postInit = function() {
     self.renderer = self.parent.renderer = renderer;
     self.camera = self.parent.camera = camera;
     self.stats = render_stats;
-
     self.bindToProducer(
         function(framecount) {
             self.stats.update();
         }, self.producer );
+};
 
-    
-
-
+var zoomFactor = 1.2;
+CowabungaHardware.prototype.zoomIn = function() {
+    this.camera.fov *= zoomFactor;
+    this.camera.fov = Math.min(this.settings.camera.maxZoom,this.camera.fov);
+    this.camera.updateProjectionMatrix();
+    console.info(this.camera.fov);
+};
+CowabungaHardware.prototype.zoomOut = function() {
+    this.camera.fov /= zoomFactor;
+    this.camera.fov = Math.max(this.settings.camera.minZoom,this.camera.fov);
+    this.camera.updateProjectionMatrix();
+    console.info(this.camera.fov);
 };

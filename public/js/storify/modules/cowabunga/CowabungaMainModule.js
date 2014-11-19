@@ -9,6 +9,8 @@ var CowabungaPhysics = require('./submodules/CowabungaPhysics.js');
 var CowabungaHardware = require('./submodules/CowabungaHardware.js');
 var CowabungaWorld = require('./submodules/CowabungaWorld.js');
 var CowabungaCarInput = require('./submodules/CowabungaCarInput.js');
+var CowabungaMouseHandler = require('./submodules/CowabungaMouseHandler.js');
+var CowabungaMulti = require('./submodules/CowabungaMulti.js');
 
 
 module.exports = CowabungaMainModule;
@@ -47,7 +49,7 @@ CowabungaMainModule.prototype.postInit = function() {
             self.phy = new CowabungaPhysics(
                 self, //parent
                 {
-                    gravity: new THREE.Vector3(0, -30, 0),
+                    gravity: new THREE.Vector3(0, -60, 0),
                     enabled: true,
                     producer: self
                 });
@@ -58,17 +60,36 @@ CowabungaMainModule.prototype.postInit = function() {
             GLOBALS.pb.set(20);
             self.hw = new CowabungaHardware(self, {
                 enabled: true,
-                producer: self
+                producer: self,
+                settings:{
+                    camera: {maxZoom : 40, minZoom:10},
+                    renderer: {}
+                }
             });
             self.submodules.push(self.hw);
             callback(null, self.hw);
         },
         initInput: function(callback) { //create the input
             GLOBALS.pb.set(30);
-            self.input = new CowabungaCarInput({
+            self.carinput = new CowabungaCarInput({
                 enabled: true
             });
-            self.submodules.push(self.input);
+            self.submodules.push(self.carinput);
+
+            self.mousehandler = new CowabungaMouseHandler(self.handler,{
+                enabled: true
+            });
+            self.submodules.push(self.mousehandler);
+
+            //BIND THE CAMERA TO MOUSE PRODUCER
+            self.bindToProducer(
+                function(meta) {
+                    var event = meta.event;
+                    if (event.type === 'mousewheel'){
+                        if (!event.up){self.hw.zoomIn();}
+                        if (event.up){self.hw.zoomOut();}
+                    }
+                }, self.mousehandler );
             callback(null, true);
         },
         initWorld: function(callback) { // add terrain, car
@@ -76,15 +97,21 @@ CowabungaMainModule.prototype.postInit = function() {
             self.world = new CowabungaWorld(self, {
                 enabled: true,
                 producer: self,
-                carInput: self.input
+                carInput: self.carinput
             });
             self.submodules.push(self.world);
             callback(null, self.world);
         },
         initMulti: function(callback) {
             GLOBALS.pb.set(50);
+            self.garageIO = new CowabungaMulti(self, {
+                enabled: true,
+                producer: self
+            });
+            self.submodules.push(self.garageIO);
             callback(null, true);
         },
+        /*START ALL THE MODULES*/
         initSubModules: function(callback) {
             GLOBALS.pb.set(60);
             for (var i = 0; i < self.submodules.length; i++) {
@@ -143,6 +170,7 @@ CowabungaMainModule.prototype.produce = function() {
     };
 };
 
+//binded to a frameproducer
 CowabungaMainModule.prototype.consume = function(frame) {
     this.produce();
 };
