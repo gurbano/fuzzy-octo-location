@@ -36,8 +36,9 @@ function GarageServer(server, $) {
         },
         onEvent: function(data){
             //console.info('onEvent',data);
-            if (data.type==='updateposition')
+            if (data.type==='updateposition'){
                 self.server.updatePlayerState(data.id, data.state);
+            }
         },
     });
     return self;

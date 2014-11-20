@@ -121,6 +121,4 @@ CowabungaWorld.prototype.addVehicle = function(callback) {
         self.parent.vehicle = self.vehicle = vehicle;
         callback();
     })
-
-
 };

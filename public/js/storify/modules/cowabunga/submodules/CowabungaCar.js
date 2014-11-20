@@ -17,9 +17,7 @@ function CowabungaCar(parent, opts) {
     /*CALL SUPERCLASS*/
     this.parent = parent;
     this.producer = this.opts.producer || this.parent;
-    this.input = this.opts.input || new CowabungaCarInput({
-        enabled: true
-    });
+    this.input = this.opts.input; // || new CowabungaCarInput({enabled: true});
     SModule.call(this, this.opts);
 
     return this;
@@ -69,37 +67,45 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                     i < 2 ? false : true
                 );
             }
-            var maxSteering = 0.15;
-            var engineForce = 600;
-            var brake = engineForce/2;
-            var correction = 0.05;
-            var drag = engineForce/4;
-            self.bindToProducer(
-                function() {
-                    var input = self.input.input;
-                    var vehicle = self.vehicle;
-                    if (input.direction !== null) {
-                        input.steering += input.direction / 30;
-                        if (input.steering < -maxSteering) input.steering = -maxSteering;
-                        if (input.steering > maxSteering) input.steering = maxSteering;
-                    }else{
-                        if (Math.abs(input.steering)<=correction){input.steering=0;}
-                        else if (input.steering>0) {input.steering-=correction;}else{input.steering+=correction;}
-                    }
-                    vehicle.setSteering(input.steering, 0);
-                    vehicle.setSteering(input.steering, 1);
+            if (self.input) {
+                var maxSteering = 0.15;
+                var engineForce = 600;
+                var brake = engineForce / 2;
+                var correction = 0.05;
+                var drag = engineForce / 4;
 
-                    if (input.power === true) {
-                        vehicle.applyEngineForce(engineForce);
-                    } else if (input.power === false) {
-                        vehicle.setBrake(brake, 2);
-                        vehicle.setBrake(brake, 3);
-                    } else {
-                        vehicle.applyEngineForce(0);
-                        vehicle.setBrake(drag, 2);
-                        vehicle.setBrake(drag, 3);
-                    }
-                }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
+                self.bindToProducer(
+                    function() {
+                        var input = self.input.input;
+                        var vehicle = self.vehicle;
+                        if (input.direction !== null) {
+                            input.steering += input.direction / 30;
+                            if (input.steering < -maxSteering) input.steering = -maxSteering;
+                            if (input.steering > maxSteering) input.steering = maxSteering;
+                        } else {
+                            if (Math.abs(input.steering) <= correction) {
+                                input.steering = 0;
+                            } else if (input.steering > 0) {
+                                input.steering -= correction;
+                            } else {
+                                input.steering += correction;
+                            }
+                        }
+                        vehicle.setSteering(input.steering, 0);
+                        vehicle.setSteering(input.steering, 1);
+
+                        if (input.power === true) {
+                            vehicle.applyEngineForce(engineForce);
+                        } else if (input.power === false) {
+                            vehicle.setBrake(brake, 2);
+                            vehicle.setBrake(brake, 3);
+                        } else {
+                            vehicle.applyEngineForce(0);
+                            vehicle.setBrake(drag, 2);
+                            vehicle.setBrake(drag, 3);
+                        }
+                    }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
+            }
 
             self.vehicle = vehicle;
             callback(vehicle);

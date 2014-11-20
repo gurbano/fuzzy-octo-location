@@ -43,7 +43,7 @@ CowabungaMainModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     this.started = false;
     GLOBALS.pb.set(0);
-    async.parallel({
+    async.series({
         //Init physics engine, create scene
         initPhysi: function(callback) {
             GLOBALS.pb.set(10);
@@ -62,8 +62,11 @@ CowabungaMainModule.prototype.postInit = function() {
             self.hw = new CowabungaHardware(self, {
                 enabled: true,
                 producer: self,
-                settings:{
-                    camera: {maxZoom : 40, minZoom:10},
+                settings: {
+                    camera: {
+                        maxZoom: 40,
+                        minZoom: 10
+                    },
                     renderer: {}
                 }
             });
@@ -77,7 +80,7 @@ CowabungaMainModule.prototype.postInit = function() {
             });
             self.submodules.push(self.carinput);
 
-            self.mousehandler = new CowabungaMouseHandler(self.handler,{
+            self.mousehandler = new CowabungaMouseHandler(self.handler, {
                 enabled: true
             });
             self.submodules.push(self.mousehandler);
@@ -86,11 +89,15 @@ CowabungaMainModule.prototype.postInit = function() {
             self.bindToProducer(
                 function(meta) {
                     var event = meta.event;
-                    if (event.type === 'mousewheel'){
-                        if (!event.up){self.hw.zoomIn();}
-                        if (event.up){self.hw.zoomOut();}
+                    if (event.type === 'mousewheel') {
+                        if (!event.up) {
+                            self.hw.zoomIn();
+                        }
+                        if (event.up) {
+                            self.hw.zoomOut();
+                        }
                     }
-                }, self.mousehandler );
+                }, self.mousehandler);
             callback(null, true);
         },
         initWorld: function(callback) { // add terrain, car
@@ -140,9 +147,10 @@ CowabungaMainModule.prototype.postInit = function() {
 
         self.bindToProducer(
             function(framecount) {
-                /*UPDATE CAR POSITION*/
-                //car position is updated in CowabungaCar.js -- line 70
 
+
+                /*UPDATE Player POSITION*/
+                //car position is updated in CowabungaCar.js -- line 70
                 //UPDATE CAMERA POSITION
                 if (self.vehicle && self.camera && self.vehicle.mesh.position) {
                     self.camera.position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(100, 80, 100));
@@ -152,6 +160,17 @@ CowabungaMainModule.prototype.postInit = function() {
                     self.lights.target.position.copy(self.vehicle.mesh.position);
                     self.lights.position.addVectors(self.lights.target.position, new THREE.Vector3(20, 20, -15));
 
+
+                    /*FAKE ENEMY*/
+                    var position = new THREE.Vector3(0,0,0);
+                    GarageServerIO.sendServerEvent({
+                        type: 'updateposition',
+                        id: 'camera',
+                        state: {
+                            position: position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(4, 4, 4)),
+                            rotation: self.camera.rotation
+                        }
+                    });
                 }
                 self.renderer.render(self.scene, self.camera);
 

@@ -135,3 +135,4 @@ Helper.prototype.dayOfTheYear = function(date) {
     j1.setMonth(0, 0);
     return Math.round((date - j1) / 8.64e7);
 }
+

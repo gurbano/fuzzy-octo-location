@@ -240,6 +240,8 @@ Helper.prototype.dayOfTheYear = function(date) {
     j1.setMonth(0, 0);
     return Math.round((date - j1) / 8.64e7);
 }
+
+
 },{}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js":[function(require,module,exports){
 (function($,sr){
 
@@ -736,7 +738,7 @@ CowabungaMainModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     this.started = false;
     GLOBALS.pb.set(0);
-    async.parallel({
+    async.series({
         //Init physics engine, create scene
         initPhysi: function(callback) {
             GLOBALS.pb.set(10);
@@ -755,8 +757,11 @@ CowabungaMainModule.prototype.postInit = function() {
             self.hw = new CowabungaHardware(self, {
                 enabled: true,
                 producer: self,
-                settings:{
-                    camera: {maxZoom : 40, minZoom:10},
+                settings: {
+                    camera: {
+                        maxZoom: 40,
+                        minZoom: 10
+                    },
                     renderer: {}
                 }
             });
@@ -770,7 +775,7 @@ CowabungaMainModule.prototype.postInit = function() {
             });
             self.submodules.push(self.carinput);
 
-            self.mousehandler = new CowabungaMouseHandler(self.handler,{
+            self.mousehandler = new CowabungaMouseHandler(self.handler, {
                 enabled: true
             });
             self.submodules.push(self.mousehandler);
@@ -779,11 +784,15 @@ CowabungaMainModule.prototype.postInit = function() {
             self.bindToProducer(
                 function(meta) {
                     var event = meta.event;
-                    if (event.type === 'mousewheel'){
-                        if (!event.up){self.hw.zoomIn();}
-                        if (event.up){self.hw.zoomOut();}
+                    if (event.type === 'mousewheel') {
+                        if (!event.up) {
+                            self.hw.zoomIn();
+                        }
+                        if (event.up) {
+                            self.hw.zoomOut();
+                        }
                     }
-                }, self.mousehandler );
+                }, self.mousehandler);
             callback(null, true);
         },
         initWorld: function(callback) { // add terrain, car
@@ -833,9 +842,10 @@ CowabungaMainModule.prototype.postInit = function() {
 
         self.bindToProducer(
             function(framecount) {
-                /*UPDATE CAR POSITION*/
-                //car position is updated in CowabungaCar.js -- line 70
 
+
+                /*UPDATE Player POSITION*/
+                //car position is updated in CowabungaCar.js -- line 70
                 //UPDATE CAMERA POSITION
                 if (self.vehicle && self.camera && self.vehicle.mesh.position) {
                     self.camera.position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(100, 80, 100));
@@ -845,6 +855,17 @@ CowabungaMainModule.prototype.postInit = function() {
                     self.lights.target.position.copy(self.vehicle.mesh.position);
                     self.lights.position.addVectors(self.lights.target.position, new THREE.Vector3(20, 20, -15));
 
+
+                    /*FAKE ENEMY*/
+                    var position = new THREE.Vector3(0,0,0);
+                    GarageServerIO.sendServerEvent({
+                        type: 'updateposition',
+                        id: 'camera',
+                        state: {
+                            position: position.copy(self.vehicle.mesh.position).add(new THREE.Vector3(4, 4, 4)),
+                            rotation: self.camera.rotation
+                        }
+                    });
                 }
                 self.renderer.render(self.scene, self.camera);
 
@@ -899,9 +920,7 @@ function CowabungaCar(parent, opts) {
     /*CALL SUPERCLASS*/
     this.parent = parent;
     this.producer = this.opts.producer || this.parent;
-    this.input = this.opts.input || new CowabungaCarInput({
-        enabled: true
-    });
+    this.input = this.opts.input; // || new CowabungaCarInput({enabled: true});
     SModule.call(this, this.opts);
 
     return this;
@@ -951,37 +970,45 @@ CowabungaCar.prototype.asyncStart = function(callback) {
                     i < 2 ? false : true
                 );
             }
-            var maxSteering = 0.15;
-            var engineForce = 600;
-            var brake = engineForce/2;
-            var correction = 0.05;
-            var drag = engineForce/4;
-            self.bindToProducer(
-                function() {
-                    var input = self.input.input;
-                    var vehicle = self.vehicle;
-                    if (input.direction !== null) {
-                        input.steering += input.direction / 30;
-                        if (input.steering < -maxSteering) input.steering = -maxSteering;
-                        if (input.steering > maxSteering) input.steering = maxSteering;
-                    }else{
-                        if (Math.abs(input.steering)<=correction){input.steering=0;}
-                        else if (input.steering>0) {input.steering-=correction;}else{input.steering+=correction;}
-                    }
-                    vehicle.setSteering(input.steering, 0);
-                    vehicle.setSteering(input.steering, 1);
+            if (self.input) {
+                var maxSteering = 0.15;
+                var engineForce = 600;
+                var brake = engineForce / 2;
+                var correction = 0.05;
+                var drag = engineForce / 4;
 
-                    if (input.power === true) {
-                        vehicle.applyEngineForce(engineForce);
-                    } else if (input.power === false) {
-                        vehicle.setBrake(brake, 2);
-                        vehicle.setBrake(brake, 3);
-                    } else {
-                        vehicle.applyEngineForce(0);
-                        vehicle.setBrake(drag, 2);
-                        vehicle.setBrake(drag, 3);
-                    }
-                }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
+                self.bindToProducer(
+                    function() {
+                        var input = self.input.input;
+                        var vehicle = self.vehicle;
+                        if (input.direction !== null) {
+                            input.steering += input.direction / 30;
+                            if (input.steering < -maxSteering) input.steering = -maxSteering;
+                            if (input.steering > maxSteering) input.steering = maxSteering;
+                        } else {
+                            if (Math.abs(input.steering) <= correction) {
+                                input.steering = 0;
+                            } else if (input.steering > 0) {
+                                input.steering -= correction;
+                            } else {
+                                input.steering += correction;
+                            }
+                        }
+                        vehicle.setSteering(input.steering, 0);
+                        vehicle.setSteering(input.steering, 1);
+
+                        if (input.power === true) {
+                            vehicle.applyEngineForce(engineForce);
+                        } else if (input.power === false) {
+                            vehicle.setBrake(brake, 2);
+                            vehicle.setBrake(brake, 3);
+                        } else {
+                            vehicle.applyEngineForce(0);
+                            vehicle.setBrake(drag, 2);
+                            vehicle.setBrake(drag, 3);
+                        }
+                    }, self.parent); //BIND TO THE PARENT (frame producer) and not to the Input Module
+            }
 
             self.vehicle = vehicle;
             callback(vehicle);
@@ -1078,6 +1105,59 @@ CowabungaCarInput.prototype.produce = function() {
             input: this.input
         });
     };
+};
+
+},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaEnemyCar.js":[function(require,module,exports){
+var SModule = require('./../../SModule.js');
+var inherits = require('inherits');
+var smartresize = require('../../../Smartresize.js');
+var helper = require('../../../Helper.js')();
+var EventType = require('../../../EventType.js');
+
+module.exports = CowabungaEnemyCar;
+
+
+function CowabungaEnemyCar(parent, opts) {
+    if (!(this instanceof CowabungaEnemyCar)) return new CowabungaEnemyCar(parent, opts);
+    this.opts = helper.extend({
+        name: 'CowabungaEnemyCar',
+        id: 'CowabungaEnemyCar'
+    }, opts);
+    /*CALL SUPERCLASS*/
+    this.parent = parent;
+    this.producer = this.opts.producer || this.parent;
+    SModule.call(this, this.opts);
+
+    return this;
+}
+inherits(CowabungaEnemyCar, SModule);
+
+CowabungaEnemyCar.prototype.postInit = function() {
+    console.info('CowabungaEnemyCar started: remember to call asyncStart(callback)');
+};
+
+
+CowabungaEnemyCar.prototype.asyncStart = function(callback) {
+    var self = this; //things are gonna get nasty
+    console.info('CowabungaEnemyCar Starting');
+    var loader = new THREE.JSONLoader();
+    loader.load("/assets/models/mustang.js", function(car, car_materials) {
+        loader.load("/assets/models/mustang_wheel.js", function(wheel, wheel_materials) {
+            var mesh = new THREE.Mesh(
+                car,
+                new THREE.MeshFaceMaterial(car_materials)
+            );
+            mesh.position.y = 2;
+            mesh.castShadow = mesh.receiveShadow = true;   
+            self.mesh = mesh;
+            callback(mesh);
+        });
+    });
+};
+
+
+CowabungaEnemyCar.prototype.consume = function(input) {
+
 };
 
 },{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaHardware.js":[function(require,module,exports){
@@ -1410,19 +1490,23 @@ var smartresize = require('../../../Smartresize.js');
 var helper = require('../../../Helper.js')();
 var EventType = require('../../../EventType.js');
 
-module.exports =  CowabungaSceneUpdater;
+module.exports = CowabungaSceneUpdater;
 
-
-function CowabungaSceneUpdater(parent,opts) {
-    if (!(this instanceof CowabungaSceneUpdater)) return new CowabungaSceneUpdater(parent,opts);
+/**
+ * Works as an adapter between
+ * @param {[type]} parent [description]
+ * @param {[type]} opts   [description]
+ */
+function CowabungaSceneUpdater(parent, opts) {
+    if (!(this instanceof CowabungaSceneUpdater)) return new CowabungaSceneUpdater(parent, opts);
     this.opts = helper.extend({
-            name: 'CowabungaSceneUpdater',
-            id: 'CowabungaSceneUpdater'
+        name: 'CowabungaSceneUpdater',
+        id: 'CowabungaSceneUpdater'
     }, opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, this.opts);
- 	this.parent = parent;
- 	this.target = this.opts.target || parent.scene;
+    this.parent = parent;
+    this.carMap = {};
     return this;
 }
 
@@ -1436,9 +1520,39 @@ CowabungaSceneUpdater.prototype.postInit = function() {
 
 CowabungaSceneUpdater.prototype.consume = function(data) {
     var self = this; //things are gonna get nasty
-    console.info(data);
+    //console.info(data);
+    if (data.state && data.state.id) {
+        var id = data.state.id;
+        if (!this.carMap[id]) {
+            self.carMap[id] = id;
+            console.info('adding car ' + id);
+            self.addVehicle(data.state.state, function(car) {
+                self.carMap[id] = car;
+                self.parent.scene.add(car);
+            });
+        } else {
+            var car = this.carMap[id];
+            if (car.geometry && data.state.state.position && data.state.state.rotation) {
+                //console.debug('updating car ' + id);
+                car.position.set(data.state.state.position.x, data.state.state.position.y, data.state.state.position.z)
+                car.rotation.set(data.state.state.rotation.x, data.state.state.rotation.y, data.state.state.rotation.z);
+            }
+        }
+    }
 };
-},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js":[function(require,module,exports){
+
+
+var CowabungaEnemyCar = require('./CowabungaEnemyCar.js');
+CowabungaSceneUpdater.prototype.addVehicle = function(data, callback) {
+    var self = this;
+    var car = new CowabungaEnemyCar(this.parent);
+    car.asyncStart(function(vehicle) {
+        car.start();
+        callback(vehicle);
+    })
+};
+
+},{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaEnemyCar.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaEnemyCar.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaWorld.js":[function(require,module,exports){
 var SModule = require('./../../SModule.js');
 var inherits = require('inherits');
 var smartresize = require('../../../Smartresize.js');
@@ -1562,8 +1676,6 @@ CowabungaWorld.prototype.addVehicle = function(callback) {
         self.parent.vehicle = self.vehicle = vehicle;
         callback();
     })
-
-
 };
 
 },{"../../../EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js","../../../Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","../../../Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","./../../SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./CowabungaCar.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\cowabunga\\submodules\\CowabungaCar.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js":[function(require,module,exports){
