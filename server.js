@@ -60,7 +60,6 @@ require('./routes/client')($);
 require('./routes/static')($);
 require('./routes/rest')($);
 require('./routes/admin')($);
-require('./routes/nteam')($); //Project newteam
 require('./routes/routes_storify')($); //Project storify
 
 

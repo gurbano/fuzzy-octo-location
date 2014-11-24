@@ -35,7 +35,7 @@ CowabungaEnemyCar.prototype.asyncStart = function(callback) {
         loader.load("/assets/models/mustang_wheel.js", function(wheel, wheel_materials) {
             var mesh = new THREE.Mesh(
                 car,
-                new THREE.MeshFaceMaterial(car_materials)
+                new THREE.MeshFaceMaterial(car_materials
             );
             mesh.position.y = 2;
             mesh.castShadow = mesh.receiveShadow = true;   
@@ -49,3 +49,4 @@ CowabungaEnemyCar.prototype.asyncStart = function(callback) {
 CowabungaEnemyCar.prototype.consume = function(input) {
 
 };
+\

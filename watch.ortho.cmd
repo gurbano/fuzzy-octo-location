@@ -1,1 +1,0 @@
-watchify .\public\js\storify\storify.ortho.js -o .\public\js\storify\dist\cowabunga.bundle.js

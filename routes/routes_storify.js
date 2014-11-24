@@ -8,6 +8,13 @@ module.exports = function($) {
             reply.view('storify');
         }
     });
+     server.route({
+        method: 'GET',
+        path: '/earth',
+        handler: function(request, reply) {
+            reply.view('earth');
+        }
+    });
     server.route({
         method: 'GET',
         path: '/cowabunga',
