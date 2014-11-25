@@ -14,26 +14,28 @@ module.exports = TimelineModule;
  */
 function TimelineModule(story, opts) {
     if (!(this instanceof TimelineModule)) return new TimelineModule(opts);
-    opts = helper.extend({
+    this.opts = helper.extend({
         name: 'TimelineModule',
         id: 'TMM'
     }, opts);
     /*CALL SUPERCLASS*/
-    SModule.call(this, opts);
+    SModule.call(this, this.opts);
+    this.opts.edit = this.opts.edit || false;
+    this.opts.view = this.opts.view || false;
     this.current = 0; //index of the current frame
     this.story = story; //story.js object
     var self = this; //things are gonna get nasty
     $(document).keydown(function(e) {
         switch (e.which) {
             case 37: // left
-                self.goToFrame(self.current - 1);
+                //self.goToFrame(self.current - 1);
                 break;
 
             case 38: // up
                 break;
 
             case 39: // right
-                self.goToFrame(self.current + 1);
+                //self.goToFrame(self.current + 1);
                 break;
 
             case 40: // down
@@ -44,7 +46,6 @@ function TimelineModule(story, opts) {
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
     });
-    this.opts = opts;
     return this;
 }
 inherits(TimelineModule, SModule);
@@ -63,10 +64,16 @@ TimelineModule.prototype.postInit = function() {
     this.$timeline.show();
     this.$dragger = $($('<div class="draggable"></div>'));
     this.$timeline.append(this.$dragger);    
-    if (this.opts.switchUI && this.opts.switchUI===true){
-        this.UIview.append(this.$timeline);
-    }else{
+    
+    if (this.opts.edit && !this.opts.view){// edit true, view false
+        
         this.UIedit.append(this.$timeline);
+    }else if (!this.opts.edit && this.opts.view){ // view true, edit false
+        this.UIview.append(this.$timeline);
+    }else if (!this.opts.edit && !this.opts.view){//both false, default
+        this.UIedit.append(this.$timeline);
+    }else{ //Both true
+        this.UIview.parent().parent().append(this.$timeline);
     }
     
     this._bk = 0;
@@ -126,7 +133,6 @@ TimelineModule.prototype.pickFrame = function() {
     var self = this; //things are gonna get nasty
     return self.story.timeline.frames[self.current];
 };
-
 TimelineModule.prototype.produce = function() {
     var frame = this.pickFrame();
     if (frame) {
@@ -135,7 +141,8 @@ TimelineModule.prototype.produce = function() {
             listener.consume(frame, 'FRAME');
         }
         this.$dragger.refresh();
-        this.dateDisplay.html(helper.dateToString(new Date(frame.time)) + '(' + frame.index + ')');
+        //this.dateDisplay.html(helper.dateToString(new Date(frame.time)) + '(' + frame.index + ')');
+        this.dateDisplay.html(helper.dateToString(new Date(frame.time)));
     }
     return this;
 };

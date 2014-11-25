@@ -6,7 +6,7 @@ var StoryFactory = require('./StoryFactory.js');
 
 init = function(_GLOBALS) {
     GLOBALS = _GLOBALS;
-    var goSocial = true;
+    var goSocial = false;
     if (goSocial) {
         GLOBALS.usm.start(false)
             .login({
@@ -48,17 +48,18 @@ var SModule = require('./modules/SModule.js');
 var GMapModule = require('./modules/GMapModule.js');
 var SModule = require('./modules/SModule.js');
 var ModulesManager = require('./modules/ModulesManager.js');
+var CustomClickModule = require('./modules/CustomClickModule.js');
 //SOURCES
 var SourcesManager = require('./modules/SourcesManager.js');
 var PlayBackModule = require('./modules/PlayBackModule.js');
 
 var TimelineModule = require('./modules/TimelineModule.js');
 var EditSwitch = require('./modules/UI/UISwitcher.js');
-var EarthModule = require('./modules/Earthmodule.js');
+
 var DisplayPathModule = require('./modules/DisplayPath.js');
 var FacebookSourcesModule = require('./modules/sources/FacebookSourcesModule.js');
 
-
+var KMLImporter = require('./modules/KMLImporter.js');
 
 var startStorify = function(err, user) {
     if (err) {
@@ -77,7 +78,7 @@ var startStorify = function(err, user) {
             timelineOpts: {
                 start: new Date('09/01/2014'),
                 end: new Date('09/02/2014'),
-                scale: 1 //1 frame every 1 minutes.
+                scale: 1 //1 frame every 10 minutes.
             },
         }).generate();
         //console.info($.toJSON(story));
@@ -89,31 +90,71 @@ var startStorify = function(err, user) {
             parent: $('#main'),enabled:true
         });
         var mm = new ModulesManager({
-            parent: $('#main'),enabled:true
+            parent: $('#UI-EDIT'),enabled:true
         });
         /*SOURCES*/
-        var sm = new SourcesManager({enabled:true}).attachTo(mm);
-        var fsm = new FacebookSourcesModule({story:story, enabled:false}).attachTo(sm);
+        var sm = new SourcesManager({enabled:false}).addProducer(mm);
+        var fsm = new FacebookSourcesModule({story:story, enabled:false}).addProducer(sm);
 
         /*TIMELINE*/
-        var tmm = new TimelineModule(story, {enabled:true}).attachTo(mm);
+        var importer = new KMLImporter(story, {
+            enabled: true
+        });
+        var tmm = new TimelineModule(story, {enabled:true, edit:true, view:true}).addProducer(mm); //edit timeline module
         /*EDIT*/
 
         var gmm = new GMapModule(story, { //Move marker, show map ecc.ecc.
             parent: $('#main'),enabled:false
-        }).attachTo(mm).attachTo(tmm).require('tmm', tmm);
+        })
+        .addProducer(tmm).require('tmm', tmm);
 
         //attached to modules manager, attached to timeline, require google maps 
         var displayPath = new DisplayPathModule({ //Move marker, show map ecc.ecc.
-            parent: $('#main'),enabled:true
-        }).attachTo(mm).attachTo(tmm).require('gmm', gmm); 
+            parent: $('#main'),
+            enabled:true
+        }).addProducer(mm).addProducer(tmm).require('gmm', gmm); 
 
 
         /*VIEW*/
-        var playback = new PlayBackModule({enabled:true}).attachTo(mm).require('tmm', tmm);
-        var earthModule = new EarthModule({
-            parent: $('#main')
-        }).attachTo(mm);
+        var playback = new PlayBackModule(
+            new CustomClickModule(1  , {enabled: true, autoStart:false}),
+            {enabled:true, maxSpeed: 15}
+        ).require('tmm', tmm);
+        
+        /*CLOCK ON TOP*/
+        var timezoneadj = - 8 *( 1000 * 60 * 60);
+        var dateDisplayer = new SModule({
+            enabled: true,
+            name: 'dateDisplayer',
+            callbacks: {
+                postInit: function() {
+                    $('#UI-VIEW').prepend('<div class="button raised grey" style="width:300px;height:30px;position:absolute;margin-left:-100px;top:50px;left:50%;text-align:center;font-size: xx-large;font-family: sans-serif" id="__clock_V"></div>');
+                    $('#UI-EDIT').prepend('<div class="button raised grey" style="width:300px;height:30px;position:absolute;margin-left:-100px;top:50px;left:50%;text-align:center;font-size: xx-large;font-family: sans-serif" id="__clock_E"></div>');
+                },
+                consume: function(frame) { 
+                    var  time = frame.time + (timezoneadj);
+                    $('#__clock_V').html(helper.msToString(time));
+                    $('#__clock_E').html(helper.msToString(time));
+                }
+            }
+        }).addProducer(tmm);
+        var speedDisplayer = new SModule({
+            enabled: true,
+            name: 'dateDisplayer',
+            callbacks: {
+                postInit: function() {
+                    $('#UI-VIEW').prepend('<div class="button raised grey" style="width:300px;height:30px;position:absolute;bottom:10%;left:0%;text-align:center;font-size: xx-large;font-family: sans-serif" id="__speed_V"></div>');  
+                },                 
+                consume: function(frame) {
+                    var posev = frame.getPositionEvent();
+                    if (posev && posev.speed){
+                        var s = posev.isReal ? '' : '*';
+                        $('#__speed_V').html(posev.speed.kmh + ' km/h' + s);
+                    }
+                    
+                }
+            }
+        }).addProducer(tmm);
 
         /*POSTINIZIALIZER*/
         var postInitializer = new SModule({
@@ -127,14 +168,23 @@ var startStorify = function(err, user) {
 
         var engine = new SEngine().start(
             [ //MODULES
+                /*GENERAL PURPOSE MODULES*/
                 mm, //module manager
+                uiSwitcher, // switch between edit and view
+
+                /*SOURCE // EDITORS // */
                 sm, //sources manager
                 fsm, //facebook source module
-                tmm, //timneline
+                importer, //KMLImporter
+                tmm, //timeline
+
+
+                /*VIEW*/                
                 gmm, //google maps
                 playback, //playback bar 
                 displayPath, //display interpolated paths and skipped events on gmap
-                uiSwitcher, // switch between edit and view
+                dateDisplayer,
+                speedDisplayer,
                 postInitializer // anonymous module on complete
             ]
         );

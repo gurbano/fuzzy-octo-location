@@ -37,28 +37,36 @@ ModulesManager.prototype.postInit = function() {
             height: 150
         },
         this.parent); //parent div
-    this.refresh();
-}
-ModulesManager.prototype.refresh = function() {
-    var self = this; //things are gonna get nasty
+
     var html = '<p style="font-size:0.8em">List of modules installed</p>';
     this.win.$content.html(html);
+    /*BUILD THE UI*/
+    this.checks = [];
     var ul = $('<ul style="list-style-type:none"></ul>');
-    for (var i = 0; i < this.listeners.length; i++) {
-        var module = this.listeners[i];
+    for (var i = 0; i < this.consumers.length; i++) {
+        var module = this.consumers[i];
         var li = $("<li>" + module.name + "</li>");
-        var check = $('<input type="checkbox"></input>');
-        check.prop('val', i);
-        li.prepend(check);
-        check.prop('checked', module.enabled);
-        check.click(function(el) {
-            self.listeners[$(el.target).prop('val')].toggle(check.is(':checked'));
-            setTimeout(function() {
-                self.refresh();
-            }, 500);
+        this.checks[i] = $('<input type="checkbox"></input>');
+        this.checks[i].prop('val', i);
+        li.prepend(this.checks[i]);
+        this.checks[i].prop('checked', module.enabled);
+        this.checks[i].click(function(el) {
+            var index = $(el.target).prop('val');
+            var module = self.consumers[index];
+            module.toggle(self.checks[index].is(':checked'));
         });
         ul.append(li);
     };
     this.win.$content.append(ul);
-
+    this.refresh();
+}
+ModulesManager.prototype.refresh = function() {
+    var self = this; //things are gonna get nasty    
+    for (var i = 0; i < this.consumers.length; i++) {
+        var module = this.consumers[i];
+        this.checks[i].prop('checked', module.enabled);
+    }
+    setTimeout(function() {
+        self.refresh();
+    }, 1500);
 }

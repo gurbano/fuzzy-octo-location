@@ -95,6 +95,11 @@ SModule.prototype.addProducer = function(source) {
     source.addConsumer(this);
     return this;
 };
+SModule.prototype.attachTo = function(source) {
+    console.warn('SModule.attachTo is deprecated. Use SModule.addProducer instead');
+    source.addConsumer(this);
+    return this;
+};
 /**
  * Create an anon consumer module, to excecute a 
  * @param  {Function} callback [description]
@@ -144,6 +149,15 @@ SModule.prototype.createButton = function(text, callback) {
     var text = $('<div class="label center" fit>' + text + '</div>');
     btn.append(text);
     btn.$text = text;
+    btn.click(function() {
+        callback(btn, self);
+    });
+    return btn;
+};
+SModule.prototype.createIcon = function(iconClass, callback) {
+    var self = this; //things are gonna get nasty
+    var html = '<div class="icon-button red"><core-icon icon="'+iconClass+'"></core-icon><paper-ripple class="circle recenteringTouch" fit></paper-ripple></div>';
+    var btn = $($(html));
     btn.click(function() {
         callback(btn, self);
     });

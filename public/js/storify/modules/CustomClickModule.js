@@ -7,15 +7,15 @@ var EventType = require('.././EventType.js');
 module.exports = CustomClickModule;
 
 
-function CustomClickModule(delay, opts) {
-    if (!(this instanceof CustomClickModule)) return new CustomClickModule(delay,opts);
+function CustomClickModule(speed, opts) {
+    if (!(this instanceof CustomClickModule)) return new CustomClickModule(speed,opts);
     this.opts = helper.extend({
         name: 'CustomClickModule',
         id: 'CustomClickModule'
     }, opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, this.opts);
-    this.delay = delay;
+    this.speed = speed; //fps
     this.framecount = 0;
     return this;
 }
@@ -27,7 +27,7 @@ CustomClickModule.prototype.postInit = function() {
     console.info('CustomClickModule started');
     this.timeout = setTimeout(function(){
     	self.produce.call(self)
-    }, self.delay);
+    }, 1000/self.speed);
 };
 CustomClickModule.prototype.produce = function() {
 	var self = this; //things are gonna get nasty
@@ -36,7 +36,7 @@ CustomClickModule.prototype.produce = function() {
     for (var i = 0; i < this.consumers.length; i++) {
         this.consumers[i].consume({framecount:this.framecount});
     };
-     this.timeout = setTimeout(function(){
+    this.timeout = setTimeout(function(){
     	self.produce.call(self)
-    }, self.delay);
+    }, 1000/Math.max(1,self.speed)); //avoid division by zero or negative
 };

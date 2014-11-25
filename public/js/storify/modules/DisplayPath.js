@@ -15,7 +15,6 @@ function DisplayPathModule(opts) {
     }, opts);
     /*CALL SUPERCLASS*/
     SModule.call(this, opts);
-
     this.parent = opts.parent; // where the map will be displayed
     this.opts = opts;
     return this;
@@ -25,7 +24,7 @@ inherits(DisplayPathModule, SModule);
 
 DisplayPathModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
-    console.info('GMapModule started');
+    console.info('DisplayPathModule started');
 }
 
 DisplayPathModule.prototype.clearPaths = function() {
@@ -52,14 +51,12 @@ DisplayPathModule.prototype.consume = function(frame) {
     var self = this; //things are gonna get nasty
     var gmm = this.required('gmm');
     var ev = frame.getPositionEvent();
-    if (ev && this.enabled) {
-        this.clearPaths();
-        //console.info(ev.index + ') R: (' + ev.isReal + ') I: (' + ev.interpolated + ') - dT: (' + helper.deltaToString(ev.real_time - ev.end_time) + ')');
-        //console.info(ev.position);
+    this.clearPaths();
+    if (ev && this.enabled) {        
         if (ev.interpolated) {
             self.addPath(gmm.map, [ev.prev.position, ev.next.position], '#FF0000');
         } else {
-            self.addPath(gmm.map, [ev.position].concat(ev.skipped), '#000000');
+            self.addPath(gmm.map, ev.skipped.concat([ev.position]), '#000000');
 
         }
     }

@@ -716,7 +716,49 @@ KMLImporter.prototype.importKML = function(res, opts) {
     console.info(this.story.timeline);
 };
 
-},{".././EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js",".././Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js",".././Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","././SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./services/KMLService.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\services\\KMLService.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
+},{".././EventType.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\EventType.js",".././Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js",".././Smartresize.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Smartresize.js","././SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./services/KMLService.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\services\\KMLService.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js":[function(require,module,exports){
+var SModule = require('././SModule.js');
+var inherits = require('inherits');
+require('./earthmodule/requestAnimationFrame.js');
+var helper = require('.././Helper.js')();
+
+module.exports = RAFClickProducer;
+
+
+function RAFClickProducer(opts) {
+    if (!(this instanceof RAFClickProducer)) return new RAFClickProducer(opts);
+    this.opts = helper.extend({
+        name: 'RAFClickProducer',
+        id: 'RAFClickProducer'
+    }, opts);
+    /*CALL SUPERCLASS*/
+    SModule.call(this, this.opts);
+    this.framecount = 0;
+    return this;
+}
+
+inherits(RAFClickProducer, SModule);
+
+RAFClickProducer.prototype.start = function() {
+    var self = this; //things are gonna get nasty
+    self.render();
+    return self;
+};
+
+RAFClickProducer.prototype.render = function() {
+    var self = this; //things are gonna get nasty
+    this.produce();
+    requestAnimationFrame(function() {
+        self.render();
+    });
+};
+RAFClickProducer.prototype.produce = function() {
+    this.framecount++;
+    for (var i = 0; i < this.consumers.length; i++) {
+        this.consumers[i].consume({framecount:this.framecount});
+    };
+};
+},{".././Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","././SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./earthmodule/requestAnimationFrame.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\earthmodule\\requestAnimationFrame.js","inherits":"H:\\Github\\fuzzy-octo-location\\node_modules\\inherits\\inherits_browser.js"}],"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js":[function(require,module,exports){
 module.exports = SModule;
 var inherits = require('inherits');
 var helper = require('../Helper.js')();
@@ -1912,6 +1954,7 @@ var StoryFactory = require('./StoryFactory.js');
 var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var CustomClickModule = require('./modules/CustomClickModule.js');
+var RAFClickProducer = require('./modules/RAFClickProducer.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 var KMLImporter = require('./modules/KMLImporter.js');
@@ -1947,7 +1990,7 @@ var startStorify = function(err, user) {
             var tmm = new TimelineModule(story, {
                 enabled: true
             });
-            var fps33 = new CustomClickModule(1000 / 66  , {enabled: true}); //call produce approx 33 times per second
+            var timeProducer = new CustomClickModule(1000 / 33  , {enabled: true}); //call produce approx 66 times per second
             var player = new SModule({enabled: true,
                 name: 'autoPlayer',
                 callbacks: {
@@ -1955,7 +1998,7 @@ var startStorify = function(err, user) {
                         tmm.nextFrame();
                     },
                 }
-            }).addProducer(fps33);
+            }).addProducer(timeProducer);
 
         //create a kml importer. modify the story object
         var importer = new KMLImporter(story, {
@@ -2011,7 +2054,7 @@ var startStorify = function(err, user) {
             renderListener,
             importer,
             tmm,
-            fps33,
+            timeProducer,
             player
         ];
 
@@ -2023,4 +2066,4 @@ var startStorify = function(err, user) {
 }
 };
 
-},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/CustomClickModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\CustomClickModule.js","./modules/Earthmodule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/KMLImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\KMLImporter.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.earth.js"]);
+},{"./Helper.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Helper.js","./Story.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\Story.js","./StoryFactory.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\StoryFactory.js","./engine/SEngine.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\engine\\SEngine.js","./modules/CustomClickModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\CustomClickModule.js","./modules/Earthmodule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\Earthmodule.js","./modules/KMLImporter.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\KMLImporter.js","./modules/RAFClickProducer.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\RAFClickProducer.js","./modules/SModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\SModule.js","./modules/TimelineModule.js":"H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\modules\\TimelineModule.js"}]},{},["H:\\Github\\fuzzy-octo-location\\public\\js\\storify\\storify.earth.js"]);

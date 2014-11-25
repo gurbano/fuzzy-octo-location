@@ -55,11 +55,6 @@ KMLImporter.prototype.postInit = function() {
     });
     this.drop = myDropzone;
 };
-KMLImporter.prototype.onFramePicked = function(frame) {
-    var self = this; //things are gonna get nasty
-    var ev = frame.getPositionEvent();
-
-};
 
 var KMLImporterBackend = require('./services/KMLService.js');
 KMLImporter.prototype.importKML = function(res, opts) {
@@ -81,19 +76,22 @@ KMLImporter.prototype.importKML = function(res, opts) {
             opts: {
                 name: 'fixNeighbours'
             }
-        }, {
+        }, 
+       {
             func: importer.pp.interpolator,
             opts: {
                 name: 'interpolator',
-                sensXY: 10, //m
-                sensT: 0.5 * 60 * 60 * 1000 // 30 min
+                sensXY: 1000, //m
+                sensT: 6 * 60 * 1000 // 3 min
             }
-        }, {
+        }, 
+        {
             func: importer.pp.reducer,
             opts: {
                 name: 'reducer',
                 sensXY: 100, //m if two events are one next to each other, merge them
             }
+        ,
         }]
     }, res, this.story.timeline); //timeline is needed to get infos about frame, scale etc.etc.
 
@@ -110,3 +108,13 @@ KMLImporter.prototype.importKML = function(res, opts) {
     console.info('**********END IMPORT KML************');
     console.info(this.story.timeline);
 };
+
+    KMLImporter.prototype.produce = function() {
+        var self = this; //things are gonna get nasty
+        self.consumers = self.consumers || [];
+        if (self.enabled){
+            for (var i = 0; i < this.consumers.length; i++) {
+                this.consumers[i].consume({},'STORY_UPDATE');
+            };
+           }
+    };

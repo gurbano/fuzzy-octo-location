@@ -16,6 +16,7 @@ function KMLService(parent, opts) {
     this.pp = {};
     /**
      * go trough the events.
+     *     for each events sets ev.prev and ev.next
      *     for each event x, search the followers, until it finds a real one.
      *     then x.next is set as the latter
      * @param  {[type]} events [description]
@@ -79,8 +80,19 @@ function KMLService(parent, opts) {
             );
             ev.interpolated = true;
             ev.position = new google.maps.LatLng(newLat, newLng);
+
+            var dist = helper.distance(
+                events[ev.index - 1].position,
+                ev.position
+            ).toFixed(2); //distance INTERPOLATED (distance from the previous event, whether real or not)
+            ev.speed = {
+                ms: ((dist/60) / ev.scale).toFixed(2),
+                kmh: (3.6 * (dist/60) / ev.scale).toFixed(1)
+            };
             events[i].postProcessingInfo.push('interpolator - interpolated');
         };
+
+
         var th_meters = opts.sensXY || 3; //x meters * minute
         var th_time = opts.sensT || 2 * 60 * 60 * 1000; //2 hours
         for (var i = 0; i < events.length; i++) {
@@ -95,13 +107,14 @@ function KMLService(parent, opts) {
                 }
             }
         };
-
-
         return events;
     }; // interpolate 
+
     this.pp.reducer = function(opts, events) {
         return events;
     }; // interpolate 
+
+
 
     return self;
 }
@@ -161,8 +174,11 @@ KMLService.prototype.importGoogleLocation = function(opts, values, timeline) {
                     end_time: frameTime + timeline.getMsStep(),
                     subtype: '__google',
                     distance: dist,
-                    speed: (dist / timeline.scale).toFixed(2),
-                    skipped: skippedPoints
+                    speed: {
+                        ms: ((dist/60) / timeline.scale).toFixed(2),
+                        kmh: (3.6 * (dist/60) / timeline.scale).toFixed(1),
+                    },
+                    skipped: skippedPoints,
                 });
                 ev.postProcessingInfo = [];
                 ev.scale = timeline.scale;

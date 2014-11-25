@@ -45,6 +45,7 @@ var StoryFactory = require('./StoryFactory.js');
 var SEngine = require('./engine/SEngine.js');
 var SModule = require('./modules/SModule.js');
 var CustomClickModule = require('./modules/CustomClickModule.js');
+var RAFClickProducer = require('./modules/RAFClickProducer.js');
 var TimelineModule = require('./modules/TimelineModule.js');
 var EarthModule = require('./modules/Earthmodule.js');
 var KMLImporter = require('./modules/KMLImporter.js');
@@ -80,7 +81,7 @@ var startStorify = function(err, user) {
             var tmm = new TimelineModule(story, {
                 enabled: true
             });
-            var fps33 = new CustomClickModule(1000 / 66  , {enabled: true}); //call produce approx 33 times per second
+            var timeProducer = new CustomClickModule( 33  , {enabled: true}); //call produce approx 66 times per second
             var player = new SModule({enabled: true,
                 name: 'autoPlayer',
                 callbacks: {
@@ -88,7 +89,7 @@ var startStorify = function(err, user) {
                         tmm.nextFrame();
                     },
                 }
-            }).addProducer(fps33);
+            }).addProducer(timeProducer);
 
         //create a kml importer. modify the story object
         var importer = new KMLImporter(story, {
@@ -144,7 +145,7 @@ var startStorify = function(err, user) {
             renderListener,
             importer,
             tmm,
-            fps33,
+            timeProducer,
             player
         ];
 
