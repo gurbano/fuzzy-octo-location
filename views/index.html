@@ -13,17 +13,45 @@
         background-repeat: no-repeat;
         background-position: center center;
     }
+    .post{
+        width:100px;
+        height:300px;
+        background: white;
+    }
+
+
+
     </style>
     <div class="container" id='main'>
-        
-    </div>
 
+
+    </div>
+    <script src="js/masonry.pkgd.min.js"></script>
     <script src="js/material/ripples.min.js"></script>
     <script src="js/material/material.min.js"></script>
     <script>
         $(document).ready(function() {
+            var postTemplate = "<div class='post type-post status-publish format-standard has-post-thumbnail hentry category-designs masonry-brick' style='position: absolute; left: 0px; top: 0px;'><div class='pinbin-image'><a href='@@link'><img src='' class='attachment-summary-image wp-post-image' alt='lego'></a></div><div class='pinbin-category'><p><a href='' rel='category tag'>@@tags</a></p></div><div class='pinbin-copy'><h2><a class='front-link' href='http://colorlib.com/pinbin/random-content-experiment/'>@@title</a></h2><p class='pinbin-date'>@@date  </p><p>@@description</p><p class='pinbin-link'><a href='@@link'>→</a></p></div></div>";
             $.material.init();
-            $.get('projects', function(data){console.info(data);});
+            $.get('projects', function(data){
+                for (var i=0; i<data.length; i++){
+                    var p = data[i];
+                    /*var article_wrapper = $(
+                        postTemplate.replace('@@title',p.name)
+                                    .replace('@@link',p.url)
+                                    .replace('@@tags',p.tags)
+                    );
+                    $('#main').append(article_wrapper);
+                    */
+                     $('#main').append('<div class="post">'+p.name+'</div>')
+                }
+            });
+
+            $('#main').masonry({
+              columnWidth: 900,
+              itemSelector: '.post'
+            });
+                    
         });
     </script>
 

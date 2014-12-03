@@ -36,3 +36,129 @@ a:active {text-decoration: none;}
 		height: auto;
 	}
 }
+
+
+
+/* Post and page style
+--------------------------------------------------------------*/
+.type-post,#main-nav-wrapper,nav {
+  -webkit-box-shadow: 0 4px 15px -5px #555;
+  box-shadow: 0 4px 15px -5px #555;
+}
+.type-post,.type-page,.type-attachment,#post-area .post {
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
+}
+.type-post,.type-page,.type-attachment {
+  width: 750px;
+  background: #fff;
+  margin-right: 10px;
+  margin-top: 15px;
+  float: left;
+}
+.type-post {
+  position: relative;
+}
+.pinbin-image img {
+  z-index: 5;
+}
+.pinbin-category {
+  position: absolute;
+  width: auto;
+  background: #000;
+  zoom: 1;
+  filter: alpha(opacity=70);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+  margin-top: -36px;
+  z-index: 1;
+  height: 30px;
+  overflow: hidden;
+  left: 0;
+}
+.pinbin-category p {
+  margin: 0;
+  padding: 0;
+  line-height: 30px;
+  padding-left: 20px;
+  padding-right: 40px;
+  color: #fff;
+  font-style: italic;
+}
+.pinbin-category a {
+  color: #fff;
+  font-style: italic;
+  text-decoration: none;
+}
+.pinbin-category a:hover {
+  color: #777;
+  text-decoration: none;
+}
+.pinbin-copy {
+  padding: 20px 8%;
+}
+.pinbin-meta {
+  width: 100%;
+  display: inline-block;
+  color: #8e8e8e;
+  font-size: 11px;
+  margin-bottom: 10px;
+  padding-bottom: 0px;
+  border-bottom: 1px dotted #cccccc;
+}
+.size-full {
+  max-width: 100%;
+  height: inherit;
+}
+#post-area .sticky {
+  background: #ececec !important;
+}
+#post-area .sticky:hover {
+  background: #fff !important;
+}
+/* Post style on frontpage
+--------------------------------------------------------------*/
+#post-area .post {
+  width: 300px;
+  background: #FFF;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+#post-area .post .pinbin-copy {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow: hidden;
+  clear: both;
+  width: 250px;
+}
+#post-area .post .pinbin-date {
+  width: 115px;
+  color: #8e8e8e;
+  font-size: 11px;
+  border-bottom: 1px dotted #cccccc;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+#post-area .post .pinbin-link a {
+  text-decoration: none;
+  background: #444;
+  padding: 5px 10px;
+  color: #fafafa;
+  font-size: 12px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 245px;
+  margin-top: -15px;
+}
+#post-area .post .pinbin-link a:hover {
+  background: #777;
+}
+#post-area .post .pinbin-link a,.post-next a,.post-prev a,.post-next a,.post-prev a {
+  -webkit-transition: background 0.3s linear;
+  -moz-transition: background 0.3s linear;
+  -o-transition: background 0.3s linear;
+  -ms-transition: background 0.3s linear;
+  transition: background 0.3s linear;
+}
