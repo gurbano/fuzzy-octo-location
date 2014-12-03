@@ -43,7 +43,6 @@ CowabungaWorld.prototype.postInit = function() {
             self.parent.vehicle = self.vehicle = self.addVehicle(function() {
                 callback(null, self.car);
             });
-
         },
     }, function(err, results) {
         self.started = true;
@@ -92,10 +91,6 @@ CowabungaWorld.prototype.addGround = function() {
 
     var NoiseGen = new SimplexNoise;
     var ground_geometry = new THREE.PlaneGeometry(3000, 3000, 100, 100);
-    for (var i = 0; i < ground_geometry.vertices.length; i++) {
-        var vertex = ground_geometry.vertices[i];
-        //vertex.y = NoiseGen.noise( vertex.x / 30, vertex.z / 30 ) * 1;
-    }
     ground_geometry.computeFaceNormals();
     ground_geometry.computeVertexNormals();
 

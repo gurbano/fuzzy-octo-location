@@ -73,18 +73,16 @@ CowabungaMainModule.prototype.postInit = function() {
             self.submodules.push(self.hw);
             callback(null, self.hw);
         },
-        initInput: function(callback) { //create the input
+        initInput: function(callback) { //create the input handler
             GLOBALS.pb.set(30);
             self.carinput = new CowabungaCarInput({
                 enabled: true
             });
             self.submodules.push(self.carinput);
-
             self.mousehandler = new CowabungaMouseHandler(self.handler, {
                 enabled: true
             });
             self.submodules.push(self.mousehandler);
-
             //BIND THE CAMERA TO MOUSE PRODUCER
             self.bindToProducer(
                 function(meta) {
@@ -147,8 +145,6 @@ CowabungaMainModule.prototype.postInit = function() {
 
         self.bindToProducer(
             function(framecount) {
-
-
                 /*UPDATE Player POSITION*/
                 //car position is updated in CowabungaCar.js -- line 70
                 //UPDATE CAMERA POSITION
@@ -177,16 +173,13 @@ CowabungaMainModule.prototype.postInit = function() {
 
             }, self);
 
-
-
         console.info('CowabungaMainModule started', results, self);
         GLOBALS.pb.set(100);
     });
-
-
-
-
 };
+
+
+
 CowabungaMainModule.prototype.produce = function() {
     var self = this; //things are gonna get nasty
     if (!this.enabled || !this.started) {

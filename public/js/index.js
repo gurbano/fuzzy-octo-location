@@ -7,6 +7,5 @@ var G = new function(div){
 
 init = function(GLOBALS) {
 	console.info('index started');
-	$('#main').css('background-image','url("assets/images/bg.jpg")');
-	
+	$('#main').css('background-image','url("assets/images/bg.jpg")');	
 };

@@ -1,4 +1,4 @@
-var garageServer = require('garageserver.io');
+var garageServer = require('../public/libs/garageserver.io/lib/garageserver.io');
 
 
 exports = module.exports = GarageServer;

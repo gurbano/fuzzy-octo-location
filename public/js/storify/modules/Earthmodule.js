@@ -44,6 +44,7 @@ EarthModule.prototype.postInit = function() {
     self.sm = new SM(self, {}).start(); //Init scene manager
     /*OBJECTS TO DISPLAY*/
     self.earth = new EARTH(self, {}).start(); //Planet earth
+    /*START ALL SUBMODULES*/
     if (this.opts.submodules && this.opts.submodules.length>0){
         var submodules = this.opts.submodules;
         for (var i = 0; i < submodules.length;   i++) {
@@ -51,11 +52,9 @@ EarthModule.prototype.postInit = function() {
         };
     }
 
-    var pp = new EarthModuleCameraPostProcessor(self, self.sm.scene, self.hw.camera, self.hw.renderer, {});
+    //var pp = new EarthModuleCameraPostProcessor(self, self.sm.scene, self.hw.camera, self.hw.renderer, {});
 
-    /*Create a ticker:
-        1 - run the loop passed as arguments ()
-     */
+    //Request animation frame producer
     self.ticker = new EarthModuleRAFProducer(
         self, {}, //parent, options 
         function(framecount, earthmodule) { //main loop. 

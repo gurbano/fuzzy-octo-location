@@ -25,7 +25,6 @@
     "events": "^1.0.2",
     "express": "^4.9.4",
     "fps": "0.0.3",
-    "garageserver.io": "^0.6.0",
     "good": "^2.3.0",
     "hapi": "^6.11.1",
     "hapi-socket": "^0.2.0",

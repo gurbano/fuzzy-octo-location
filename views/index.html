@@ -1,5 +1,9 @@
-<% include partials/head %>
-<% include partials/menu_head %>
+    <% include partials/head %>    
+    <!--https://github.com/FezVrasta/bootstrap-material-design-->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/material/ripples.min.css" rel="stylesheet">
+    <link href="css/material/material-wfont.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <script src="js/index.js"></script>
     <style type="text/css">
     #main {
@@ -10,8 +14,17 @@
         background-position: center center;
     }
     </style>
-    <div id="main">
+    <div class="container" id='main'>
+        
     </div>
 
-    <% include partials/menu_foot %>
-    <% include partials/foot %>
+    <script src="js/material/ripples.min.js"></script>
+    <script src="js/material/material.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.material.init();
+            $.get('projects', function(data){console.info(data);});
+        });
+    </script>
+
+<% include partials/foot %>

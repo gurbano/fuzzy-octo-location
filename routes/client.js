@@ -14,12 +14,28 @@ module.exports = function($) {
             reply.view('flock');
         }
     });
+    server.route({
+        method: 'GET',
+        path: '/particles',
+        handler: function(request, reply) {
+            reply.view('particles');
+        }
+    });
 
     server.route({
         method: 'GET',
         path: '/',
         handler: function(request, reply) {
-            reply.view('masonry');
+            reply.view('index');
+        }
+    });
+
+
+    server.route({
+        method: 'GET',
+        path: '/projects',
+        handler: function(request, reply) {
+            reply($.get('projects').findAll());
         }
     });
 };

@@ -30,6 +30,7 @@ $.put('api', require('./modules/api')($)); //
 $.put('battery', require('./modules/battery')($));
 $.put('fsmanager', require('./modules/fsmanager')($)); //
 $.put('storify', require('./modules/server_storify')($)); //
+$.put('projects', require('./modules/project_repository')($)); //
 
 
 
