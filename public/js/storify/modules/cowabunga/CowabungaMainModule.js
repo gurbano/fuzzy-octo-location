@@ -180,7 +180,7 @@ CowabungaMainModule.prototype.postInit = function() {
 
 
 
-CowabungaMainModule.prototype.produce = function() {
+CowabungaMainModule.prototype.produce = function(frame) {
     var self = this; //things are gonna get nasty
     if (!this.enabled || !this.started) {
         return;
@@ -188,7 +188,7 @@ CowabungaMainModule.prototype.produce = function() {
     self.consumers = self.consumers || [];
     for (var i = 0; i < this.consumers.length; i++) {
         this.consumers[i].consume({
-            framecount: this.framecount
+            framecount: frame
         });
     };
 };

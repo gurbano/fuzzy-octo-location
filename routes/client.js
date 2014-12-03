@@ -7,6 +7,14 @@ module.exports = function($) {
             reply.view('index');
         }
     });
+
+    server.route({
+        method: 'GET',
+        path: '/ss',
+        handler: function(request, reply) {
+            reply.view('simsity');
+        }
+    });
     server.route({
         method: 'GET',
         path: '/flock',

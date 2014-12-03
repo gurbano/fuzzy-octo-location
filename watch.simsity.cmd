@@ -1,0 +1,1 @@
+watchify .\public\js\storify\storify.simsity.js -o .\public\js\storify\dist\simsity.bundle.js
