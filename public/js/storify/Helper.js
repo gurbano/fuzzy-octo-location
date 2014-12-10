@@ -134,5 +134,11 @@ Helper.prototype.dayOfTheYear = function(date) {
     var j1 = new Date(date);
     j1.setMonth(0, 0);
     return Math.round((date - j1) / 8.64e7);
+};
+
+Helper.prototype.getUID = function() {
+    return '#' + new Date().getTime();
 }
+
+
 

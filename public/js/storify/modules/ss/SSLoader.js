@@ -55,4 +55,5 @@ SSLoader.prototype.produce = function(event) {
 
 SSLoader.prototype.addSubmodule = function(module) {
 	this.submodules.push(module);
+	return this;
 };

@@ -7,8 +7,8 @@ var EventType = require('../../EventType.js');
 module.exports = SSSceneManager;
 
 
-function SSSceneManager(parent,opts) {
-    if (!(this instanceof SSSceneManager)) return new SSSceneManager(parent,opts);
+function SSSceneManager(parent, opts) {
+    if (!(this instanceof SSSceneManager)) return new SSSceneManager(parent, opts);
     this.opts = helper.extend({
         name: 'SSSceneManager',
         id: 'SSSceneManager'
@@ -25,33 +25,30 @@ inherits(SSSceneManager, SModule);
 SSSceneManager.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
     console.info('SSSceneManager started');
-    self.scene = self.parent.scene = new THREE.Scene();   
+    self.scene = self.parent.scene = new THREE.Scene();
 };
 
 
-SSSceneManager.prototype.addEntity = function(entity, parentId) {
-	if (!entity.id){
-		entity.id = helper.getUID();
-	}
-	this.entities[entity.id] = entity;
-
-	if (!parentId || !this.entities[parentId]){
-		this.scene.add(entity);
-	}else{
-		this.entities[parentId].add(entity);
-	}
-};
-
-
-SSSceneManager.prototype.addAxis = function(entity, parentId) {
-	if (!entity.id){
-		entity.id = helper.getUID();
-	}
-	this.entities[entity.id] = entity;
-
-	if (!parentId || !this.entities[parentId]){
-		this.scene.add(entity);
-	}else{
-		this.entities[parentId].add(entity);
-	}
+SSSceneManager.prototype.addEntity = function(entity, id, parentId) {
+    if (id && this.entities[id]) {
+        console.error('an entity with the same ID exists already', id, this.entities[id]);
+        return;
+    }
+    id = id || helper.getUID();
+    if (!entity.uid) {
+        entity.uid = id;
+    }
+    this.entities[entity.uid] = entity;
+    if (parentId) {
+        if (!this.entities[parentId]) {
+        	console.error('Trying to add to unknown parent entity', parentId);
+        	return;
+        	    
+        }else{
+        	this.entities[parentId].add(entity);
+        }
+    } else {
+    	this.scene.add(entity);
+        
+    }
 };

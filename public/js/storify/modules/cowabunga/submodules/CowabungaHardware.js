@@ -86,11 +86,11 @@ CowabungaHardware.prototype.zoomIn = function() {
     this.camera.fov *= zoomFactor;
     this.camera.fov = Math.min(this.settings.camera.maxZoom,this.camera.fov);
     this.camera.updateProjectionMatrix();
-    console.info(this.camera.fov);
+    //console.info(this.camera.fov);
 };
 CowabungaHardware.prototype.zoomOut = function() {
     this.camera.fov /= zoomFactor;
     this.camera.fov = Math.max(this.settings.camera.minZoom,this.camera.fov);
     this.camera.updateProjectionMatrix();
-    console.info(this.camera.fov);
+    //console.info(this.camera.fov);
 };

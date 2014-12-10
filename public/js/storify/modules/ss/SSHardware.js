@@ -3,8 +3,18 @@ var inherits = require('inherits');
 var smartresize = require('../../Smartresize.js');
 var helper = require('../../Helper.js')();
 var EventType = require('../../EventType.js');
+
 module.exports = SSHardware;
 
+
+var POS_X = -1000;
+var POS_Y = 1000;
+var POS_Z = 1000;
+
+var FOV = 45;
+var NEAR = 1;
+var FAR = 400000 * 1000000;
+var CLEAR_HEX_COLOR = 0x000000;
 
 function SSHardware(parent, target, opts) {
     if (!(this instanceof SSHardware)) return new SSHardware(parent, opts);
@@ -48,7 +58,7 @@ SSHardware.prototype.postInit = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
-    renderer.setClearColorHex(0xaaaaaa);
+    renderer.setClearColorHex(0x000000);
     self.target.prepend(renderer.domElement);
 
     //STATS
@@ -59,24 +69,36 @@ SSHardware.prototype.postInit = function() {
     render_stats.domElement.style.zIndex = 100;
     self.target.append(render_stats.domElement);
 
-    var camera = new THREE.PerspectiveCamera(
-			35,
-			window.innerWidth / window.innerHeight,
-			1,
-			1000
-		);
-	self.parent.scene.add( camera );
 
+
+    var camera = new THREE.PerspectiveCamera(FOV, window.innerWidth /  window.innerHeight, NEAR, FAR);
+	self.parent.scene.add( camera );
     self.projector = projector;
     self.renderer = self.parent.renderer = renderer;
     self.camera = self.parent.camera = camera;
-    camera.lookAt(0,0,0);
+    self.camera.position.set(POS_X, POS_Y, POS_Z);
+    self.camera.lookAt(new THREE.Vector3(0, 0, 0));
     self.stats = render_stats;
     self.bindToProducer(
         function(framecount) {
             self.stats.update();
+            
         }, self.producer );
 
+
+    self.controls = self.parent.controls = new THREE.TrackballControls(self.camera, document.getElementById('UI-VIEW'));
+    self.controls.rotateSpeed = 1.0;
+    self.controls.zoomSpeed = 1.2;
+    self.controls.panSpeed = 0.8;
+    self.controls.noZoom = false;
+    self.controls.noPan = false;
+    self.controls.staticMoving = false;
+    self.controls.dynamicDampingFactor = 0.3;
+    //self.controls.minDistance = EARTH_SIZE + EARTH_SIZE / 100;
+    self.controls.maxDistance = 400000;
+    self.controls.keys = [65, 83, 68];
+
+    /*RESIZE*/
     $(window).smartresize(function onWindowResize() {
         self.target.width(window.innerWidth);
         self.target.height(window.innerHeight);
