@@ -3,7 +3,6 @@ var inherits = require('inherits');
 var smartresize = require('../../Smartresize.js');
 var helper = require('../../Helper.js')();
 var EventType = require('../../EventType.js');
-var THREEx = require('./THREEx.Terrain.js');
 
 module.exports = SSEntityFactory;
 
@@ -34,28 +33,32 @@ SSEntityFactory.prototype.getSphere = function(radius, material) {
 };
 
 SSEntityFactory.prototype.createTerrain = function(w, h) {
-    var heightMap = THREEx.Terrain.allocateHeightMap(w, h);
-    THREEx.Terrain.simplexHeightMap(heightMap);
-    var geometry = THREEx.Terrain.heightMapToPlaneGeometry(heightMap);
-    var material = new THREE.MeshBasicMaterial({
-        wireframe: true,
-        color: 'blue'
+    var xS = 120, yS = 120;
+    terrainScene = THREE.Terrain({
+        easing: THREE.Terrain.Linear,
+        frequency: 2.5,
+        heightmap: THREE.Terrain.DiamondSquare,
+        material: new THREE.MeshBasicMaterial({color: 0x5566aa,wireframe: true}),
+        maxHeight: 100,
+        minHeight: -100,
+        steps: 1,
+        useBufferGeometry: false,
+        xSegments: xS,
+        xSize: 1024,
+        ySegments: yS,
+        ySize: 1024,
     });
-    var m = new THREE.Mesh(geometry, material);
-
-    m.scale.x = m.scale.y = 200;
-
-    return m;
+    return terrainScene;
 };
 
 SSEntityFactory.prototype.createAxis = function(x, y, z) {
     var axisLength = 850;
     var createAxis = function(p1, p2, color, width) {
         var line, lineGeometry = new THREE.Geometry(),
-            lineMat = new THREE.LineBasicMaterial({
-                color: color,
-                lineWidth: width
-            });
+        lineMat = new THREE.LineBasicMaterial({
+            color: color,
+            lineWidth: width
+        });
         lineGeometry.vertices.push(p1, p2);
         line = new THREE.Line(lineGeometry, lineMat);
         return line;
