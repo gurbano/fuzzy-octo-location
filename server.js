@@ -3,7 +3,7 @@ var Hapi = require('hapi');
 var Good = require('good');
 
 /*CREATE HAPI SERVER --- http://hapijs.com/
- * set ejs as template system */
+* set ejs as template system */
 var port = parseInt(process.env.PORT, 10) || 3000;
 var server = new Hapi.Server('0.0.0.0', port, {
     views: {
@@ -65,7 +65,7 @@ require('./routes/routes_storify')($); //Project storify
 
 
 /*PACKS:
-    - Good - A logging plugin that supports output to console, file and udp/http endpoints*/
+- Good - A logging plugin that supports output to console, file and udp/http endpoints*/
 /*server.pack.register(Good, function(err) {
     if (err) {
         throw err;
