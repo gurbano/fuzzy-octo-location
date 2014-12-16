@@ -22,6 +22,7 @@ function SSMainModule(target, opts) {
 inherits(SSMainModule, SModule);
 
 var SSLoader = require('./SSLoader.js');
+var SSTextureLoader = require('./SSTextureLoader.js');
 var SSHardware = require('./SSHardware.js');
 var SSSceneManager = require('./SSSceneManager.js');
 var SSEntityFactory = require('./SSEntityFactory.js');
@@ -50,10 +51,15 @@ SSMainModule.prototype.postInit = function() {
     }, self.loader);
 
     /*Create submodules and start application*/
-    self.ef = new SSEntityFactory();
+    
     self.sm = new SSSceneManager(self, {
         enabled: true
     });
+    self.textureManager = new SSTextureLoader([
+            {id: 'playa', url: '/assets/images/ss/terr_0.jpg' },
+            {id: 'playa1', url: '/assets/images/ss/terr_1.jpg' },
+        ],{});
+    self.ef = new SSEntityFactory({tm : self.textureManager});
     self.hw = new SSHardware(
         self, //parent
         self.$target, //target 
@@ -69,7 +75,11 @@ SSMainModule.prototype.postInit = function() {
             }
         }
     );
-    self.loader.addSubmodule(self.sm).addSubmodule(self.hw).start();
+    self.loader
+        .addSubmodule(self.sm)
+        .addSubmodule(self.hw)
+        .addSubmodule(self.textureManager)
+    .start();
 };
 
 
