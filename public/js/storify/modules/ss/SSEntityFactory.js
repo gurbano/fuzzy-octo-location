@@ -34,13 +34,17 @@ SSEntityFactory.prototype.getSphere = function(radius, material) {
 };
 
 SSEntityFactory.prototype.getTerrainMaterial = function() {
+
+    
         // t1, t2, t3, and t4 must be textures, e.g. loaded using `THREE.ImageUtils.loadTexture()`.
         // The function takes an array specifying textures to blend together and how to do so.
         // The `levels` property indicates at what height to blend the texture in and out.
         // The `glsl` property allows specifying a GLSL expression for texture blending.
-        return  THREE.Terrain.generateBlendedMaterial([
         // The first texture is the base; other textures are blended in on top.
-        {texture: this.tm.get('playa')},
+    return  THREE.Terrain.generateBlendedMaterial([
+    
+    {texture: this.tm.get('playa')},
+
         // Start blending in at height -80; opaque between -35 and 20; blend out by 50
         //{texture: t2, levels: [-80, -35, 20, 50]},
         //{texture: t3, levels: [20, 50, 60, 85]},
@@ -49,6 +53,9 @@ SSEntityFactory.prototype.getTerrainMaterial = function() {
         // Use this texture if the slope is between 27 and 45 degrees
         //{texture: t3, glsl: 'slope > 0.7853981633974483 ? 0.2 : 1.0 - smoothstep(0.47123889803846897, 0.7853981633974483, slope) + 0.2'},
     ]);
+    
+
+    //turn new THREE.MeshBasicMaterial({map: this.tm.get('playa')})
 };
 
 SSEntityFactory.prototype.createTerrain = function(w, h) {
@@ -69,6 +76,23 @@ SSEntityFactory.prototype.createTerrain = function(w, h) {
         ySize: 10240,
     });
     return terrainScene;
+};
+
+SSEntityFactory.prototype.createLights = function() {
+    //new THREE.AmbientLight(0x151515);
+    var sun = new THREE.DirectionalLight(0xffaaaa, 1);
+    //sun.position.set(POS_X_L, POS_Y_L, POS_Z_L);
+    //sun.lookAt(POS_X, POS_Y, POS_Z);
+    sun.castShadow = true;
+    sun.shadowCameraVisible = false; //set true to see shadow frustum
+    sun.intensity = 0.8;
+    sun.shadowCameraNear = 1000;
+    sun.shadowCameraFar = 250000000;
+    sun.shadowBias = 0.0001;
+    sun.shadowDarkness = 0.35;
+    sun.shadowMapWidth = 1024; //512px by default
+    sun.shadowMapHeight = 1024; //512px by default    
+    return sun;
 };
 
 SSEntityFactory.prototype.createAxis = function(x, y, z) {
@@ -98,3 +122,12 @@ THREE.Mesh.prototype.moveAt = function(x, y, z) {
     this.position.set(x, y, z);
     return this;
 };
+THREE.DirectionalLight.prototype.moveAt = function(x, y, z) {
+    this.position.set(x, y, z);
+    return this;
+};
+THREE.DirectionalLight.prototype.lookTo = function(x, y, z) {
+    this.lookAt(x, y, z);
+    return this;
+};
+

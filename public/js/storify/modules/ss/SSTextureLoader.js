@@ -31,7 +31,7 @@ SSTextureLoader.prototype.postInit = function() {
 SSTextureLoader.prototype.get = function(alias) {
     var self = this;
 	for (var i = self.textures.length - 1; i >= 0; i--) {
-		if(self.textures[i]===alias)
+		if(self.textures[i].id===alias)
     	return self.textures[i].texture;
     };
     return null;
