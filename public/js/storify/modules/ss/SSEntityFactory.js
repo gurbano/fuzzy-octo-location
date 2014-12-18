@@ -34,7 +34,11 @@ SSEntityFactory.prototype.getSphere = function(radius, material) {
 };
 
 SSEntityFactory.prototype.getTerrainMaterial = function() {
-
+    return new THREE.MeshPhongMaterial( 
+        { vertexColors: THREE.VertexColors, 
+            shading: THREE.FlatShading, 
+            specular: 0xffffff, side: THREE.DoubleSide } );
+        
     
         // t1, t2, t3, and t4 must be textures, e.g. loaded using `THREE.ImageUtils.loadTexture()`.
         // The function takes an array specifying textures to blend together and how to do so.
@@ -59,21 +63,21 @@ SSEntityFactory.prototype.getTerrainMaterial = function() {
 };
 
 SSEntityFactory.prototype.createTerrain = function(w, h) {
-    var xS = 255, yS = 255;
+    var xS = 128, yS = 128;
     terrainScene = THREE.Terrain({
         easing: THREE.Terrain.Linear,
-        frequency: 2.5,
+        frequency: 5.5,
         heightmap: THREE.Terrain.DiamondSquare,
         //material: new THREE.MeshBasicMaterial({wireframe: true}),
         material: this.getTerrainMaterial(),
-        maxHeight: 600,
-        minHeight: -600,
+        maxHeight: 120,
+        minHeight: -120,
         steps: 1,
         useBufferGeometry: false,
         xSegments: xS,
-        xSize: 10240,
+        xSize: 2048,
         ySegments: yS,
-        ySize: 10240,
+        ySize: 2048,
     });
     return terrainScene;
 };
