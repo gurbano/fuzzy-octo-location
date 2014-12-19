@@ -86,17 +86,10 @@ SSHardware.prototype.postInit = function() {
         }, self.producer );
 
 
-    self.controls = self.parent.controls = new THREE.TrackballControls(self.camera, document.getElementById('UI-VIEW'));
-    self.controls.rotateSpeed = 1.0;
-    self.controls.zoomSpeed = 1.2;
-    self.controls.panSpeed = 0.8;
-    self.controls.noZoom = false;
-    self.controls.noPan = false;
-    self.controls.staticMoving = false;
-    self.controls.dynamicDampingFactor = 0.3;
-    //self.controls.minDistance = EARTH_SIZE + EARTH_SIZE / 100;
-    self.controls.maxDistance = 400000;
-    self.controls.keys = [65, 83, 68];
+    //self.controls = self.parent.controls = self.getTrackballControls();
+    self.controls = self.parent.controls = self.getFPSControls();
+
+    
 
     /*RESIZE*/
     $(window).smartresize(function onWindowResize() {
@@ -125,4 +118,27 @@ SSHardware.prototype.zoomOut = function() {
     this.camera.fov = Math.max(this.settings.camera.minZoom,this.camera.fov);
     this.camera.updateProjectionMatrix();
     //console.info(this.camera.fov);
+};
+
+SSHardware.prototype.getTrackballControls = function() {
+    var controls = new THREE.TrackballControls(this.camera, document.getElementById('UI-VIEW'));
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.noZoom = false;
+    controls.noPan = false;
+    controls.staticMoving = false;
+    controls.dynamicDampingFactor = 0.3;
+    //controls.minDistance = EARTH_SIZE + EARTH_SIZE / 100;
+    controls.maxDistance = 400000;
+    controls.keys = [65, 83, 68];
+    return controls;
+};
+
+SSHardware.prototype.getFPSControls = function() {
+    var controls = new THREE.PointerLockControls( this.camera );
+    this.camera.position.set(0, 0, 0);
+    controls.enabled = true;
+    this.parent.scene.add(controls.getObject());
+    return controls;
 };

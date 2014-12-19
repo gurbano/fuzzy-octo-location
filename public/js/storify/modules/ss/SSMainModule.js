@@ -42,7 +42,7 @@ SSMainModule.prototype.postInit = function() {
 
         }
         if (event.type === 'onLoadEnd') {
-            var l = self.ef.createLights();
+            var l = self.ef.createLights();            
             self.sm.addEntity(l.moveAt(1000, 1000, 1000).lookTo(0,0,0),'LIGHT');
         	self.sm.addEntity(self.ef.createTerrain(100, 100),'TERRAIN');
             //self.sm.addEntity(self.ef.getSphere(100).moveAt(0, 0, 0),'SPHERE');
