@@ -36,6 +36,7 @@ SSEntityFactory.prototype.getSphere = function(radius, material) {
 SSEntityFactory.prototype.getTerrainMaterial = function() {
     return new THREE.MeshPhongMaterial( 
         { vertexColors: THREE.VertexColors, 
+            texture: this.tm.get('playa'),
             shading: THREE.FlatShading, 
             specular: 0xffffff, side: THREE.DoubleSide } );
         

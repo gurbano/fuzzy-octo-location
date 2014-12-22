@@ -26,6 +26,7 @@ var SSTextureLoader = require('./SSTextureLoader.js');
 var SSHardware = require('./SSHardware.js');
 var SSSceneManager = require('./SSSceneManager.js');
 var SSEntityFactory = require('./SSEntityFactory.js');
+var SSPlayer = require('./SSPlayer.js');
 
 SSMainModule.prototype.postInit = function() {
     var self = this; //things are gonna get nasty
@@ -42,18 +43,15 @@ SSMainModule.prototype.postInit = function() {
 
         }
         if (event.type === 'onLoadEnd') {
-            var l = self.ef.createLights();            
-            self.sm.addEntity(l.moveAt(1000, 1000, 1000).lookTo(0,0,0),'LIGHT');
+            self.sm.addEntity(self.ef.createLights().moveAt(1000, 1000, 1000).lookTo(0,0,0),'LIGHT');
         	self.sm.addEntity(self.ef.createTerrain(100, 100),'TERRAIN');
             //self.sm.addEntity(self.ef.getSphere(100).moveAt(0, 0, 0),'SPHERE');
-            self.sm.addEntity(self.ef.createAxis(true, true, true),'AXIS','TERRAIN');
+            //self.sm.addEntity(self.ef.createAxis(true, true, true),'AXIS','TERRAIN');
             //self.sm.addEntity(self.ef.createLights(true, true, true),'AXIS','TERRAIN');
-
         }
     }, self.loader);
 
-    /*Create submodules and start application*/
-    
+    /*Create submodules and start application*/    
     self.sm = new SSSceneManager(self, {
         enabled: true
     });
@@ -77,10 +75,15 @@ SSMainModule.prototype.postInit = function() {
             }
         }
     );
+    self.player = new SSPlayer(
+    	self.camera, 
+    	self.controls
+    	,{});
     self.loader
         .addSubmodule(self.sm)
         .addSubmodule(self.hw)
         .addSubmodule(self.textureManager)
+        .addSubmodule(self.player)
     .start();
 };
 
@@ -114,8 +117,5 @@ SSMainModule.prototype.consume = function(frame) {
     if (self.renderer && self.scene && self.camera) {
         self.renderer.render(self.scene, self.camera);
     }
-    if (self.controls) {
-        self.controls.update();
-        //console.info(self.camera.position);
-    }
+ 
 };

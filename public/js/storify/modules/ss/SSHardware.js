@@ -3,6 +3,7 @@ var inherits = require('inherits');
 var smartresize = require('../../Smartresize.js');
 var helper = require('../../Helper.js')();
 var EventType = require('../../EventType.js');
+var SSControls = require('./SSControls.js');
 
 module.exports = SSHardware;
 
@@ -26,13 +27,13 @@ function SSHardware(parent, target, opts) {
     this.parent = parent;
     this.target = target;
     this.producer = this.opts.producer || this.parent;
-    this.settings =  this.opts.settings || {};
-    this.settings.renderer =  this.settings.renderer || {};
-    this.settings.camera =  this.settings.camera || {};
+    this.settings = this.opts.settings || {};
+    this.settings.renderer = this.settings.renderer || {};
+    this.settings.camera = this.settings.camera || {};
     this.settings.camera.maxZoom = 50 || this.settings.camera.maxZoom;
     this.settings.camera.minZoom = 5 || this.settings.camera.minZoom;
 
-    
+
     SModule.call(this, this.opts);
     return this;
 }
@@ -45,7 +46,7 @@ SSHardware.prototype.postInit = function() {
     console.info('SSHardware started');
 
 
-    if (!self.parent.scene){
+    if (!self.parent.scene) {
         console.error('THREE SCENE not initializated');
         return;
     }
@@ -62,7 +63,7 @@ SSHardware.prototype.postInit = function() {
     self.target.prepend(renderer.domElement);
 
     //STATS
-    var render_stats = new Stats();//TODO:MOVE TO CSS
+    var render_stats = new Stats(); //TODO:MOVE TO CSS
     render_stats.domElement.style.position = 'absolute';
     render_stats.domElement.style.top = '1px';
     render_stats.domElement.style.right = '1px';
@@ -71,25 +72,29 @@ SSHardware.prototype.postInit = function() {
 
 
 
-    var camera = new THREE.PerspectiveCamera(FOV, window.innerWidth /  window.innerHeight, NEAR, FAR);
-	self.parent.scene.add( camera );
+    var camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
+    self.parent.scene.add(camera);
     self.projector = projector;
     self.renderer = self.parent.renderer = renderer;
     self.camera = self.parent.camera = camera;
     self.camera.position.set(POS_X, POS_Y, POS_Z);
     self.camera.lookAt(new THREE.Vector3(0, 0, 0));
     self.stats = render_stats;
-    self.bindToProducer(
-        function(framecount) {
-            self.stats.update();
-            
-        }, self.producer );
+
 
 
     //self.controls = self.parent.controls = self.getTrackballControls();
-    self.controls = self.parent.controls = self.getFPSControls();
+    //self.controls = self.parent.controls = self.getFPSControls();
+    self.controls = self.parent.controls = new SSControls(
+        self.camera,
+        self.parent.scene, {}
+    ).start();
 
-    
+    self.bindToProducer(
+        function(framecount) {
+            self.stats.update();
+            self.controls.update();
+        }, self.producer);
 
     /*RESIZE*/
     $(window).smartresize(function onWindowResize() {
@@ -109,13 +114,13 @@ SSHardware.prototype.postInit = function() {
 var zoomFactor = 1.2;
 SSHardware.prototype.zoomIn = function() {
     this.camera.fov *= zoomFactor;
-    this.camera.fov = Math.min(this.settings.camera.maxZoom,this.camera.fov);
+    this.camera.fov = Math.min(this.settings.camera.maxZoom, this.camera.fov);
     this.camera.updateProjectionMatrix();
     //console.info(this.camera.fov);
 };
 SSHardware.prototype.zoomOut = function() {
     this.camera.fov /= zoomFactor;
-    this.camera.fov = Math.max(this.settings.camera.minZoom,this.camera.fov);
+    this.camera.fov = Math.max(this.settings.camera.minZoom, this.camera.fov);
     this.camera.updateProjectionMatrix();
     //console.info(this.camera.fov);
 };
@@ -136,7 +141,7 @@ SSHardware.prototype.getTrackballControls = function() {
 };
 
 SSHardware.prototype.getFPSControls = function() {
-    var controls = new THREE.PointerLockControls( this.camera );
+    var controls = new THREE.PointerLockControls(this.camera);
     this.camera.position.set(0, 0, 0);
     controls.enabled = true;
     this.parent.scene.add(controls.getObject());
