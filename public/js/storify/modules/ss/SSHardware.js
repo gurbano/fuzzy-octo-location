@@ -126,25 +126,4 @@ SSHardware.prototype.zoomOut = function() {
     //console.info(this.camera.fov);
 };
 
-SSHardware.prototype.getTrackballControls = function() {
-    var controls = new THREE.TrackballControls(this.camera, document.getElementById('UI-VIEW'));
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
-    controls.noZoom = false;
-    controls.noPan = false;
-    controls.staticMoving = false;
-    controls.dynamicDampingFactor = 0.3;
-    //controls.minDistance = EARTH_SIZE + EARTH_SIZE / 100;
-    controls.maxDistance = 400000;
-    controls.keys = [65, 83, 68];
-    return controls;
-};
 
-SSHardware.prototype.getFPSControls = function() {
-    var controls = new THREE.PointerLockControls(this.camera);
-    this.camera.position.set(0, 0, 0);
-    controls.enabled = true;
-    this.parent.scene.add(controls.getObject());
-    return controls;
-};
