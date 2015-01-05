@@ -73,6 +73,7 @@ SSHardware.prototype.postInit = function() {
 
 
     var camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
+    //var camera = new THREE.OrthographicCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
     self.parent.scene.add(camera);
     self.projector = projector;
     self.renderer = self.parent.renderer = renderer;

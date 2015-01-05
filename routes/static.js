@@ -22,5 +22,16 @@ module.exports = function($) {
             }
         }
     });
+     server.route({
+        path: "/static/{path*}",
+        method: "GET",
+        handler: {
+            directory: {
+                path: "./public/static",
+                listing: false,
+                index: false
+            }
+        }
+    });
 
 };

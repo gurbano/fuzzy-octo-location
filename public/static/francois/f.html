@@ -1,0 +1,174 @@
+<HTML>
+
+<HEAD>
+    <TITLE>
+        ...
+    </TITLE>
+    <style type="text/css">
+    body {
+        background: black;
+        transition: background-color 0.5s ease;
+    }
+    .red{
+        background: red;
+    }
+    .show{
+        transition: opacity 1s ease;
+        opacity: 1 !important;
+    }
+    #francois {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 100%;
+        opacity: 0;
+    }
+    #touch {
+        background: transparent;
+        //background: white;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+    #coolbro {
+        color: white;
+        display: block;
+        text-align: center;
+        margin-top: -300px;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .bg {
+        transition: opacity 0.5s ease;
+        opacity: 0;
+        font-family: "League-Gothic", Courier;
+        font-size: 100px;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 3px 3px 0 #ffd217, 6px 6px 0 #5ac7ff, 9px 9px 0 #ffd217, 12px 12px 0 #5ac7ff;
+    }
+   
+    .preloader{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+    }
+    #p_1{
+        background: url(1.jpg) no-repeat -9999px -9999px;
+    }
+    #p_2{
+        background: url(2.jpg) no-repeat -9999px -9999px;
+    }
+    </style>
+    <script type="text/javascript" src="./jquery-1.11.2.min.js"></script>
+    <audio id="roar" src="goodbye.mp3"></audio>
+</HEAD>
+
+
+<BODY>
+    <div class="preloader">
+        <div id='p_1'></div>
+        <div id='p_2'></div>
+    </div>
+    <img id='francois' src="1.jpg">
+    <div id='touch'></div>
+    <div id='coolbro' class="bg">Cool bro!!!</div>
+
+</BODY>
+
+<script type="text/javascript">
+var el;
+var touch;
+var timeout;
+var audio;
+
+$(document).ready(function() {
+    el = $('#francois');
+    touch = $('#touch');
+    audio = document.getElementById('roar');
+    audio.addEventListener('canplaythrough', function(){
+        refresh();
+        bind();
+        el.addClass('show');
+    }, false);    
+    
+});
+var refresh = function() {
+    var position = el.offset(); // position = { left: 42, top: 567 }    
+    touch.css('left', position.left + Math.floor(el.width()*0.44) );
+    touch.css('top', position.top +  Math.floor(el.height()*0.12));
+    touch.css('width', Math.floor(el.width()*0.15) + 'px' );
+    touch.css('height', Math.floor(el.height()*0.14) + 'px' );
+    el.css('height', $(window).height() + 'px' );
+}
+var m = 1800;
+var go = true;
+
+//
+var beat = function() {
+    if (go) {
+        go = false;
+        setTimeout(function() {
+            go = true;
+        }, m);
+        blink();
+        flash();
+        muuu();
+    }
+}
+
+
+var blink = function(val) {
+    $(document.body).addClass('red');
+    $('#coolbro').addClass('show');
+    setTimeout(function() {
+        $(document.body).removeClass('red');
+        $('#coolbro').removeClass('show');
+    }, m);
+}
+
+//play flash
+var flash = function() {
+        f2(m);
+    }
+    //play mooooo
+var muuu = function() {
+    audio.currentTime = 0.5;
+    audio.play();
+    setTimeout(function() {
+        audio.pause();
+    }, m);
+}
+var bind = function() {
+    $(window).resize(function() {
+        refresh();
+    });
+    touch.mouseover(function() {
+        beat();
+    }).click(function() {
+        beat();
+    });
+    $(window).mousemove(function(event) {
+        var percX = Math.floor((200 * event.clientX / $(window).width()) - 100);
+        var percY = Math.floor((200 * event.clientX / $(window).width()) - 100);
+        //;
+    });
+}
+var f1 = function() {
+    $('#francois').attr('src', '1.jpg');
+};
+var f2 = function(time) {
+    $('#francois').attr('src', '2.jpg');
+    if (time) {
+        setTimeout(function() {
+            f1();
+        }, time);
+    }
+};
+</script>
+
+</HTML>
